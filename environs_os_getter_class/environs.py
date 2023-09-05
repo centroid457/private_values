@@ -76,13 +76,24 @@ class EnvsOsGetterClass:
                     return False
         return True
 
-    def envs__show_os_all(self) -> Type_EnvsDict:
-        result = dict(os.environ)
-        for name, value in result.items():
+    def envs__show_os_all(self, prefix: str = None) -> Type_EnvsDict:
+        envs_all = dict(os.environ)
+        envs_result: Type_EnvsDict = {}
+
+        # filter
+        if not prefix:
+            envs_result = envs_all
+        else:
+            for name, value in envs_all.items():
+                if name.startswith(prefix):
+                    envs_result.update({name: value})
+
+        # print
+        for name, value in envs_result.items():
             print(f"{name}    ={value}")
-        return result
+        return envs_result
 
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    EnvsOsGetterClass().envs__show_os_all()
+    EnvsOsGetterClass().envs__show_os_all("ENV")
