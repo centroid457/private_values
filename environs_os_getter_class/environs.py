@@ -3,16 +3,19 @@ from typing import *
 
 
 # =====================================================================================================================
+Type_EnvsDict = Dict[str, Optional[str]]
+
+
 class EnvsNotAccepted(Exception):
     pass
 
 
 class EnvsOsGetterClass:
     """
-    get environs from OS or use default!
+    update special environs from OS or use default!
     if not exists some value of them - RAISE!
 
-    # add all ENVS with type STR!
+    add all ENVS with type STR!
 
     firstly it will try to get value from OsEnv
     then if not will be used already set as default!
@@ -34,18 +37,18 @@ class EnvsOsGetterClass:
     def __init__(self):
         super().__init__()
 
-        self._envs_detected: Dict[str, Optional[str]] = {}
+        self._envs_detected: Type_EnvsDict = {}
 
         self.envs__detect_names()
         self.envs__update_values_from_os()
         self.envs__check_no_blanks()
 
-    def envs__detect_names(self):
+    def envs__detect_names(self) -> None:
         for name in dir(self):
             if name.startswith(self.ENVS_PREFIX):
                 self._envs_detected.update({name: getattr(self, name)})
 
-    def envs__update_values_from_os(self):
+    def envs__update_values_from_os(self) -> None:
         for name_w_prefix in self._envs_detected:
             name_wo_prefix = name_w_prefix.replace(self.ENVS_PREFIX, "", 1)
 
