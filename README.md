@@ -3,7 +3,7 @@
 ## INFORMATION
 
 ### Inspiration
-Designed to use private data like username/pwd kept in OsEnvironment and not open it in projects.  
+Designed to use private data like username/pwd kept in OsEnvironment and not open it in public projects.  
 Main goals: short implementation and OOP usage.
 
 
