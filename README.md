@@ -1,11 +1,13 @@
 # environs_os_getter_class
 
-## Inspiration
+## INFORMATION
+
+### Inspiration
 Designed to use private data like username/pwd kept in OsEnvironment and not open it in projects.  
 Main goals: short implementation and OOP usage.
 
 
-## Features
+### Features
 1. Create classes with special attributes, which will be updated from OS Environs.  
 By default it must startswith "ENV__".
 
@@ -15,21 +17,29 @@ By this way you can share for example open username/pwd data, end user must crea
 3. If finally no value withing any special attributes - raise Exception.  
 You can disable this behaviour.
 
-## Installation
+
+### License
+
+See the [LICENSE](LICENSE.md) file for license rights and limitations.
+
+
+***
+## QUICK START
+
+### Installation
 ```commandline
 python pip install environs_os_getter_class
 ```
 
-## Import
+### Import
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 ```
-***
-## Usage
+### Usage
 You don't need use it like separated end class to handle only envs!  
 Use nesting to any existed class.
 
-### Before
+#### Before
 Incorrect opened private data - cant push to public repo.
 ```python
 class MyWork:
@@ -38,7 +48,7 @@ class MyWork:
 
 ```
 
-### After
+#### After
 First step, change code to
 
 ```python
@@ -68,3 +78,5 @@ or
 * pwd = "PwdPrivate"  
 
 If you forgot to add some of them, you will get the Exception which notify you exact env!  
+
+***
