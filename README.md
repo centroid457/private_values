@@ -2,12 +2,12 @@
 
 ***
 ## Inspiration
-Designed to use private data like username/pwd kept in OsEvironment and not open it in projects.  
+Designed to use private data like username/pwd kept in OsEnvironment and not open it in projects.  
 Main goals: short implementation and OOP usage.
 
 
 ## Features
-1. Create classes with special attributes, wich will be updated from OS Environs.  
+1. Create classes with special attributes, which will be updated from OS Environs.  
 By default it must startswith "ENV__".
 
 2. Ability to set default values.  
@@ -28,7 +28,7 @@ from environs_os_getter_class import EnvsOsGetterClass
 ```
 ***
 ## Usage
-You dont need use it like separated end class to handle only envs!  
+You don't need use it like separated end class to handle only envs!  
 Use nesting to any existed class.
 
 ### Before
