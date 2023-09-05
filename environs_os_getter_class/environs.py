@@ -76,4 +76,13 @@ class EnvsOsGetterClass:
                     return False
         return True
 
+    def envs__show_os_all(self) -> Type_EnvsDict:
+        result = dict(os.environ)
+        for name, value in result.items():
+            print(f"{name}    ={value}")
+        return result
+
+
 # =====================================================================================================================
+if __name__ == "__main__":
+    EnvsOsGetterClass().envs__show_os_all()
