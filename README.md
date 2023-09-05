@@ -1,6 +1,5 @@
 # environs_os_getter_class
 
-***
 ## Inspiration
 Designed to use private data like username/pwd kept in OsEnvironment and not open it in projects.  
 Main goals: short implementation and OOP usage.
@@ -16,7 +15,6 @@ By this way you can share for example open username/pwd data, end user must crea
 3. If finally no value withing any special attributes - raise Exception.  
 You can disable this behaviour.
 
-***
 ## Installation
 ```commandline
 python pip install environs_os_getter_class
@@ -41,15 +39,7 @@ class MyWork:
 ```
 
 ### After
-Now you need to add envs to your OS and can safely push in any public place!  
-* ENV__user = "UserPrivate"
-* ENV__pwd = "PwdPrivate"  
-or
-* user = "UserPrivate"
-* pwd = "PwdPrivate"  
-
-If you forgot to add some envs, you will get the Exception which notify you exact env!  
-
+First step, change code to
 
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
@@ -59,7 +49,7 @@ class MyWork(EnvsOsGetterClass):
     ENV__pwd: str = None
 ```
 
-Next you can add default public values.
+Next you can add default public values
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
@@ -67,4 +57,14 @@ class MyWork(EnvsOsGetterClass):
     ENV__user: str = "UserDemo"
     ENV__pwd: str = "PwdDemo"
 ```
-***
+
+Now you can safely push it in any public place.
+
+Finally you need to add envs to your OS: 
+* ENV__user = "UserPrivate"
+* ENV__pwd = "PwdPrivate"  
+or
+* user = "UserPrivate"
+* pwd = "PwdPrivate"  
+
+If you forgot to add some of them, you will get the Exception which notify you exact env!  
