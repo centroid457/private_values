@@ -74,8 +74,8 @@ or
 
 
 ### Disable Exception
-If you forgot to add some of envs in OS, you will get the Exception which notify you exact env on instance creation!  
-If you dont need it, just disable
+If you forgot to add some of the envs into OS and it have not defval, you will get the Exception which notify you exact env on instance creation!  
+If you dont need it (handle by your own), just disable
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
@@ -83,12 +83,12 @@ class MyWork(EnvsOsGetterClass):
     ENVS_RISE_EXCEPTION = False
     
     ENV__user: str = "UserDemo"
-    ENV__pwd: str = "PwdDemo"
+    ENV__pwd: str = None
 ```
 
 
 ### Tips
-You don't need use it like separated end class to handle only envs!  
+You don't need use it just like separated end class to handle only envs!  
 Use nesting to any existed class.
 
 ```python
