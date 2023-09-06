@@ -84,7 +84,7 @@ class MyWork(EnvsOsGetterClass):
     ENV__pwd: str = "PwdDemo"
 ```
 
-### Dont forget to add envs to your OS
+### Don't forget to add envs to your OS
 
 In our example you need this pair:
 * ENV__user = "UserPrivate"
@@ -96,8 +96,9 @@ or
 
 ### Disable Exception
 
-If you forgot to add some of the envs into OS and it have not defval, you will get the Exception which notify you exact env on instance creation!  
-If you dont need it (handle by your own), just disable it
+If you forgot to add some of the envs into OS, and it has not defval, 
+you will get the Exception which notify you exact env on instance creation!  
+If you don't need it (handle by your own), just disable it
 
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
