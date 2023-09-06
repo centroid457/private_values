@@ -2,12 +2,14 @@
 
 ## INFORMATION
 
+
 ### Inspiration
 Designed to use private data like username/pwd kept in OsEnvironment and not open it in public projects.  
 Main goals: short implementation and OOP usage.
 
 
 ### Features
+
 1. Create classes with special attributes, which will be updated from OS Environs.  
 By default it must startswith "ENV__".
 
@@ -27,17 +29,21 @@ See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
 ## QUICK START
 
 ### Installation
+
 ```commandline
 python pip install environs_os_getter_class
 ```
 
 ### Import
+
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 ```
 
 ### Suppose you have at start next code
+
 Opened private data - cant push to public repo.
+
 ```python
 class MyWork:
     user: str = "UserPrivate"
@@ -45,6 +51,7 @@ class MyWork:
 ```
 
 ### Change code
+
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
@@ -56,6 +63,7 @@ Now you can safely push it in any public repo.
 
 
 ### Add default (public) values
+
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
@@ -65,6 +73,7 @@ class MyWork(EnvsOsGetterClass):
 ```
 
 ### Dont forget to add envs to your OS
+
 In our example you need this pair:
 * ENV__user = "UserPrivate"
 * ENV__pwd = "PwdPrivate"  
@@ -74,8 +83,10 @@ or
 
 
 ### Disable Exception
+
 If you forgot to add some of the envs into OS and it have not defval, you will get the Exception which notify you exact env on instance creation!  
-If you dont need it (handle by your own), just disable
+If you dont need it (handle by your own), just disable it
+
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
@@ -88,6 +99,7 @@ class MyWork(EnvsOsGetterClass):
 
 
 ### Tips
+
 You don't need use it just like separated end class to handle only envs!  
 Use nesting to any existed class.
 
