@@ -41,7 +41,7 @@ class EnvsOsGetterClass:
 
         self.envs__detect_names()
         self.envs__update_values_from_os()
-        self.envs__check_no_blanks()
+        self.envs__check_no_None()
 
     def envs__detect_names(self) -> None:
         for name in dir(self):
@@ -65,7 +65,7 @@ class EnvsOsGetterClass:
 
                 self._envs_detected.update({name_w_prefix: env_value__os})
 
-    def envs__check_no_blanks(self) -> Union[NoReturn, bool]:
+    def envs__check_no_None(self) -> Union[NoReturn, bool]:
         for name in self._envs_detected:
             if getattr(self, name) is None:
                 msg = f"[CRITICAL] There is no [{name=}] in EnvsOs and not exists default value! Add it manually!!!"
