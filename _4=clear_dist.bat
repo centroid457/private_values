@@ -1,2 +1,2 @@
-del dist\ /q
+rd dist\ /q /s
 pause
