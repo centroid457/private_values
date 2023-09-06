@@ -25,10 +25,16 @@ You can disable this behaviour.
 See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
 
 
+### Release history
+
+See the [HISTORY.md](HISTORY.md) file for release history.
+
+
 ### Help
 
 Source code is small and pretty simple, good structured and self-documented. 
 So feel free to take a look at source do discover implementation abilities. 
+
 
 
 ***
