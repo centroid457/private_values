@@ -1,0 +1,2 @@
+del dist\ /q
+pause
