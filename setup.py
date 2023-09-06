@@ -6,7 +6,7 @@ with open('README.md', 'r') as f:
 
 setup(
   name='environs_os_getter_class',
-  version='1.0.0',
+  version='0.0.1',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
   description='Update class attributes from Os Environment',
