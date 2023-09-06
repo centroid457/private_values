@@ -16,9 +16,13 @@ setup(
   packages=find_packages(),
   install_requires=[],
   classifiers=[
+    'Programming Language :: Python',
     'Programming Language :: Python :: 3.11',
-    'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
+    'Intended Audience :: Developers',
+    'Natural Language :: English',
+    'License :: OSI Approved :: MIT License',
+
   ],
   keywords='example python',
   python_requires='>=3.6',
