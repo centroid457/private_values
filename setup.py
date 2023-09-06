@@ -22,10 +22,11 @@ setup(
     'Intended Audience :: Developers',
     'Natural Language :: English',
     'License :: OSI Approved :: MIT License',
-
   ],
-  keywords='example python',
+  keywords='environs environment',
   python_requires='>=3.6',
-  zip_safe=False
+  project_urls={
+    "Source": "https://github.com/centroid457/environs_os_getter_class",
+  }
 )
 
