@@ -29,4 +29,3 @@ setup(
     "Source": "https://github.com/centroid457/environs_os_getter_class",
   }
 )
-
