@@ -76,7 +76,7 @@ Now you can safely push it in any public repo.
 
 ### Add default (public) values
 
-Use only strint type! no other types like int/float
+Use only string type! no other types like int/float
 
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
