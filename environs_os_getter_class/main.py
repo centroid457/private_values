@@ -77,8 +77,10 @@ class EnvsOsGetterClass:
         return True
 
     @classmethod
-    def envs__show_os_all(cls, prefix: str = None) -> Type_EnvsDict:
+    def envs__show_os(cls, prefix: str = None) -> Type_EnvsDict:
         """
+        mainly it is only for PRINTing! dont use result!
+
         NOTE: be careful to use result as dict! especially if you have lowercase letters!
 
         REASON:
@@ -86,8 +88,13 @@ class EnvsOsGetterClass:
 
             name_lowercase = "name_lowercase"
             os.environ[name_lowercase] = name_lowercase
+
             print(os.getenv(name_lowercase))    # name_lowercase
+            print(os.getenv(name_lowercase.upper()))    # name_lowercase
+
             print(os.environ[name_lowercase])   # name_lowercase
+            print(os.environ[name_lowercase.upper()])   # name_lowercase
+
             print(dict(os.environ)[name_lowercase])     # KeyError: 'name_lowercase'
         """
         envs_all = dict(os.environ)
@@ -118,4 +125,4 @@ class EnvsOsGetterClass:
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    EnvsOsGetterClass.envs__show_os_all("ENV__")
+    EnvsOsGetterClass.envs__show_os("ENV__")
