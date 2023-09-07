@@ -144,9 +144,9 @@ class Test:
             self.env_name__Exists_short: self.VALUE_OS,
         }
 
-    def test__show_os_all(self):
+    def test__envs__show_os(self):
         Victim = VictimRaise
-
-        assert Victim.envs__show_os_all(prefix=Victim.ENVS_PREFIX).get(self.env_name__Exists_full.upper()) == self.VALUE_OS
+        # uppercase - see docstring for method!
+        assert Victim.envs__show_os(prefix=Victim.ENVS_PREFIX).get(self.env_name__Exists_full.upper()) == self.VALUE_OS
 
 # =====================================================================================================================
