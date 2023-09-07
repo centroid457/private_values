@@ -6,7 +6,7 @@ from typing import *
 Type_EnvsDict = Dict[str, Optional[str]]
 
 
-class EnvsNotAccepted(Exception):
+class Exx_EnvsNotAccepted(Exception):
     pass
 
 
@@ -71,12 +71,25 @@ class EnvsOsGetterClass:
                 msg = f"[CRITICAL] There is no [{name=}] in EnvsOs and not exists default value! Add it manually!!!"
                 print(msg)
                 if self.ENVS_RISE_EXCEPTION:
-                    raise EnvsNotAccepted(msg)
+                    raise Exx_EnvsNotAccepted(msg)
                 else:
                     return False
         return True
 
-    def envs__show_os_all(self, prefix: str = None) -> Type_EnvsDict:
+    @classmethod
+    def envs__show_os_all(cls, prefix: str = None) -> Type_EnvsDict:
+        """
+        NOTE: be careful to use result as dict! especially if you have lowercase letters!
+
+        REASON:
+            import os
+
+            name_lowercase = "name_lowercase"
+            os.environ[name_lowercase] = name_lowercase
+            print(os.getenv(name_lowercase))    # name_lowercase
+            print(os.environ[name_lowercase])   # name_lowercase
+            print(dict(os.environ)[name_lowercase])     # KeyError: 'name_lowercase'
+        """
         envs_all = dict(os.environ)
         envs_result: Type_EnvsDict = {}
 
@@ -93,7 +106,13 @@ class EnvsOsGetterClass:
             print(f"{name}    ={value}")
         return envs_result
 
+    def envs__show_used(self) -> Type_EnvsDict:
+
+        for name, value in self._envs_detected.items():
+            print(f"{name}    ={value}")
+        return self._envs_detected
+
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    EnvsOsGetterClass().envs__show_os_all("ENV")
+    EnvsOsGetterClass.envs__show_os_all("ENV__")
