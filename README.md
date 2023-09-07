@@ -38,7 +38,8 @@ So feel free to take a look at source do discover implementation abilities.
 
 
 ***
-## QUICK START
+
+## GUIDE
 
 ### Installation
 
@@ -100,7 +101,8 @@ or
 
 If you forgot to add some of the envs into OS, and it has not defval, 
 you will get the Exception which notify you exact env on instance creation!  
-If you don't need it (handle by your own), just disable it
+If you don't need it (handle by your own), just disable it.
+But don't forget it make sense only if any ENV has None value.
 
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
@@ -113,26 +115,55 @@ class MyWork(EnvsOsGetterClass):
 ```
 
 
-### Tips
+### You may change attribute prefix
 
-You don't need use it just like separated end class to handle only envs!  
-Use nesting to any existed class.
+if default prefix is inappropriate for your project you can change it, but it is not recommended
 
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
 class MyWork(EnvsOsGetterClass):
-    ENVS_RISE_EXCEPTION = False
+    ENVS_PREFIX: str = "MyPrefix__"
     
+    MyPrefix__user: str = None
+    MyPrefix__pwd: str = None
+```
+
+In this case you need following env pair in your OS:
+* MyPrefix__user = "UserPrivate"
+* MyPrefix__pwd = "PwdPrivate"  
+or
+* user = "UserPrivate"
+* pwd = "PwdPrivate"  
+
+
+### Environ names in OS and code source
+
+In examples above you may notice that it is better to keep env names in OS as is 
+and in your code just add prefix.
+It is the best practice to get existed environs from OS. 
+But if you need to add new ones there I think it is more preferable using name with prefix, 
+so you can visually separate envs you specially add for python usage.
+
+
+### Tips
+
+You don't need use it just like separated end class to handle only envs!  
+Use nesting to any existed class.
+Only special names of attributes will be updated from OsEnvironment.
+
+```python
+from environs_os_getter_class import EnvsOsGetterClass
+
+class MyWork(EnvsOsGetterClass):
     ENV__user: str = "UserDemo"
     ENV__pwd: str = "PwdDemo"
 
     ATTR1 = 1
-    ATTR2 = 2
+    ATTR2 = None
 
     def __init__(self):
         super().__init__()
-        
         # do smth
 
     def do_smth(self):
