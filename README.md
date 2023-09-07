@@ -32,7 +32,7 @@ See the [HISTORY.md](HISTORY.md) file for release history.
 
 ### Help
 
-See the [GUIDE](GUIDE) to get main usage.
+See the [GUIDE](#GUIDE) to get main usage.
 Source code is small and pretty simple, good structured and self-documented. 
 So feel free to take a look at source do discover other implementation abilities.
 
