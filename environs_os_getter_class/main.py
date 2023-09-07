@@ -93,7 +93,7 @@ class EnvsOsGetterClass:
         envs_all = dict(os.environ)
         envs_result: Type_EnvsDict = {}
 
-        # filter
+        # filter ---------------
         if not prefix:
             envs_result = envs_all
         else:
@@ -101,15 +101,18 @@ class EnvsOsGetterClass:
                 if name.startswith(prefix):
                     envs_result.update({name: value})
 
-        # print
+        # print ---------------
+        print()     # to pretty print in pytest only
         for name, value in envs_result.items():
             print(f"{name}    ={value}")
+        print()     # to pretty print in pytest only
         return envs_result
 
     def envs__show_used(self) -> Type_EnvsDict:
-
+        print()     # to pretty print in pytest only
         for name, value in self._envs_detected.items():
             print(f"{name}    ={value}")
+        print()     # to pretty print in pytest only
         return self._envs_detected
 
 
