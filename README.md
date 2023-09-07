@@ -76,6 +76,8 @@ Now you can safely push it in any public repo.
 
 ### Add default (public) values
 
+Use only strint type! no other types like int/float
+
 ```python
 from environs_os_getter_class import EnvsOsGetterClass
 
@@ -86,7 +88,7 @@ class MyWork(EnvsOsGetterClass):
 
 ### Don't forget to add envs to your OS
 
-In our example you need this pair:
+In our example we need this pair:
 * ENV__user = "UserPrivate"
 * ENV__pwd = "PwdPrivate"  
 or
