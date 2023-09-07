@@ -6,7 +6,7 @@ with open('README.md', 'r') as f:
 
 setup(
   name='environs_os_getter_class',
-  version='0.0.1',
+  version='0.0.2',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
   description='Update class attributes from Os Environment',
@@ -16,6 +16,7 @@ setup(
   packages=find_packages(),
   install_requires=[],
   classifiers=[
+    'Development Status :: 5 - Production/Stable',
     'Programming Language :: Python',
     'Programming Language :: Python :: 3.11',
     'Operating System :: OS Independent',
