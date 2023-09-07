@@ -5,8 +5,8 @@ with open('README.md', 'r') as f:
     readme = f.read()
 
 setup(
-  name='environs_os_getter_class',
-  version='0.0.2',
+  name='privet_values',
+  version='0.0.3',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
   description='Update class attributes from Os Environment',
@@ -24,7 +24,7 @@ setup(
     'Natural Language :: English',
     'License :: OSI Approved :: MIT License',
   ],
-  keywords='environs environment',
+  keywords='environs environment rc privet',
   python_requires='>=3.6',
   project_urls={
     "Source": "https://github.com/centroid457/environs_os_getter_class",

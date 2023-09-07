@@ -1,19 +1,22 @@
 import os
+import pathlib
+from configparser import ConfigParser
 from typing import *
 
 
 # =====================================================================================================================
-Type_EnvsDict = Dict[str, Optional[str]]
+Type_PvsDict = Dict[str, Optional[str]]
+Type_Path = Union[str, pathlib.Path]
 
 
-class Exx_EnvsNotAccepted(Exception):
+class Exx_PvNotAccepted(Exception):
     pass
 
 
-class EnvsOsGetterClass:
+class PrivetValues:
     """
-    update special environs from OS or use default!
-    if not exists some value of them - RAISE!
+    update special params from OsEnvirons, RC file or use default.
+    if not exists finally some value of them - RAISE!
 
     add all ENVS with type STR!
 
@@ -30,27 +33,43 @@ class EnvsOsGetterClass:
     set default VALUES
         ENV__MAIL_USER: str = None      # no default value
         ENV__MAIL_USER: str = "hello"   # def value set!
+
+    When updated values - any value even blank string will be used!
     """
-    ENVS_RISE_EXCEPTION: bool = True
-    ENVS_PREFIX: str = "ENV__"
+    PVS__RISE_EXCEPTION_IF_NONE: bool = True
+    PVS__PREFIX: str = "PV__"
+
+    PVS__ENV_BETTER_THEN_RC: bool = True
+
+    PVS__RC_SECTION: str = "DEFAULT"
+    PVS__RC_DIRPATH: Type_Path = pathlib.Path.home()
+    PVS__RC_FILENAME: str = ".pv_rc"
 
     def __init__(self):
         super().__init__()
 
-        self._envs_detected: Type_EnvsDict = {}
+        self._pvs_detected: Type_PvsDict = {}
+        self.PVS__RC_FILEPATH = self.PVS__RC_DIRPATH.joinpath(self.PVS__RC_FILENAME)
 
-        self.envs__detect_names()
-        self.envs__update_values_from_os()
-        self.envs__check_no_None()
+        self.pvs__detect_names()
 
-    def envs__detect_names(self) -> None:
+        if self.PVS__ENV_BETTER_THEN_RC:
+            self.pvs__update_from_rc()
+            self.pvs__update_from_os_env()
+        else:
+            self.pvs__update_from_os_env()
+            self.pvs__update_from_rc()
+
+        self.pvs__check_no_None()
+
+    def pvs__detect_names(self) -> None:
         for name in dir(self):
-            if name.startswith(self.ENVS_PREFIX):
-                self._envs_detected.update({name: getattr(self, name)})
+            if name.startswith(self.PVS__PREFIX) and not callable(getattr(self, name)):
+                self._pvs_detected.update({name: getattr(self, name)})
 
-    def envs__update_values_from_os(self) -> None:
-        for name_w_prefix in self._envs_detected:
-            name_wo_prefix = name_w_prefix.replace(self.ENVS_PREFIX, "", 1)
+    def pvs__update_from_os_env(self) -> None:
+        for name_w_prefix in self._pvs_detected:
+            name_wo_prefix = name_w_prefix.replace(self.PVS__PREFIX, "", 1)
 
             env_name__os = None
 
@@ -63,21 +82,42 @@ class EnvsOsGetterClass:
                 env_value__os = os.getenv(env_name__os)
                 setattr(self, name_w_prefix, env_value__os)
 
-                self._envs_detected.update({name_w_prefix: env_value__os})
+                self._pvs_detected.update({name_w_prefix: env_value__os})
 
-    def envs__check_no_None(self) -> Union[NoReturn, bool]:
-        for name in self._envs_detected:
+    def pvs__update_from_rc(self) -> None:
+        if not self.PVS__RC_FILEPATH.exists():
+            print(f'[INFO]not exists {self.PVS__RC_FILEPATH=}')
+            return
+
+        cfg = ConfigParser()
+        cfg.read_file(self.PVS__RC_FILEPATH.read_text())
+
+        for name_w_prefix in self._pvs_detected:
+            # in RC we will use only WO prefix!
+            name_wo_prefix = name_w_prefix.replace(self.PVS__PREFIX, "", 1)
+
+            try:
+                value = cfg.get(section=self.PVS__RC_SECTION, option=name_wo_prefix)
+            except Exception:
+                print(f'[INFO]not exists option [{name_wo_prefix}]')
+                continue
+
+            setattr(self, name_w_prefix, value)
+            self._pvs_detected.update({name_w_prefix: value})
+
+    def pvs__check_no_None(self) -> Union[NoReturn, bool]:
+        for name in self._pvs_detected:
             if getattr(self, name) is None:
                 msg = f"[CRITICAL] There is no [{name=}] in EnvsOs and not exists default value! Add it manually!!!"
                 print(msg)
-                if self.ENVS_RISE_EXCEPTION:
-                    raise Exx_EnvsNotAccepted(msg)
+                if self.PVS__RISE_EXCEPTION_IF_NONE:
+                    raise Exx_PvNotAccepted(msg)
                 else:
                     return False
         return True
 
     @classmethod
-    def envs__show_os(cls, prefix: str = None) -> Type_EnvsDict:
+    def pvs__show_os_env(cls, prefix: str = None) -> Type_PvsDict:
         """
         mainly it is only for PRINTing! dont use result!
 
@@ -98,7 +138,7 @@ class EnvsOsGetterClass:
             print(dict(os.environ)[name_lowercase])     # KeyError: 'name_lowercase'
         """
         envs_all = dict(os.environ)
-        envs_result: Type_EnvsDict = {}
+        envs_result: Type_PvsDict = {}
 
         # filter ---------------
         if not prefix:
@@ -115,14 +155,14 @@ class EnvsOsGetterClass:
         print()     # to pretty print in pytest only
         return envs_result
 
-    def envs__show_used(self) -> Type_EnvsDict:
+    def pvs__show_detected(self) -> Type_PvsDict:
         print()     # to pretty print in pytest only
-        for name, value in self._envs_detected.items():
+        for name, value in self._pvs_detected.items():
             print(f"{name}    ={value}")
         print()     # to pretty print in pytest only
-        return self._envs_detected
+        return self._pvs_detected
 
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    EnvsOsGetterClass.envs__show_os("ENV__")
+    PrivetValues.pvs__show_os_env(PrivetValues.PVS__PREFIX)

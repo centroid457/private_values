@@ -18,11 +18,12 @@ It is contain private data - you can't push this in public place.
 ## Change code
 
 ```python
-from environs_os_getter_class import EnvsOsGetterClass
+from privet_values import PrivetValues
 
-class MyWork(EnvsOsGetterClass):
-    ENV__user: str = None
-    ENV__pwd: str = None
+
+class MyWork(PrivetValues):
+    PV__user: str = None
+    PV__pwd: str = None
 ```
 Now you can safely push it in any public repo.
 
@@ -33,18 +34,19 @@ Use only string type! No other types like int/float.
 Don't place private data here!
 
 ```python
-from environs_os_getter_class import EnvsOsGetterClass
+from privet_values import PrivetValues
 
-class MyWork(EnvsOsGetterClass):
-    ENV__user: str = "UserDemo"
-    ENV__pwd: str = "PwdDemo"
+
+class MyWork(PrivetValues):
+    PV__user: str = "UserDemo"
+    PV__pwd: str = "PwdDemo"
 ```
 
 ## Add envs to your OS
 
 In our example we need this pair:
-* ENV__user = "UserPrivate"
-* ENV__pwd = "PwdPrivate"  
+* PV__user = "UserPrivate"
+* PV__pwd = "PwdPrivate"  
 or
 * user = "UserPrivate"
 * pwd = "PwdPrivate"  
@@ -58,13 +60,14 @@ If you don't need it (handle by your own), just disable it.
 But don't forget it make sense only if any ENV has None value.
 
 ```python
-from environs_os_getter_class import EnvsOsGetterClass
+from privet_values import PrivetValues
 
-class MyWork(EnvsOsGetterClass):
-    ENVS_RISE_EXCEPTION = False
-    
-    ENV__user: str = "UserDemo"
-    ENV__pwd: str = None
+
+class MyWork(PrivetValues):
+    PVS__RISE_EXCEPTION_IF_NONE = False
+
+    PV__user: str = "UserDemo"
+    PV__pwd: str = None
 ```
 
 
@@ -73,11 +76,12 @@ class MyWork(EnvsOsGetterClass):
 If default prefix is inappropriate for your project you can change it, but it is not recommended
 
 ```python
-from environs_os_getter_class import EnvsOsGetterClass
+from privet_values import PrivetValues
 
-class MyWork(EnvsOsGetterClass):
-    ENVS_PREFIX: str = "MyPrefix__"
-    
+
+class MyWork(PrivetValues):
+    PVS__PREFIX: str = "MyPrefix__"
+
     MyPrefix__user: str = None
     MyPrefix__pwd: str = None
 ```
@@ -106,11 +110,12 @@ Use nesting to any existed class.
 Only special names of attributes will be updated from OsEnvironment.
 
 ```python
-from environs_os_getter_class import EnvsOsGetterClass
+from privet_values import PrivetValues
 
-class MyWork(EnvsOsGetterClass):
-    ENV__user: str = "UserDemo"
-    ENV__pwd: str = "PwdDemo"
+
+class MyWork(PrivetValues):
+    PV__user: str = "UserDemo"
+    PV__pwd: str = "PwdDemo"
 
     ATTR1 = 1
     ATTR2 = None

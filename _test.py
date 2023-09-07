@@ -1,25 +1,25 @@
 import os
 import pytest
-from environs_os_getter_class import EnvsOsGetterClass, Exx_EnvsNotAccepted
+from privet_values import PrivetValues, Exx_PvNotAccepted
 
 
 # PREPARE VICTIM ======================================================================================================
-class VictimRaise(EnvsOsGetterClass):
+class VictimRaise(PrivetValues):
     pass
 
 
-class VictimNoRaise(EnvsOsGetterClass):
-    ENVS_RISE_EXCEPTION = False
+class VictimNoRaise(PrivetValues):
+    PVS__RISE_EXCEPTION_IF_NONE = False
 
 
 # TESTS ===============================================================================================================
-class Test:
+class Test1_Env:
     VALUE_DEF: str = "VALUE_DEF"
     VALUE_OS: str = "VALUE_OS"
 
-    env_name__NotExists: str = "ENV__NotExists"
-    env_name__Exists_full: str = "ENV__Exists_full"
-    env_name__Exists_short: str = "ENV__Exists_short"
+    env_name__NotExists: str = f"{PrivetValues.PVS__PREFIX}NotExists"
+    env_name__Exists_full: str = f"{PrivetValues.PVS__PREFIX}Exists_full"
+    env_name__Exists_short: str = f"{PrivetValues.PVS__PREFIX}Exists_short"
 
     @classmethod
     def setup_class(cls):
@@ -33,7 +33,7 @@ class Test:
             cls.env_name__Exists_short = f"{cls.env_name__Exists_short}_"
 
         os.environ[cls.env_name__Exists_full] = cls.VALUE_OS
-        os.environ[cls.env_name__Exists_short[5:]] = cls.VALUE_OS
+        os.environ[cls.env_name__Exists_short[len(PrivetValues.PVS__PREFIX):]] = cls.VALUE_OS
 
         print()
         print()
@@ -46,28 +46,28 @@ class Test:
     @classmethod
     def teardown_class(cls):
         del os.environ[cls.env_name__Exists_full]
-        del os.environ[cls.env_name__Exists_short[5:]]
+        del os.environ[cls.env_name__Exists_short[len(PrivetValues.PVS__PREFIX):]]
 
     # TESTS ===========================================================================================================
-    # ENVS_RISE_EXCEPTION ---------------------------------------------------------------------------------------------
-    def test__ENVS_RISE_EXCEPTION__True(self):
+    # PVS__RISE_EXCEPTION_IF_NONE -------------------------------------------------------------------------------------
+    def test__PVS__RISE_EXCEPTION_IF_NONE__True(self):
         Victim = VictimRaise
         setattr(Victim, self.env_name__NotExists, None)
 
         try:
             Victim()
-        except Exx_EnvsNotAccepted:
+        except Exx_PvNotAccepted:
             return
 
         assert False
 
-    def test__ENVS_RISE_EXCEPTION__False(self):
+    def test__PVS__RISE_EXCEPTION_IF_NONE__False(self):
         Victim = VictimNoRaise
         setattr(Victim, self.env_name__NotExists, None)
 
         try:
             Victim()
-        except Exx_EnvsNotAccepted:
+        except Exx_PvNotAccepted:
             assert False
 
     # ENV - NOT EXISTS ------------------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ class Test:
 
         try:
             Victim()
-        except Exx_EnvsNotAccepted:
+        except Exx_PvNotAccepted:
             return
 
         assert False
@@ -108,14 +108,14 @@ class Test:
 
         assert getattr(Victim(), self.env_name__Exists_short) == self.VALUE_OS
 
-    # _envs_detected --------------------------------------------------------------------------------------------------
+    # _pvs_detected --------------------------------------------------------------------------------------------------
     def test__envs_detected(self):
         Victim = VictimRaise
         setattr(Victim, self.env_name__NotExists, self.VALUE_DEF)
         setattr(Victim, self.env_name__Exists_full, self.VALUE_DEF)
         setattr(Victim, self.env_name__Exists_short, self.VALUE_DEF)
 
-        assert Victim()._envs_detected == {
+        assert Victim()._pvs_detected == {
             self.env_name__NotExists: self.VALUE_DEF,
             self.env_name__Exists_full: self.VALUE_OS,
             self.env_name__Exists_short: self.VALUE_OS,
@@ -124,29 +124,29 @@ class Test:
         setattr(Victim, self.env_name__Exists_full, None)
         setattr(Victim, self.env_name__Exists_short, None)
 
-        assert Victim()._envs_detected == {
+        assert Victim()._pvs_detected == {
             self.env_name__NotExists: self.VALUE_DEF,
             self.env_name__Exists_full: self.VALUE_OS,
             self.env_name__Exists_short: self.VALUE_OS,
         }
 
     # envs__show* ------------------------------------------------------------------------------------------------------
-    def test__envs__show_used(self):
+    def test__pvs__show_detected(self):
         Victim = VictimRaise
 
         setattr(Victim, self.env_name__NotExists, self.VALUE_DEF)
         setattr(Victim, self.env_name__Exists_full, None)
         setattr(Victim, self.env_name__Exists_short, None)
 
-        assert Victim().envs__show_used() == {
+        assert Victim().pvs__show_detected() == {
             self.env_name__NotExists: self.VALUE_DEF,
             self.env_name__Exists_full: self.VALUE_OS,
             self.env_name__Exists_short: self.VALUE_OS,
         }
 
-    def test__envs__show_os(self):
+    def test__pvs__show_os_env(self):
         Victim = VictimRaise
         # uppercase - see docstring for method!
-        assert Victim.envs__show_os(prefix=Victim.ENVS_PREFIX).get(self.env_name__Exists_full.upper()) == self.VALUE_OS
+        assert Victim.pvs__show_os_env(prefix=Victim.PVS__PREFIX).get(self.env_name__Exists_full.upper()) == self.VALUE_OS
 
 # =====================================================================================================================

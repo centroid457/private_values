@@ -42,5 +42,5 @@ python pip install environs_os_getter_class
 ## Import
 
 ```python
-from environs_os_getter_class import EnvsOsGetterClass
+from privet_values import PrivetValues
 ```
