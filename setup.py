@@ -6,7 +6,7 @@ with open('README.md', 'r') as f:
 
 setup(
   name='private_values',
-  version='0.0.3',
+  version='0.1.0',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
   description='Update class attributes from Os Environment',
