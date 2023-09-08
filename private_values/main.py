@@ -67,6 +67,17 @@ class PrivateValues:
 
         self.pv__check_no_None()
 
+    @classmethod
+    def _cls_set_defaults(cls):
+        """
+        creating for tests!
+        set all attrs in upper class at defaults from this class!
+        """
+        for name in dir(PrivateValues):
+            if not callable(getattr(PrivateValues, name)) and not name.startswith("_"):
+                value = getattr(PrivateValues, name)
+                setattr(cls, name, value)
+
     def _pv__get_name_wo_prefix(self, name: str) -> str:
         if name.startswith(self.PV__PREFIX):
             name = name[len(self.PV__PREFIX):]
@@ -166,4 +177,4 @@ class PrivateValues:
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    PrivateValues._pv__show_env()
+    PrivateValues._cls_set_defaults()
