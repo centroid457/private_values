@@ -44,12 +44,12 @@ class MyWork(PrivetValues):
 
 ## Add envs to your OS
 
-In our example we need this pair:
-* PV___user = "UserPrivate"
-* PV___pwd = "PwdPrivate"  
-or
+For example above we need to keep OsEnvirons:
 * user = "UserPrivate"
 * pwd = "PwdPrivate"  
+
+So in source code - add prefix, 
+in OsEnvirons - use without prefix.
 
 
 ## Disable Exception
@@ -86,26 +86,10 @@ class MyWork(PrivetValues):
     MyPrefix__pwd: str = None
 ```
 
-In this case you need following env pair in your OS:
-* MyPrefix__user = "UserPrivate"
-* MyPrefix__pwd = "PwdPrivate"  
-or
-* user = "UserPrivate"
-* pwd = "PwdPrivate"  
-
-
-## Environ names in OS and code source
-
-In examples above you may notice that it is better to keep env names in OS as is 
-and in your code just add prefix.
-It is the best practice to get existed environs from OS. 
-But if you need to add new ones there I think it is more preferable using name with prefix, 
-so you can visually separate envs you specially add for python usage.
-
 
 ## Tips
 
-You don't need use it just like separated end class to handle only envs!  
+You don't need to use it just like separated end class to handle only envs!  
 Use nesting to any existed class.
 Only special names of attributes will be updated from OsEnvironment.
 
