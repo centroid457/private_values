@@ -53,6 +53,9 @@ class PrivateValues:
     def __init__(self):
         super().__init__()
 
+        if self.PV__RC_DIRPATH:
+            self.PV__RC_DIRPATH = pathlib.Path(self.PV__RC_DIRPATH)
+
         self._pv_detected: Type_PvsDict = {}    # it is just for debugging!
         self.PV__RC_FILEPATH = self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
 
@@ -103,7 +106,7 @@ class PrivateValues:
         if not self.PV__USE_RC:
             return
 
-        if not self.PV__RC_FILEPATH.exists():
+        if not self.PV__RC_FILEPATH or not self.PV__RC_FILEPATH.exists():
             print(f'[INFO]not exists {self.PV__RC_FILEPATH=}')
             return
 
