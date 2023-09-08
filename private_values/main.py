@@ -124,7 +124,7 @@ class PrivateValues:
     def pv__check_no_None(self) -> Union[NoReturn, bool]:
         for name in self._pv_detected:
             if getattr(self, f"{self.PV__PREFIX}{name}") is None:
-                msg = f"[CRITICAL] There is no [{name=}] in EnvsOs and not exists default value! Add it manually!!!"
+                msg = f"[CRITICAL] There is no [{name=}] in EnvsOs or RcFile and not exists default value! Add it manually!!!"
                 print(msg)
                 if self.PV__RISE_EXCEPTION_IF_NONE:
                     raise Exx_PvNotAccepted(msg)
