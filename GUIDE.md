@@ -18,10 +18,10 @@ It is contain private data - you can't push this in public place.
 ## Change code
 
 ```python
-from privet_values import PrivetValues
+from private_values import PrivateValues
 
 
-class MyWork(PrivetValues):
+class MyWork(PrivateValues):
     PV___user: str = None
     PV___pwd: str = None
 ```
@@ -34,10 +34,10 @@ Use only string type! No other types like int/float.
 Don't place private data here!
 
 ```python
-from privet_values import PrivetValues
+from private_values import PrivateValues
 
 
-class MyWork(PrivetValues):
+class MyWork(PrivateValues):
     PV___user: str = "UserDemo"
     PV___pwd: str = "PwdDemo"
 ```
@@ -60,10 +60,10 @@ If you don't need it (handle by your own), just disable it.
 But don't forget it make sense only if any ENV has None value.
 
 ```python
-from privet_values import PrivetValues
+from private_values import PrivateValues
 
 
-class MyWork(PrivetValues):
+class MyWork(PrivateValues):
     PV___RISE_EXCEPTION_IF_NONE = False
 
     PV___user: str = "UserDemo"
@@ -76,10 +76,10 @@ class MyWork(PrivetValues):
 If default prefix is inappropriate for your project you can change it, but it is not recommended
 
 ```python
-from privet_values import PrivetValues
+from private_values import PrivateValues
 
 
-class MyWork(PrivetValues):
+class MyWork(PrivateValues):
     PV___PREFIX: str = "MyPrefix__"
 
     MyPrefix__user: str = None
@@ -94,10 +94,10 @@ Use nesting to any existed class.
 Only special names of attributes will be updated from OsEnvironment.
 
 ```python
-from privet_values import PrivetValues
+from private_values import PrivateValues
 
 
-class MyWork(PrivetValues):
+class MyWork(PrivateValues):
     PV___user: str = "UserDemo"
     PV___pwd: str = "PwdDemo"
 
@@ -106,9 +106,9 @@ class MyWork(PrivetValues):
 
     def __init__(self):
         super().__init__()
-        pass    # do smth
+        pass  # do smth
 
     def do_smth(self):
-        pass    # do smth
+        pass  # do smth
 
 ```

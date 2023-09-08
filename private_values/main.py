@@ -13,7 +13,7 @@ class Exx_PvNotAccepted(Exception):
     pass
 
 
-class PrivetValues:
+class PrivateValues:
     """
     update special params from OsEnvirons, RC file or use default.
     if we have finally None value in updated params - RAISE!
@@ -166,4 +166,4 @@ class PrivetValues:
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    PrivetValues._pv__show_env()
+    PrivateValues._pv__show_env()

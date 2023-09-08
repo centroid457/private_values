@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
     readme = f.read()
 
 setup(
-  name='privet_values',
+  name='private_values',
   version='0.0.3',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
