@@ -24,7 +24,7 @@ setup(
     'Natural Language :: English',
     'License :: OSI Approved :: MIT License',
   ],
-  keywords='environs environment rc privet',
+  keywords='environs environment rc private',
   python_requires='>=3.6',
   project_urls={
     "Source": "https://github.com/centroid457/environs_os_getter_class",
