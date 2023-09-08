@@ -110,7 +110,7 @@ class PrivetValues:
 
     def pv__check_no_None(self) -> Union[NoReturn, bool]:
         for name in self._pv_detected:
-            if getattr(self, name) is None:
+            if getattr(self, f"{self.PV__PREFIX}{name}") is None:
                 msg = f"[CRITICAL] There is no [{name=}] in EnvsOs and not exists default value! Add it manually!!!"
                 print(msg)
                 if self.PV__RISE_EXCEPTION_IF_NONE:
@@ -121,9 +121,9 @@ class PrivetValues:
 
     # SHOW ------------------------------------------------------------------------------------------------------------
     @classmethod
-    def pv__show_env(cls, prefix: str = None) -> Type_PvsDict:
+    def _pv__show_env(cls, prefix: str = None) -> Type_PvsDict:
         """
-        mainly it is only for PRINTing! dont use result!
+        mainly it is only for PRINTing and debugging! dont use result!
 
         NOTE: be careful to use result as dict! especially if you have lowercase letters!
 
@@ -141,23 +141,20 @@ class PrivetValues:
 
             print(dict(os.environ)[name_lowercase])     # KeyError: 'name_lowercase'
         """
-        envs_all = dict(os.environ)
-        envs_result: Type_PvsDict = {}
+        envs_all = os.environ
+        result: Type_PvsDict = {}
 
         # filter ---------------
-        if not prefix:
-            envs_result = envs_all
-        else:
-            for name, value in envs_all.items():
-                if name.startswith(prefix):
-                    envs_result.update({name: value})
+        for name, value in envs_all.items():
+            if not prefix or (prefix and name.upper().startswith(prefix.upper())):
+                result.update({name: value})
 
         # print ---------------
         print()     # to pretty print in pytest only
-        for name, value in envs_result.items():
+        for name, value in result.items():
             print(f"{name}    ={value}")
         print()     # to pretty print in pytest only
-        return envs_result
+        return result
 
     def pv__show_detected(self) -> Type_PvsDict:
         print()     # to pretty print in pytest only
@@ -169,4 +166,4 @@ class PrivetValues:
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    PrivetValues.pv__show_env(PrivetValues.PV__PREFIX)
+    PrivetValues._pv__show_env()
