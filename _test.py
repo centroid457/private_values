@@ -62,7 +62,7 @@ class Test:
             rc.write(rc_file)
 
     def setup_method(self, method):
-        # self.VICTIM = Victim
+        self.VICTIM = Victim
         self.VICTIM._cls_set_defaults()
         self.VICTIM.PV__RC_DIRPATH = self.DIRPATH_RC
 
@@ -138,18 +138,31 @@ class Test:
             expected = self.VALUE_RC
         assert getattr(self.VICTIM(), self.pv_name__Exists_full) == expected
 
-    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__Exists_Def(self, env, rc):
+    @pytest.mark.parametrize(argnames="env,rc,envBetterRc", argvalues=[
+        (False, False, False),
+
+        (True, False, True), (False, True, True), (True, True, True),
+        (True, False, False), (False, True, False), (True, True, False),
+    ])
+    def test__Exists_Def__with_ENV_BETTER_THEN_RC(self, env, rc, envBetterRc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
+        self.VICTIM.PV__ENV_BETTER_THEN_RC = envBetterRc
 
         setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
-        expected = None
-        if env:
-            expected = self.VALUE_ENV
-        elif rc:
-            expected = self.VALUE_RC
+        expected = self.VALUE_DEF
+        if envBetterRc:
+            if env:
+                expected = self.VALUE_ENV
+            elif rc:
+                expected = self.VALUE_RC
+        else:
+            if rc:
+                expected = self.VALUE_RC
+            elif env:
+                expected = self.VALUE_ENV
+
         assert getattr(self.VICTIM(), self.pv_name__Exists_full) == expected
 
     # _pvs_detected ---------------------------------------------------------------------------------------------------
