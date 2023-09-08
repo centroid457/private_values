@@ -9,30 +9,33 @@ setup(
   version='0.1.0',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
-  description='Update class attributes from Os Environment',
+
+  description='Update class attributes from OsEnvironment or RcFile',
   long_description=readme,
   long_description_content_type='text/markdown',
-  url='https://github.com/centroid457/environs_os_getter_class',
+  keywords='environs environment rc private',
+
+  # url='https://github.com/centroid457/private_values',
+  project_urls={
+    "Source": "https://github.com/centroid457/private_values",
+  },
+
   packages=find_packages(),
   install_requires=[],
   classifiers=[
-    # "Framework :: "
-    "Topic :: Security"
-    "Topic :: Software Development :: Libraries :: Python Modules"
-    "Topic :: System :: Logging"
+    # "Framework :: ",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent",
-    "Environment :: Console"
+    "Environment :: Console",
     "Intended Audience :: Developers",
     "Natural Language :: English",
-    "Typing :: Typed"
+    "Typing :: Typed",
   ],
-  keywords='environs environment rc private',
-  python_requires='>=3.6',
-  project_urls={
-    "Source": "https://github.com/centroid457/environs_os_getter_class",
-  }
+  python_requires='>=3.6'
 )
