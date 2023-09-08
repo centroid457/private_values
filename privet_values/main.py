@@ -16,25 +16,27 @@ class Exx_PvNotAccepted(Exception):
 class PrivetValues:
     """
     update special params from OsEnvirons, RC file or use default.
-    if not exists finally some value of them - RAISE!
+    if we have finally None value in updated params - RAISE!
 
-    add all ENVS with type STR!
+    Use type STR for all PVs!
 
-    firstly it will try to get value from OsEnv
-    then if not will be used already set as default!
+    STEPS
+     1. detect all appropriate names
+     2. create dict with default values
+     3. update values from OsEnv and RcFile in order depends on PV__ENV_BETTER_THEN_RC
+        if param exists and have new blank value "" it will update any last value obviously.
+     4. check None values existed - rise if have and PV__RISE_EXCEPTION_IF_NONE
+
+    EXAMPLES
 
     define env NAMES
-        ENV__MAIL_USER: str = None  # will find ENV__MAIL_USER/MAIL_USER
-        ENV__myEnv: str = None  # will find ENV__myEnv/myEnv
+        PV___MAIL_USER: str = None  # will find PV___MAIL_USER/MAIL_USER
+        PV___myEnv: str = None  # will find PV___myEnv/myEnv
         MAIL_USER: str = None  # this is not expected as env!
 
-    so if you already have Env in you Os add prefix ENV__ to use it in your class.
-
     set default VALUES
-        ENV__MAIL_USER: str = None      # no default value
-        ENV__MAIL_USER: str = "hello"   # def value set!
-
-    When updated values - any value even blank string will be used!
+        PV___MAIL_USER: str = None      # no default value
+        PV___MAIL_USER: str = "hello"   # def value set!
     """
     PV__RISE_EXCEPTION_IF_NONE: bool = True
     PV__PREFIX: str = "PV___"
