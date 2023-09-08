@@ -55,10 +55,9 @@ class PrivateValues:
 
         if self.PV__RC_DIRPATH:
             self.PV__RC_DIRPATH = pathlib.Path(self.PV__RC_DIRPATH)
+        self._PV__RC_FILEPATH = self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
 
         self._pv_detected: Type_PvsDict = {}    # it is just for debugging!
-        self.PV__RC_FILEPATH = self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
-
         self.pv__detect_names()
 
         if self.PV__ENV_BETTER_THEN_RC:
@@ -106,12 +105,12 @@ class PrivateValues:
         if not self.PV__USE_RC:
             return
 
-        if not self.PV__RC_FILEPATH or not self.PV__RC_FILEPATH.exists():
-            print(f'[INFO]not exists {self.PV__RC_FILEPATH=}')
+        if not self._PV__RC_FILEPATH or not self._PV__RC_FILEPATH.exists():
+            print(f'[INFO]not exists {self._PV__RC_FILEPATH=}')
             return
 
         rc = ConfigParser()
-        rc.read_string(self.PV__RC_FILEPATH.read_text())
+        rc.read_string(self._PV__RC_FILEPATH.read_text())
 
         for name_wo_prefix in self._pv_detected:
             # in RC we will use only WO prefix!
