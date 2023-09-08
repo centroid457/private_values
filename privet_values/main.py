@@ -43,6 +43,9 @@ class PrivetValues:
 
     PV__ENV_BETTER_THEN_RC: bool = True
 
+    PV__USE_ENV: bool = True
+    PV__USE_RC: bool = True
+
     PV__RC_SECTION: str = "DEFAULT"
     PV__RC_DIRPATH: Type_Path = pathlib.Path.home()
     PV__RC_FILENAME: str = ".pv_rc"
@@ -75,6 +78,9 @@ class PrivetValues:
                 self._pv_detected.update({name: getattr(self, name)})
 
     def pv__update_from_os_env(self) -> None:
+        if not self.PV__USE_ENV:
+            return
+
         for name_w_prefix in self._pv_detected:
             name_wo_prefix = self._pv__get_name_wo_prefix(name_w_prefix)
 
@@ -92,6 +98,9 @@ class PrivetValues:
                 self._pv_detected.update({name_w_prefix: env_value__os})
 
     def pv__update_from_rc(self) -> None:
+        if not self.PV__USE_RC:
+            return
+
         if not self.PV__RC_FILEPATH.exists():
             print(f'[INFO]not exists {self.PV__RC_FILEPATH=}')
             return
