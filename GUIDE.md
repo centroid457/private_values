@@ -52,6 +52,7 @@ This product gives you two abilities:
 2. RcFile - standard Ini/Cfg format
 
 ```ini
+[DEFAULT]
 user=UserPrivate  
 pwd=PwdPrivate
 ```
