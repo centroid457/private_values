@@ -111,7 +111,7 @@ class PrivateValues:
             return
 
         rc = ConfigParser()
-        rc.read_file(self.PV__RC_FILEPATH.read_text())
+        rc.read_string(self.PV__RC_FILEPATH.read_text())
 
         for name_wo_prefix in self._pv_detected:
             # in RC we will use only WO prefix!
