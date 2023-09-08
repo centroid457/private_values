@@ -1,179 +1,157 @@
 import os
 import pytest
+import pathlib
+from tempfile import TemporaryDirectory
 from typing import *
+from configparser import ConfigParser
 from private_values import PrivateValues, Exx_PvNotAccepted
-
-pass    # ENV =========================================================================================================
-pass    # ENV =========================================================================================================
-pass    # ENV =========================================================================================================
-pass    # ENV =========================================================================================================
-
-
-# PREPARE VICTIM ======================================================================================================
-class VictimEnvCls(PrivateValues):
-    PV__USE_RC = False
-    pass
-
-
-@pytest.fixture()
-def VictimEnv():
-    VictimEnvCls._cls_set_defaults()
-    yield VictimEnvCls
 
 
 # =====================================================================================================================
-class Test1_Env:
+class Victim(PrivateValues):
+    """
+    necessary to hide original class attributes
+    """
+    pass
+
+
+# =====================================================================================================================
+class Test:
+    VICTIM: Victim = Victim
+
     VALUE_DEF: str = "VALUE_DEF"
     VALUE_ENV: str = "VALUE_ENV"
+    VALUE_RC: str = "VALUE_RC"
 
-    env_name__NotExists_short: str = "NotExists"
-    env_name__NotExists_full: str = f"{PrivateValues.PV__PREFIX}{env_name__NotExists_short}"
-    env_name__Exists_short: str = "Exists"
-    env_name__Exists_full: str = f"{PrivateValues.PV__PREFIX}{env_name__Exists_short}"
+    pv_name__NotExists_short: str = "NotExists"
+    pv_name__NotExists_full: str = f"{PrivateValues.PV__PREFIX}{pv_name__NotExists_short}"
+    pv_name__Exists_short: str = "Exists"
+    pv_name__Exists_full: str = f"{PrivateValues.PV__PREFIX}{pv_name__Exists_short}"
+
+    DIRPATH_RC: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
     @classmethod
     def setup_class(cls):
-        while cls.env_name__NotExists_short in os.environ:
-            cls.env_name__NotExists_short = f"{cls.env_name__NotExists_short}_"
-            cls.env_name__NotExists_full: str = f"{PrivateValues.PV__PREFIX}{cls.env_name__NotExists_short}"
+        while cls.pv_name__NotExists_short in os.environ:
+            cls.pv_name__NotExists_short = f"{cls.pv_name__NotExists_short}_"
+            cls.pv_name__NotExists_full: str = f"{PrivateValues.PV__PREFIX}{cls.pv_name__NotExists_short}"
 
-        while cls.env_name__Exists_short in os.environ:
-            cls.env_name__Exists_short = f"{cls.env_name__Exists_short}_"
-            cls.env_name__Exists_full: str = f"{PrivateValues.PV__PREFIX}{cls.env_name__Exists_short}"
+        while cls.pv_name__Exists_short in os.environ:
+            cls.pv_name__Exists_short = f"{cls.pv_name__Exists_short}_"
+            cls.pv_name__Exists_full: str = f"{PrivateValues.PV__PREFIX}{cls.pv_name__Exists_short}"
 
-        os.environ[cls.env_name__Exists_short] = cls.VALUE_ENV
+        os.environ[cls.pv_name__Exists_short] = cls.VALUE_ENV
 
         print()
         print()
-        print(f"{cls.env_name__NotExists_short=}")
-        print(f"{cls.env_name__NotExists_full=}")
-        print(f"{cls.env_name__Exists_short=}")
-        print(f"{cls.env_name__Exists_full=}")
+        print(f"{cls.pv_name__NotExists_short=}")
+        print(f"{cls.pv_name__NotExists_full=}")
+        print(f"{cls.pv_name__Exists_short=}")
+        print(f"{cls.pv_name__Exists_full=}")
         print()
         print()
+
+        # RC ------------------------------------------------------------
+        cls.DIRPATH_RC.mkdir()
+
+        rc = ConfigParser()
+        rc.set(section=cls.VICTIM.PV__RC_SECTION, option=cls.pv_name__Exists_short, value=cls.VALUE_RC)
+
+        with open(cls.DIRPATH_RC.joinpath(cls.VICTIM.PV__RC_FILENAME), 'w', errors=None) as rc_file:
+            rc.write(rc_file)
+
+    def setup_method(self, method):
+        # self.VICTIM = Victim
+        self.VICTIM._cls_set_defaults()
+        self.VICTIM.PV__RC_DIRPATH = self.DIRPATH_RC
 
     @classmethod
     def teardown_class(cls):
-        del os.environ[cls.env_name__Exists_short]
+        del os.environ[cls.pv_name__Exists_short]
 
     # PVS__RISE_EXCEPTION_IF_NONE -------------------------------------------------------------------------------------
-    def test__PVS__RISE_EXCEPTION_IF_NONE__True(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__NotExists_full, None)
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__RISE_EXCEPTION_IF_NONE__True(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
+        setattr(self.VICTIM, self.pv_name__NotExists_full, None)
 
         try:
-            VictimEnv()
+            self.VICTIM()
         except Exx_PvNotAccepted:
             return
 
         assert False
 
-    def test__PVS__RISE_EXCEPTION_IF_NONE__False(self, VictimEnv):
-        setattr(VictimEnv, "PV__RISE_EXCEPTION_IF_NONE", False)
-        setattr(VictimEnv, self.env_name__NotExists_full, None)
+    def test__RISE_EXCEPTION_IF_NONE__False(self):
+        self.VICTIM.PV__RISE_EXCEPTION_IF_NONE = False
+        setattr(self.VICTIM, self.pv_name__NotExists_full, None)
 
         try:
-            VictimEnv()
+            self.VICTIM()
         except Exx_PvNotAccepted:
             assert False
 
     # ENV - NOT EXISTS ------------------------------------------------------------------------------------------------
-    def test__NoExists_None(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__NotExists_full, None)
+    def test__NoExists_None(self):
+        setattr(self.VICTIM, self.pv_name__NotExists_full, None)
 
         try:
-            VictimEnv()
+            self.VICTIM()
         except Exx_PvNotAccepted:
             return
 
         assert False
 
-    def test__NoExists_NoNone(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__NotExists_full, self.VALUE_DEF)
+    def test__NoExists_NoNone(self):
+        setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
 
-        assert getattr(VictimEnv(), self.env_name__NotExists_full) == self.VALUE_DEF
+        assert getattr(self.VICTIM(), self.pv_name__NotExists_full) == self.VALUE_DEF
 
     # ENV - EXISTS ----------------------------------------------------------------------------------------------------
-    def test__Exists_None(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__Exists_full, None)
+    def test__Exists_None(self):
+        setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
-        assert getattr(VictimEnv(), self.env_name__Exists_full) == self.VALUE_ENV
+        assert getattr(self.VICTIM(), self.pv_name__Exists_full) == self.VALUE_ENV
 
-    def test__Exists_NoNone(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__Exists_full, self.VALUE_DEF)
+    def test__Exists_NoNone(self):
+        setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
-        assert getattr(VictimEnv(), self.env_name__Exists_full) == self.VALUE_ENV
+        assert getattr(self.VICTIM(), self.pv_name__Exists_full) == self.VALUE_ENV
 
     # _pvs_detected --------------------------------------------------------------------------------------------------
-    def test__envs_detected(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__NotExists_full, self.VALUE_DEF)
-        setattr(VictimEnv, self.env_name__Exists_full, self.VALUE_DEF)
+    def test__envs_detected(self):
+        setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
+        setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
-        assert VictimEnv()._pv_detected == {
-            self.env_name__NotExists_short: self.VALUE_DEF,
-            self.env_name__Exists_short: self.VALUE_ENV,
+        assert self.VICTIM()._pv_detected == {
+            self.pv_name__NotExists_short: self.VALUE_DEF,
+            self.pv_name__Exists_short: self.VALUE_ENV,
         }
-        setattr(VictimEnv, self.env_name__NotExists_full, self.VALUE_DEF)
-        setattr(VictimEnv, self.env_name__Exists_full, None)
+        setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
+        setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
-        assert VictimEnv()._pv_detected == {
-            self.env_name__NotExists_short: self.VALUE_DEF,
-            self.env_name__Exists_short: self.VALUE_ENV,
+        assert self.VICTIM()._pv_detected == {
+            self.pv_name__NotExists_short: self.VALUE_DEF,
+            self.pv_name__Exists_short: self.VALUE_ENV,
         }
 
     # envs__show* ------------------------------------------------------------------------------------------------------
-    def test__pvs__show_detected(self, VictimEnv):
-        setattr(VictimEnv, self.env_name__NotExists_full, self.VALUE_DEF)
-        setattr(VictimEnv, self.env_name__Exists_full, None)
+    def test__pvs__show_detected(self):
+        setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
+        setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
-        assert VictimEnv().pv__show_detected() == {
-            self.env_name__NotExists_short: self.VALUE_DEF,
-            self.env_name__Exists_short: self.VALUE_ENV,
+        assert self.VICTIM().pv__show_detected() == {
+            self.pv_name__NotExists_short: self.VALUE_DEF,
+            self.pv_name__Exists_short: self.VALUE_ENV,
         }
 
-    def test__pvs__show_os_env(self, VictimEnv):
+    def test__pvs__show_os_env(self):
         # uppercase - see docstring for method!
-        envs = VictimEnv._pv__show_env(self.env_name__Exists_short)
+        envs = self.VICTIM._pv__show_env(self.pv_name__Exists_short)
         print(envs)
-        assert envs.get(self.env_name__Exists_short.upper()) == self.VALUE_ENV
-
-
-pass    # RC ==========================================================================================================
-pass    # RC ==========================================================================================================
-pass    # RC ==========================================================================================================
-pass    # RC ==========================================================================================================
-
-
-# PREPARE VICTIM ======================================================================================================
-class VictimRaise_RC(PrivateValues):
-    PV__USE_ENV = False
-
-
-class VictimNoRaise_RC(PrivateValues):
-    PV__USE_ENV = False
-    PV__RISE_EXCEPTION_IF_NONE = False
-
-
-# =====================================================================================================================
-class Test2_Rc:
-    VALUE_DEF: str = "VALUE_DEF"
-    VALUE_RC: str = "VALUE_RC"
-
-    @classmethod
-    def setup_class(cls):
-
-
-        print()
-        print()
-        print(f"{cls.env_name__NotExists_short=}")
-        print(f"{cls.env_name__NotExists_full=}")
-        print(f"{cls.env_name__Exists_short=}")
-        print(f"{cls.env_name__Exists_full=}")
-        print()
-        print()
-
-    @classmethod
-    def teardown_class(cls):
-        pass
+        assert envs.get(self.pv_name__Exists_short.upper()) == self.VALUE_ENV
 
 
 # =====================================================================================================================
