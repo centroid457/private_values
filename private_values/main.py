@@ -24,7 +24,7 @@ class PrivateValues:
      1. detect all appropriate names
      2. create dict with default values
      3. update values from OsEnv and RcFile in order depends on PV__ENV_BETTER_THEN_RC
-        if param exists and have new blank value "" it will update any last value obviously.
+        if param exists and have new blank value "" it will update any last value, obviously.
      4. check None values existed - rise if have and PV__RISE_EXCEPTION_IF_NONE
 
     EXAMPLES
@@ -136,7 +136,7 @@ class PrivateValues:
     @classmethod
     def _pv__show_env(cls, prefix: str = None) -> Type_PvsDict:
         """
-        mainly it is only for PRINTing and debugging! dont use result!
+        mainly it is only for PRINTing and debugging! don't use result!
 
         NOTE: be careful to use result as dict! especially if you have lowercase letters!
 

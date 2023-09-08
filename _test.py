@@ -18,7 +18,7 @@ class Victim(PrivateValues):
 
 # =====================================================================================================================
 class Test:
-    VICTIM: Victim = Victim
+    VICTIM: Type[Victim] = Victim
 
     VALUE_DEF: str = "VALUE_DEF"
     VALUE_ENV: str = "VALUE_ENV"
