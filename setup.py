@@ -17,6 +17,7 @@ setup(
 
   # url='https://github.com/centroid457/private_values',
   project_urls={
+    "Documentation": "https://github.com/centroid457/private_values/blob/main/GUIDE.md",
     "Source": "https://github.com/centroid457/private_values",
   },
 
