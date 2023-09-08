@@ -86,7 +86,11 @@ class Test:
 
         assert False
 
-    def test__RISE_EXCEPTION_IF_NONE__False(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__RISE_EXCEPTION_IF_NONE__False(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         self.VICTIM.PV__RISE_EXCEPTION_IF_NONE = False
         setattr(self.VICTIM, self.pv_name__NotExists_full, None)
 
@@ -96,7 +100,11 @@ class Test:
             assert False
 
     # ENV - NOT EXISTS ------------------------------------------------------------------------------------------------
-    def test__NoExists_None(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__NoExists_None(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         setattr(self.VICTIM, self.pv_name__NotExists_full, None)
 
         try:
@@ -106,24 +114,40 @@ class Test:
 
         assert False
 
-    def test__NoExists_NoNone(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__NoExists_NoNone(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
 
         assert getattr(self.VICTIM(), self.pv_name__NotExists_full) == self.VALUE_DEF
 
     # ENV - EXISTS ----------------------------------------------------------------------------------------------------
-    def test__Exists_None(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__Exists_None(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
         assert getattr(self.VICTIM(), self.pv_name__Exists_full) == self.VALUE_ENV
 
-    def test__Exists_NoNone(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__Exists_NoNone(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
         assert getattr(self.VICTIM(), self.pv_name__Exists_full) == self.VALUE_ENV
 
     # _pvs_detected --------------------------------------------------------------------------------------------------
-    def test__envs_detected(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__envs_detected(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
         setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
@@ -140,7 +164,11 @@ class Test:
         }
 
     # envs__show* ------------------------------------------------------------------------------------------------------
-    def test__pvs__show_detected(self):
+    @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
+    def test__pvs__show_detected(self, env, rc):
+        self.VICTIM.PV__USE_ENV = env
+        self.VICTIM.PV__USE_RC = rc
+
         setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
         setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
