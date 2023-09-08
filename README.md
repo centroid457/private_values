@@ -2,14 +2,16 @@
 
 
 ## Inspiration
-Designed to use private data like username/pwd kept in OsEnvironment and not open it in public projects.  
+Designed to use private data like username/pwd kept in OsEnvironment (or RcFile or even both variants) and not open it in public projects.  
 Main goals: short implementation and OOP usage.
 
 
 ## Features
 
-1. Create classes with special attributes, which will be updated from OS Environs.  
-By default it must startswith PREFIX PV___.
+1. Create classes with special attributes, which will be updated from OsEnvirons or RcFile.  
+By default it must startswith PREFIX PV___.  
+In case of OsEnvirons - it is very simple.  
+For RcFile it gives you much more flexibility with ini-sections.
 
 2. Ability to set default values.  
 By this way you can share for example open username/pwd data, end user must create private data in the OS.

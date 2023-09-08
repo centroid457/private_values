@@ -116,7 +116,7 @@ class MyWork(PrivateValues):
 
 ## 8. Tips
 
-You don't need to use it just like separated end class to handle only envs!  
+You don't need (but you can) use it just like separated end class to handle only envs!  
 Use nesting to any existed class.
 Only special names of attributes will be updated from OsEnvironment.
 
