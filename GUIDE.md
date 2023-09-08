@@ -12,7 +12,7 @@ class MyWork:
     user: str = "UserPrivate"
     pwd: str = "PwdPrivate"
 ```
-It is contain private data - you can't push this in public place.
+It is contained private data - you can't push this in public place.
 
 
 ## 1. Change code
