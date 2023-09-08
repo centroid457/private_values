@@ -16,13 +16,19 @@ setup(
   packages=find_packages(),
   install_requires=[],
   classifiers=[
-    'Development Status :: 5 - Production/Stable',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3.11',
-    'Operating System :: OS Independent',
-    'Intended Audience :: Developers',
-    'Natural Language :: English',
-    'License :: OSI Approved :: MIT License',
+    # "Framework :: "
+    "Topic :: Security"
+    "Topic :: Software Development :: Libraries :: Python Modules"
+    "Topic :: System :: Logging"
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Environment :: Console"
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Typing :: Typed"
   ],
   keywords='environs environment rc private',
   python_requires='>=3.6',
