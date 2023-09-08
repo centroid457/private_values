@@ -8,7 +8,7 @@ So feel free to take a look at source do discover some other implementation abil
 ## 0. Suppose you already have next code
 
 ```python
-class MyWork:
+class ExampleBefore:
     user: str = "UserPrivate"
     pwd: str = "PwdPrivate"
 ```
@@ -20,8 +20,7 @@ It is contained private data - you can't push this in public place.
 ```python
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
+class ExampleModified(PrivateValues):
     PV___user: str = None
     PV___pwd: str = None
 ```
@@ -36,8 +35,7 @@ Don't place private data here!
 ```python
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
+class ExampleModified(PrivateValues):
     PV___user: str = "UserDemo"
     PV___pwd: str = "PwdDemo"
 ```
@@ -63,9 +61,8 @@ pwd=PwdPrivate
 import pathlib
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
-    PV__RC_DIRPATH: Type_Path = pathlib.Path.home()
+class ExampleModified(PrivateValues):
+    PV__RC_DIRPATH = pathlib.Path.home()
     PV__RC_FILENAME: str = ".pv_rc"
 ```
 
@@ -73,8 +70,7 @@ class MyWork(PrivateValues):
 ```python
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
+class ExampleModified(PrivateValues):
     PV__ENV_BETTER_THEN_RC: bool = True
     
     PV__USE_ENV: bool = True
@@ -92,8 +88,7 @@ But don't forget it make sense only if any ENV has None value.
 ```python
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
+class ExampleModified(PrivateValues):
     PV___RISE_EXCEPTION_IF_NONE = False
 ```
 
@@ -105,8 +100,7 @@ If default prefix is inappropriate for your project you can change it, but it is
 ```python
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
+class ExampleModified(PrivateValues):
     PV___PREFIX: str = "MyPrefix__"
 
     MyPrefix__user: str = None
@@ -123,8 +117,7 @@ Only special names of attributes will be updated from OsEnvironment.
 ```python
 from private_values import PrivateValues
 
-
-class MyWork(PrivateValues):
+class ExampleModified(PrivateValues):
     PV___user: str = "UserDemo"
     PV___pwd: str = "PwdDemo"
 
@@ -137,5 +130,4 @@ class MyWork(PrivateValues):
 
     def do_smth(self):
         pass  # do smth
-
 ```
