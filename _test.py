@@ -101,7 +101,7 @@ class Test:
 
     # ENV - NOT EXISTS ------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__NoExists_None(self, env, rc):
+    def test__NoExists_NoDef(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
@@ -115,7 +115,7 @@ class Test:
         assert False
 
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__NoExists_NoNone(self, env, rc):
+    def test__NoExists_Def(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
@@ -125,7 +125,7 @@ class Test:
 
     # ENV - EXISTS ----------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__Exists_None(self, env, rc):
+    def test__Exists_NoDef(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
@@ -139,7 +139,7 @@ class Test:
         assert getattr(self.VICTIM(), self.pv_name__Exists_full) == expected
 
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__Exists_NoNone(self, env, rc):
+    def test__Exists_Def(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
@@ -154,7 +154,7 @@ class Test:
 
     # _pvs_detected --------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__envs_detected(self, env, rc):
+    def test__pv_detected(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
@@ -181,7 +181,7 @@ class Test:
 
     # envs__show* ------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
-    def test__pvs__show_detected(self, env, rc):
+    def test__pv__show_detected(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
@@ -199,7 +199,7 @@ class Test:
             self.pv_name__Exists_short: expected,
         }
 
-    def test__pvs__show_os_env(self):
+    def test__pv__show_os_env(self):
         # uppercase - see docstring for method!
         envs = self.VICTIM._pv__show_env(self.pv_name__Exists_short)
         print(envs)
