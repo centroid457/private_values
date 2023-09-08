@@ -131,7 +131,12 @@ class Test:
 
         setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
-        assert getattr(self.VICTIM(), self.pv_name__Exists_full) == self.VALUE_ENV
+        expected = None
+        if env:
+            expected = self.VALUE_ENV
+        elif rc:
+            expected = self.VALUE_RC
+        assert getattr(self.VICTIM(), self.pv_name__Exists_full) == expected
 
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
     def test__Exists_NoNone(self, env, rc):
@@ -140,7 +145,12 @@ class Test:
 
         setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
-        assert getattr(self.VICTIM(), self.pv_name__Exists_full) == self.VALUE_ENV
+        expected = None
+        if env:
+            expected = self.VALUE_ENV
+        elif rc:
+            expected = self.VALUE_RC
+        assert getattr(self.VICTIM(), self.pv_name__Exists_full) == expected
 
     # _pvs_detected --------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
@@ -148,19 +158,25 @@ class Test:
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
+        expected = None
+        if env:
+            expected = self.VALUE_ENV
+        elif rc:
+            expected = self.VALUE_RC
+
         setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
         setattr(self.VICTIM, self.pv_name__Exists_full, self.VALUE_DEF)
 
         assert self.VICTIM()._pv_detected == {
             self.pv_name__NotExists_short: self.VALUE_DEF,
-            self.pv_name__Exists_short: self.VALUE_ENV,
+            self.pv_name__Exists_short: expected,
         }
         setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
         setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
         assert self.VICTIM()._pv_detected == {
             self.pv_name__NotExists_short: self.VALUE_DEF,
-            self.pv_name__Exists_short: self.VALUE_ENV,
+            self.pv_name__Exists_short: expected,
         }
 
     # envs__show* ------------------------------------------------------------------------------------------------------
@@ -169,12 +185,18 @@ class Test:
         self.VICTIM.PV__USE_ENV = env
         self.VICTIM.PV__USE_RC = rc
 
+        expected = None
+        if env:
+            expected = self.VALUE_ENV
+        elif rc:
+            expected = self.VALUE_RC
+
         setattr(self.VICTIM, self.pv_name__NotExists_full, self.VALUE_DEF)
         setattr(self.VICTIM, self.pv_name__Exists_full, None)
 
         assert self.VICTIM().pv__show_detected() == {
             self.pv_name__NotExists_short: self.VALUE_DEF,
-            self.pv_name__Exists_short: self.VALUE_ENV,
+            self.pv_name__Exists_short: expected,
         }
 
     def test__pvs__show_os_env(self):
