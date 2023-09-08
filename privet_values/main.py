@@ -62,7 +62,10 @@ class PrivetValues:
 
         self.pv__check_no_None()
 
-
+    def _pv__get_name_wo_prefix(self, name: str) -> str:
+        if name.startswith(self.PV__PREFIX):
+            name = name[len(self.PV__PREFIX):]
+        return name
 
     def pv__detect_names(self) -> None:
         for name in dir(self):
@@ -71,7 +74,7 @@ class PrivetValues:
 
     def pv__update_from_os_env(self) -> None:
         for name_w_prefix in self._pv_detected:
-            name_wo_prefix = name_w_prefix.replace(self.PV__PREFIX, "", 1)
+            name_wo_prefix = self._pv__get_name_wo_prefix(name_w_prefix)
 
             env_name__os = None
 
@@ -96,7 +99,7 @@ class PrivetValues:
 
         for name_w_prefix in self._pv_detected:
             # in RC we will use only WO prefix!
-            name_wo_prefix = name_w_prefix.replace(self.PV__PREFIX, "", 1)
+            name_wo_prefix = self._pv__get_name_wo_prefix(name_w_prefix)
 
             try:
                 value = cfg.get(section=self.PV__RC_SECTION, option=name_wo_prefix)
