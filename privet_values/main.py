@@ -53,7 +53,7 @@ class PrivetValues:
     def __init__(self):
         super().__init__()
 
-        self._pv_detected: Type_PvsDict = {}
+        self._pv_detected: Type_PvsDict = {}    # it is just for debugging!
         self.PV__RC_FILEPATH = self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
 
         self.pv__detect_names()
