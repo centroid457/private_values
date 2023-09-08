@@ -1,6 +1,7 @@
 import os
 import pytest
 import pathlib
+import shutil
 from tempfile import TemporaryDirectory
 from typing import *
 from configparser import ConfigParser
@@ -68,6 +69,7 @@ class Test:
     @classmethod
     def teardown_class(cls):
         del os.environ[cls.pv_name__Exists_short]
+        shutil.rmtree(cls.DIRPATH_RC)
 
     # PVS__RISE_EXCEPTION_IF_NONE -------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
