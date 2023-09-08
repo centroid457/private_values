@@ -36,40 +36,42 @@ class PrivetValues:
 
     When updated values - any value even blank string will be used!
     """
-    PVS__RISE_EXCEPTION_IF_NONE: bool = True
-    PVS__PREFIX: str = "PV__"
+    PV__RISE_EXCEPTION_IF_NONE: bool = True
+    PV__PREFIX: str = "PV__"
 
-    PVS__ENV_BETTER_THEN_RC: bool = True
+    PV__ENV_BETTER_THEN_RC: bool = True
 
-    PVS__RC_SECTION: str = "DEFAULT"
-    PVS__RC_DIRPATH: Type_Path = pathlib.Path.home()
-    PVS__RC_FILENAME: str = ".pv_rc"
+    PV__RC_SECTION: str = "DEFAULT"
+    PV__RC_DIRPATH: Type_Path = pathlib.Path.home()
+    PV__RC_FILENAME: str = ".pv_rc"
 
     def __init__(self):
         super().__init__()
 
-        self._pvs_detected: Type_PvsDict = {}
-        self.PVS__RC_FILEPATH = self.PVS__RC_DIRPATH.joinpath(self.PVS__RC_FILENAME)
+        self._pv_detected: Type_PvsDict = {}
+        self.PV__RC_FILEPATH = self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
 
-        self.pvs__detect_names()
+        self.pv__detect_names()
 
-        if self.PVS__ENV_BETTER_THEN_RC:
-            self.pvs__update_from_rc()
-            self.pvs__update_from_os_env()
+        if self.PV__ENV_BETTER_THEN_RC:
+            self.pv__update_from_rc()
+            self.pv__update_from_os_env()
         else:
-            self.pvs__update_from_os_env()
-            self.pvs__update_from_rc()
+            self.pv__update_from_os_env()
+            self.pv__update_from_rc()
 
-        self.pvs__check_no_None()
+        self.pv__check_no_None()
 
-    def pvs__detect_names(self) -> None:
+
+
+    def pv__detect_names(self) -> None:
         for name in dir(self):
-            if name.startswith(self.PVS__PREFIX) and not callable(getattr(self, name)):
-                self._pvs_detected.update({name: getattr(self, name)})
+            if name.startswith(self.PV__PREFIX) and not callable(getattr(self, name)):
+                self._pv_detected.update({name: getattr(self, name)})
 
-    def pvs__update_from_os_env(self) -> None:
-        for name_w_prefix in self._pvs_detected:
-            name_wo_prefix = name_w_prefix.replace(self.PVS__PREFIX, "", 1)
+    def pv__update_from_os_env(self) -> None:
+        for name_w_prefix in self._pv_detected:
+            name_wo_prefix = name_w_prefix.replace(self.PV__PREFIX, "", 1)
 
             env_name__os = None
 
@@ -82,42 +84,42 @@ class PrivetValues:
                 env_value__os = os.getenv(env_name__os)
                 setattr(self, name_w_prefix, env_value__os)
 
-                self._pvs_detected.update({name_w_prefix: env_value__os})
+                self._pv_detected.update({name_w_prefix: env_value__os})
 
-    def pvs__update_from_rc(self) -> None:
-        if not self.PVS__RC_FILEPATH.exists():
-            print(f'[INFO]not exists {self.PVS__RC_FILEPATH=}')
+    def pv__update_from_rc(self) -> None:
+        if not self.PV__RC_FILEPATH.exists():
+            print(f'[INFO]not exists {self.PV__RC_FILEPATH=}')
             return
 
         cfg = ConfigParser()
-        cfg.read_file(self.PVS__RC_FILEPATH.read_text())
+        cfg.read_file(self.PV__RC_FILEPATH.read_text())
 
-        for name_w_prefix in self._pvs_detected:
+        for name_w_prefix in self._pv_detected:
             # in RC we will use only WO prefix!
-            name_wo_prefix = name_w_prefix.replace(self.PVS__PREFIX, "", 1)
+            name_wo_prefix = name_w_prefix.replace(self.PV__PREFIX, "", 1)
 
             try:
-                value = cfg.get(section=self.PVS__RC_SECTION, option=name_wo_prefix)
+                value = cfg.get(section=self.PV__RC_SECTION, option=name_wo_prefix)
             except Exception:
                 print(f'[INFO]not exists option [{name_wo_prefix}]')
                 continue
 
             setattr(self, name_w_prefix, value)
-            self._pvs_detected.update({name_w_prefix: value})
+            self._pv_detected.update({name_w_prefix: value})
 
-    def pvs__check_no_None(self) -> Union[NoReturn, bool]:
-        for name in self._pvs_detected:
+    def pv__check_no_None(self) -> Union[NoReturn, bool]:
+        for name in self._pv_detected:
             if getattr(self, name) is None:
                 msg = f"[CRITICAL] There is no [{name=}] in EnvsOs and not exists default value! Add it manually!!!"
                 print(msg)
-                if self.PVS__RISE_EXCEPTION_IF_NONE:
+                if self.PV__RISE_EXCEPTION_IF_NONE:
                     raise Exx_PvNotAccepted(msg)
                 else:
                     return False
         return True
 
     @classmethod
-    def pvs__show_os_env(cls, prefix: str = None) -> Type_PvsDict:
+    def pv__show_os_env(cls, prefix: str = None) -> Type_PvsDict:
         """
         mainly it is only for PRINTing! dont use result!
 
@@ -155,14 +157,14 @@ class PrivetValues:
         print()     # to pretty print in pytest only
         return envs_result
 
-    def pvs__show_detected(self) -> Type_PvsDict:
+    def pv__show_detected(self) -> Type_PvsDict:
         print()     # to pretty print in pytest only
-        for name, value in self._pvs_detected.items():
+        for name, value in self._pv_detected.items():
             print(f"{name}    ={value}")
         print()     # to pretty print in pytest only
-        return self._pvs_detected
+        return self._pv_detected
 
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    PrivetValues.pvs__show_os_env(PrivetValues.PVS__PREFIX)
+    PrivetValues.pv__show_os_env(PrivetValues.PV__PREFIX)

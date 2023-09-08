@@ -64,7 +64,7 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PVS__RISE_EXCEPTION_IF_NONE = False
+    PV__RISE_EXCEPTION_IF_NONE = False
 
     PV__user: str = "UserDemo"
     PV__pwd: str = None
@@ -80,7 +80,7 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PVS__PREFIX: str = "MyPrefix__"
+    PV__PREFIX: str = "MyPrefix__"
 
     MyPrefix__user: str = None
     MyPrefix__pwd: str = None
