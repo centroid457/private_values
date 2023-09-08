@@ -147,6 +147,6 @@ class Test1_Env:
     def test__pvs__show_os_env(self):
         Victim = VictimRaise
         # uppercase - see docstring for method!
-        assert Victim.pv__show_os_env(prefix=Victim.PV__PREFIX).get(self.env_name__Exists_full.upper()) == self.VALUE_OS
+        assert Victim.pv__show_env(prefix=Victim.PV__PREFIX).get(self.env_name__Exists_full.upper()) == self.VALUE_OS
 
 # =====================================================================================================================

@@ -60,9 +60,9 @@ class PrivetValues:
 
         if self.PV__ENV_BETTER_THEN_RC:
             self.pv__update_from_rc()
-            self.pv__update_from_os_env()
+            self.pv__update_from_env()
         else:
-            self.pv__update_from_os_env()
+            self.pv__update_from_env()
             self.pv__update_from_rc()
 
         self.pv__check_no_None()
@@ -73,29 +73,20 @@ class PrivetValues:
         return name
 
     def pv__detect_names(self) -> None:
-        for name in dir(self):
-            if name.startswith(self.PV__PREFIX) and not callable(getattr(self, name)):
-                self._pv_detected.update({name: getattr(self, name)})
+        for name_w_prefix in dir(self):
+            if name_w_prefix.startswith(self.PV__PREFIX) and not callable(getattr(self, name_w_prefix)):
+                self._pv_detected.update({self._pv__get_name_wo_prefix(name_w_prefix): getattr(self, name_w_prefix)})
 
-    def pv__update_from_os_env(self) -> None:
+    def pv__update_from_env(self) -> None:
         if not self.PV__USE_ENV:
             return
 
-        for name_w_prefix in self._pv_detected:
-            name_wo_prefix = self._pv__get_name_wo_prefix(name_w_prefix)
-
-            env_name__os = None
-
-            if name_w_prefix in os.environ:
-                env_name__os = name_w_prefix
-            elif name_wo_prefix in os.environ:
-                env_name__os = name_wo_prefix
-
-            if env_name__os:
-                env_value__os = os.getenv(env_name__os)
-                setattr(self, name_w_prefix, env_value__os)
-
-                self._pv_detected.update({name_w_prefix: env_value__os})
+        for name_wo_prefix in self._pv_detected:
+            name_w_prefix = f"{self.PV__PREFIX}{name_wo_prefix}"
+            if name_wo_prefix in os.environ:
+                value = os.getenv(name_wo_prefix)
+                setattr(self, name_w_prefix, value)
+                self._pv_detected.update({name_wo_prefix: value})
 
     def pv__update_from_rc(self) -> None:
         if not self.PV__USE_RC:
@@ -105,21 +96,17 @@ class PrivetValues:
             print(f'[INFO]not exists {self.PV__RC_FILEPATH=}')
             return
 
-        cfg = ConfigParser()
-        cfg.read_file(self.PV__RC_FILEPATH.read_text())
+        rc = ConfigParser()
+        rc.read_file(self.PV__RC_FILEPATH.read_text())
 
-        for name_w_prefix in self._pv_detected:
+        for name_wo_prefix in self._pv_detected:
             # in RC we will use only WO prefix!
-            name_wo_prefix = self._pv__get_name_wo_prefix(name_w_prefix)
+            name_w_prefix = f"{self.PV__PREFIX}{name_wo_prefix}"
 
-            try:
-                value = cfg.get(section=self.PV__RC_SECTION, option=name_wo_prefix)
-            except Exception:
-                print(f'[INFO]not exists option [{name_wo_prefix}]')
-                continue
-
-            setattr(self, name_w_prefix, value)
-            self._pv_detected.update({name_w_prefix: value})
+            if rc.has_option(section=self.PV__RC_SECTION, option=name_wo_prefix):
+                value = rc.get(section=self.PV__RC_SECTION, option=name_wo_prefix)
+                setattr(self, name_w_prefix, value)
+                self._pv_detected.update({name_wo_prefix: value})
 
     def pv__check_no_None(self) -> Union[NoReturn, bool]:
         for name in self._pv_detected:
@@ -132,8 +119,9 @@ class PrivetValues:
                     return False
         return True
 
+    # SHOW ------------------------------------------------------------------------------------------------------------
     @classmethod
-    def pv__show_os_env(cls, prefix: str = None) -> Type_PvsDict:
+    def pv__show_env(cls, prefix: str = None) -> Type_PvsDict:
         """
         mainly it is only for PRINTing! dont use result!
 
@@ -181,4 +169,4 @@ class PrivetValues:
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    PrivetValues.pv__show_os_env(PrivetValues.PV__PREFIX)
+    PrivetValues.pv__show_env(PrivetValues.PV__PREFIX)
