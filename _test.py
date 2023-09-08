@@ -152,7 +152,7 @@ class Test:
             expected = self.VALUE_RC
         assert getattr(self.VICTIM(), self.pv_name__Exists_full) == expected
 
-    # _pvs_detected --------------------------------------------------------------------------------------------------
+    # _pvs_detected ---------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
     def test__pv_detected(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
@@ -179,7 +179,7 @@ class Test:
             self.pv_name__Exists_short: expected,
         }
 
-    # envs__show* ------------------------------------------------------------------------------------------------------
+    # envs__show* -----------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(argnames="env,rc", argvalues=[(True, False), (False, True), (True, True)])
     def test__pv__show_detected(self, env, rc):
         self.VICTIM.PV__USE_ENV = env
