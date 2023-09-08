@@ -22,8 +22,8 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PV__user: str = None
-    PV__pwd: str = None
+    PV___user: str = None
+    PV___pwd: str = None
 ```
 Now you can safely push it in any public repo.
 
@@ -38,15 +38,15 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PV__user: str = "UserDemo"
-    PV__pwd: str = "PwdDemo"
+    PV___user: str = "UserDemo"
+    PV___pwd: str = "PwdDemo"
 ```
 
 ## Add envs to your OS
 
 In our example we need this pair:
-* PV__user = "UserPrivate"
-* PV__pwd = "PwdPrivate"  
+* PV___user = "UserPrivate"
+* PV___pwd = "PwdPrivate"  
 or
 * user = "UserPrivate"
 * pwd = "PwdPrivate"  
@@ -64,10 +64,10 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PV__RISE_EXCEPTION_IF_NONE = False
+    PV___RISE_EXCEPTION_IF_NONE = False
 
-    PV__user: str = "UserDemo"
-    PV__pwd: str = None
+    PV___user: str = "UserDemo"
+    PV___pwd: str = None
 ```
 
 
@@ -80,7 +80,7 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PV__PREFIX: str = "MyPrefix__"
+    PV___PREFIX: str = "MyPrefix__"
 
     MyPrefix__user: str = None
     MyPrefix__pwd: str = None
@@ -114,17 +114,17 @@ from privet_values import PrivetValues
 
 
 class MyWork(PrivetValues):
-    PV__user: str = "UserDemo"
-    PV__pwd: str = "PwdDemo"
+    PV___user: str = "UserDemo"
+    PV___pwd: str = "PwdDemo"
 
     ATTR1 = 1
     ATTR2 = None
 
     def __init__(self):
         super().__init__()
-        # do smth
+        pass    # do smth
 
     def do_smth(self):
-        # do smth
-        pass
+        pass    # do smth
+
 ```

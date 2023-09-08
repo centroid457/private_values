@@ -37,7 +37,7 @@ class PrivetValues:
     When updated values - any value even blank string will be used!
     """
     PV__RISE_EXCEPTION_IF_NONE: bool = True
-    PV__PREFIX: str = "PV__"
+    PV__PREFIX: str = "PV___"
 
     PV__ENV_BETTER_THEN_RC: bool = True
 
