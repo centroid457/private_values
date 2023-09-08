@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
 
+NAME = 'private_values'
 
 with open('README.md', 'r') as f:
     readme = f.read()
 
 setup(
-  name='private_values',
+  name=NAME,
   version='0.1.0',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
@@ -21,7 +22,7 @@ setup(
     "Source": "https://github.com/centroid457/private_values",
   },
 
-  packages=find_packages(),
+  packages=[NAME, ],
   install_requires=[],
   classifiers=[
     # "Framework :: ",
