@@ -5,7 +5,7 @@ Source code is small and pretty simple, good structured and self-documented.
 So feel free to take a look at source do discover some other implementation abilities which may be not so useful.
 
 
-## Suppose you already have next code
+## 0. Suppose you already have next code
 
 ```python
 class MyWork:
@@ -15,7 +15,7 @@ class MyWork:
 It is contain private data - you can't push this in public place.
 
 
-## Change code
+## 1. Change code
 
 ```python
 from private_values import PrivateValues
@@ -28,7 +28,7 @@ class MyWork(PrivateValues):
 Now you can safely push it in any public repo.
 
 
-## Add default values
+## 2. Add default values
 
 Use only string type! No other types like int/float.  
 Don't place private data here!
@@ -42,20 +42,50 @@ class MyWork(PrivateValues):
     PV___pwd: str = "PwdDemo"
 ```
 
-## Add envs to your OS
+## 3. Add private values into appropriate hidden place
 
-For example above we need to keep OsEnvirons:
+Notice: all names in source code must have prefix, and in original place (OsEnv/RcFile) it must have no prefix!  
+For example above we need to add:
 * user = "UserPrivate"
-* pwd = "PwdPrivate"  
+* pwd = "PwdPrivate"
 
-So in source code - add prefix, 
-in OsEnvirons - use without prefix.
+This product gives you two abilities:
+1. OsEnvironment - just add in environment as usual (ask google for you OS),
+2. RcFile - standard Ini/Cfg format
+
+```ini
+user=UserPrivate  
+pwd=PwdPrivate
+```
+
+## 4. Change rc-file dirpath or just name
+```python
+import pathlib
+from private_values import PrivateValues
 
 
-## Disable Exception
+class MyWork(PrivateValues):
+    PV__RC_DIRPATH: Type_Path = pathlib.Path.home()
+    PV__RC_FILENAME: str = ".pv_rc"
+```
 
-If you forgot to add some of the envs into OS, and it has not defval, 
-you will get the Exception which notify you exact env on instance creation!  
+## 5. Disable using Env or Rc or even change Priority
+```python
+from private_values import PrivateValues
+
+
+class MyWork(PrivateValues):
+    PV__ENV_BETTER_THEN_RC: bool = True
+    
+    PV__USE_ENV: bool = True
+    PV__USE_RC: bool = True
+```
+
+
+## 6. Disable Exception
+
+If you forgot to add some values, and it has not defval, 
+you will get the Exception which notify you exact name on instance creation!  
 If you don't need it (handle by your own), just disable it.
 But don't forget it make sense only if any ENV has None value.
 
@@ -65,13 +95,10 @@ from private_values import PrivateValues
 
 class MyWork(PrivateValues):
     PV___RISE_EXCEPTION_IF_NONE = False
-
-    PV___user: str = "UserDemo"
-    PV___pwd: str = None
 ```
 
 
-## Change attribute prefix
+## 7. Change attribute prefix
 
 If default prefix is inappropriate for your project you can change it, but it is not recommended
 
@@ -87,7 +114,7 @@ class MyWork(PrivateValues):
 ```
 
 
-## Tips
+## 8. Tips
 
 You don't need to use it just like separated end class to handle only envs!  
 Use nesting to any existed class.
