@@ -1,6 +1,16 @@
 Release History
 ===============
 
+0.0.3 (2023-09-08)
+-------------------
+
+**ADDITIONS**
+- add RC-file usage
+
+**CHANGES**
+- change name of project
+
+
 0.0.2 (2023-09-07)
 -------------------
 
