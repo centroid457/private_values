@@ -1,9 +1,11 @@
-# environs_os_getter_class
+# private_values
 
 
 ## Inspiration
 Designed to use private data like username/pwd kept in OsEnvironment (or RcFile or even both variants) and not open it in public projects.  
-Main goals: short implementation and OOP usage.
+Main goals: short implementation and OOP usage.  
+
+So for your projects it helps you to share it in public and keep private data in secure.
 
 
 ## Features
