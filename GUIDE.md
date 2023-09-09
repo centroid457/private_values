@@ -64,7 +64,7 @@ from private_values import PrivateValues
 
 class ExampleModified(PrivateValues):
     PV__RC_DIRPATH = pathlib.Path.home()
-    PV__RC_FILENAME: str = ".pv_rc"
+    PV__RC_FILENAME: str = "pv.ini"
 ```
 
 ## 5. Disable using Env or Rc or even change Priority

@@ -48,7 +48,7 @@ class PrivateValues:
 
     PV__RC_SECTION: str = "DEFAULT"
     PV__RC_DIRPATH: Type_Path = pathlib.Path.home()
-    PV__RC_FILENAME: str = ".pv_rc"
+    PV__RC_FILENAME: str = "pv.ini"
 
     def __init__(self):
         super().__init__()
