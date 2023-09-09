@@ -13,8 +13,65 @@ class Exx_PvNotAccepted(Exception):
     pass
 
 
+# =====================================================================================================================
+def env_value_get(name: str, raise_exx: bool = True) -> Union[str, NoReturn, None]:
+    """
+    read exact environ
+    """
+    result = os.getenv(name)
+    if result is None and raise_exx:
+        PrivateValues._pv__show_env()
+
+        msg = f"[CRITICAL]no [{name=}] in environment!"
+        msg += f"\n\tIf you just now add it - dont forget reboot!"
+        raise Exx_PvNotAccepted(msg)
+    return result
+
+
+class IniValues:
+    """
+    read exact value from IniFile
+    """
+    SECTION: str = "DEFAULT"
+    DIRPATH: Type_Path = pathlib.Path.home()
+    FILENAME: str = "pv.ini"
+
+    def __init__(self):
+        super().__init__()
+
+        if self.DIRPATH:
+            self.DIRPATH = pathlib.Path(self.DIRPATH)
+
+    @property
+    def FILEPATH(self) -> pathlib.Path:
+        return self.DIRPATH.joinpath(self.FILENAME)
+
+    def get(self, name: str, section: Optional[str] = None) -> Union[str, NoReturn]:
+        if not self.FILEPATH or not self.FILEPATH.exists():
+            msg = f'[INFO]no file [{self.FILEPATH=}]'
+            raise Exx_PvNotAccepted(msg)
+
+        section = section or self.SECTION
+        filetext = self.FILEPATH.read_text()
+
+        rc = ConfigParser()
+        rc.read_string(filetext)
+
+        if rc.has_option(section=section, option=name):
+            value = rc.get(section=section, option=name)
+            return value
+
+        msg = f"[CRITICAL]no {name=} in {self.FILEPATH=}!"
+        msg += f"\n"
+        msg += filetext
+        raise Exx_PvNotAccepted(msg)
+
+
+# =====================================================================================================================
 class PrivateValues:
     """
+    NOT RECOMMENDED! USE ABOVE ONES!
+
     update special params from OsEnvirons, RC file or use default.
     if we have finally None value in updated params - RAISE!
 
@@ -127,8 +184,7 @@ class PrivateValues:
     def pv__check_no_None(self) -> Union[NoReturn, bool]:
         for name in self._pv_detected:
             if getattr(self, f"{self.PV__PREFIX}{name}") is None:
-                msg = f"[CRITICAL] There is no [{name=}] in EnvsOs or RcFile and not exists default value! Add it manually!!!"
-                print(msg)
+                msg = f"[CRITICAL] no [{name=}] in EnvsOs or IniFile and no default value!"
                 if self.PV__RISE_EXCEPTION_IF_NONE:
                     raise Exx_PvNotAccepted(msg)
                 else:
