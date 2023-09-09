@@ -55,7 +55,6 @@ class PrivateValues:
 
         if self.PV__RC_DIRPATH:
             self.PV__RC_DIRPATH = pathlib.Path(self.PV__RC_DIRPATH)
-        self._PV__RC_FILEPATH = self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
 
         self._pv_detected: Type_PvsDict = {}    # it is just for debugging!
         self.pv__detect_names()
@@ -68,6 +67,10 @@ class PrivateValues:
             self.pv__update_from_rc()
 
         self.pv__check_no_None()
+
+    @property
+    def _PV__RC_FILEPATH(self) -> pathlib.Path:
+        return self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
 
     @classmethod
     def _cls_set_defaults(cls):
