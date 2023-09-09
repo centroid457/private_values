@@ -7,6 +7,7 @@ from typing import *
 # =====================================================================================================================
 Type_PvsDict = Dict[str, Optional[str]]
 Type_Path = Union[str, pathlib.Path]
+Type_Value = Union[str, NoReturn, None]
 
 
 class Exx_PvNotAccepted(Exception):
@@ -14,7 +15,7 @@ class Exx_PvNotAccepted(Exception):
 
 
 # =====================================================================================================================
-def env_value_get(name: str, raise_exx: bool = True) -> Union[str, NoReturn, None]:
+def env_value_get(name: str, raise_exx: bool = True) -> Type_Value:
     """
     read exact environ
     """
@@ -46,10 +47,14 @@ class IniValues:
     def FILEPATH(self) -> pathlib.Path:
         return self.DIRPATH.joinpath(self.FILENAME)
 
-    def get(self, name: str, section: Optional[str] = None) -> Union[str, NoReturn]:
+    def get(self, name: str, section: Optional[str] = None, raise_exx: bool = True) -> Type_Value:
         if not self.FILEPATH or not self.FILEPATH.exists():
             msg = f'[INFO]no file [{self.FILEPATH=}]'
-            raise Exx_PvNotAccepted(msg)
+            if raise_exx:
+                raise Exx_PvNotAccepted(msg)
+            else:
+                print(msg)
+                return
 
         section = section or self.SECTION
         filetext = self.FILEPATH.read_text()
@@ -61,10 +66,15 @@ class IniValues:
             value = rc.get(section=section, option=name)
             return value
 
-        msg = f"[CRITICAL]no {name=} in {self.FILEPATH=}!"
+        msg = f"[CRITICAL]no {name=}/{section=} in {self.FILEPATH=}!"
         msg += f"\n"
         msg += filetext
-        raise Exx_PvNotAccepted(msg)
+
+        if raise_exx:
+            raise Exx_PvNotAccepted(msg)
+        else:
+            print(msg)
+            return
 
 
 # =====================================================================================================================
@@ -128,17 +138,6 @@ class PrivateValues:
     @property
     def _PV__RC_FILEPATH(self) -> pathlib.Path:
         return self.PV__RC_DIRPATH.joinpath(self.PV__RC_FILENAME)
-
-    @classmethod
-    def _cls_set_defaults(cls):
-        """
-        creating for tests!
-        set all attrs in upper class at defaults from this class!
-        """
-        for name in dir(PrivateValues):
-            if not callable(getattr(PrivateValues, name)) and not name.startswith("_"):
-                value = getattr(PrivateValues, name)
-                setattr(cls, name, value)
 
     def _pv__get_name_wo_prefix(self, name: str) -> str:
         if name.startswith(self.PV__PREFIX):
@@ -238,4 +237,4 @@ class PrivateValues:
 
 # =====================================================================================================================
 if __name__ == "__main__":
-    PrivateValues._cls_set_defaults()
+    PrivateValues._pv__show_env()

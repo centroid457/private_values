@@ -5,7 +5,7 @@ import shutil
 from tempfile import TemporaryDirectory
 from typing import *
 from configparser import ConfigParser
-from private_values import PrivateValues, Exx_PvNotAccepted, env_value_get, IniValues
+from private_values import *
 
 
 # =====================================================================================================================
@@ -31,6 +31,10 @@ class Test__env_value_get:
         print()
         print()
 
+    @classmethod
+    def teardown_class(cls):
+        del os.environ[cls.NAME_Exists]
+
     def test__Exists(self):
         assert env_value_get(self.NAME_Exists) == self.VALUE
 
@@ -47,16 +51,62 @@ class Test__env_value_get:
 
 
 # =====================================================================================================================
-class Victim(PrivateValues):
-    """
-    necessary to hide original class attributes
-    """
-    pass
+class Test__IniValues:
+    VICTIM: Type[IniValues] = type("VICTIM", (IniValues, ), {})
+    DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
+    TEXT: str = f"""
+[DEFAULT]
+name=valueDef
+name0=valueDef
+
+[SEC1]
+name=value1
+name1=value1
+    """
+    @classmethod
+    def setup_class(cls):
+        cls.DIRPATH.mkdir()
+        cls.DIRPATH.joinpath(cls.VICTIM.FILENAME).write_text(cls.TEXT)
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree(cls.DIRPATH)
+
+    def setup_method(self, method):
+        self.VICTIM = type("VICTIM", (IniValues, ), {})
+        self.VICTIM.DIRPATH = self.DIRPATH
+
+    def test__notExist_file(self):
+        self.VICTIM.FILENAME = "12345.ini"
+
+        try:
+            self.VICTIM().get("name")
+        except Exx_PvNotAccepted:
+            return
+
+        assert False
+
+    def test__notExist_name(self):
+        try:
+            self.VICTIM().get("name999")
+        except Exx_PvNotAccepted:
+            return
+
+        assert False
+
+    def test__Exist_name(self):
+        assert self.VICTIM().get("name", raise_exx=False) == "valueDef"     #1
+        assert self.VICTIM().get("name0", raise_exx=False) == "valueDef"    #2
+        assert self.VICTIM().get("name1", raise_exx=False) is None          #3
+
+        assert self.VICTIM().get("name", section="SEC1", raise_exx=False) == "value1"       #4
+        assert self.VICTIM().get("name0", section="SEC1", raise_exx=False) == "valueDef"    #5
+        assert self.VICTIM().get("name1", section="SEC1", raise_exx=False) == "value1"      #6
 
 # =====================================================================================================================
-class Test:
-    VICTIM: Type[Victim] = Victim
+class Test__PrivateValues:
+    VICTIM: Type[PrivateValues] = type("VICTIM", (PrivateValues, ), {})
 
     VALUE_DEF: str = "VALUE_DEF"
     VALUE_ENV: str = "VALUE_ENV"
@@ -100,8 +150,7 @@ class Test:
             rc.write(rc_file)
 
     def setup_method(self, method):
-        self.VICTIM = Victim
-        self.VICTIM._cls_set_defaults()
+        self.VICTIM = type("VICTIM", (PrivateValues, ), {})
         self.VICTIM.PV__RC_DIRPATH = self.DIRPATH_RC
 
     @classmethod
