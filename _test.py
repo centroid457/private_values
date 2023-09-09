@@ -5,7 +5,45 @@ import shutil
 from tempfile import TemporaryDirectory
 from typing import *
 from configparser import ConfigParser
-from private_values import PrivateValues, Exx_PvNotAccepted
+from private_values import PrivateValues, Exx_PvNotAccepted, env_value_get, IniValues
+
+
+# =====================================================================================================================
+class Test__env_value_get:
+    VALUE: str = "VALUE"
+    NAME_Exists: str = "Exists"
+    NAME_NotExists: str = "NotExists"
+
+    @classmethod
+    def setup_class(cls):
+        while cls.NAME_Exists in os.environ:
+            cls.NAME_Exists = f"{cls.NAME_Exists}_"
+
+        while cls.NAME_NotExists in os.environ:
+            cls.NAME_NotExists = f"{cls.NAME_NotExists}_"
+
+        os.environ[cls.NAME_Exists] = cls.VALUE
+
+        print()
+        print()
+        print(f"{cls.NAME_Exists=}")
+        print(f"{cls.NAME_NotExists=}")
+        print()
+        print()
+
+    def test__Exists(self):
+        assert env_value_get(self.NAME_Exists) == self.VALUE
+
+    def test__notExists_Rise(self):
+        try:
+            env_value_get(self.NAME_NotExists)
+        except Exx_PvNotAccepted:
+            return
+
+        assert False
+
+    def test__notExists_noRise(self):
+        assert env_value_get(self.NAME_NotExists, raise_exx=False) is None
 
 
 # =====================================================================================================================
