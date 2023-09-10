@@ -5,7 +5,7 @@ from typing import *
 
 
 # =====================================================================================================================
-Type_PvsDict = Dict[str, Optional[str]]
+Type_PvDict = Dict[str, Optional[str]]
 Type_Path = Union[str, pathlib.Path]
 Type_Value = Union[str, NoReturn, None]
 
@@ -34,7 +34,7 @@ class EnvValues:
         return result
 
     @staticmethod
-    def show(prefix: Optional[str] = None) -> Type_PvsDict:
+    def show(prefix: Optional[str] = None) -> Type_PvDict:
         """
         mainly it is only for PRINTing and debugging! don't use result!
 
@@ -55,7 +55,7 @@ class EnvValues:
             print(dict(os.environ)[name_lowercase])     # KeyError: 'name_lowercase'
         """
         envs_all = os.environ
-        result: Type_PvsDict = {}
+        result: Type_PvDict = {}
 
         # filter ---------------
         for name, value in envs_all.items():
@@ -160,7 +160,7 @@ class PrivateValues:
         if self.PV__RC_DIRPATH:
             self.PV__RC_DIRPATH = pathlib.Path(self.PV__RC_DIRPATH)
 
-        self._pv_detected: Type_PvsDict = {}    # it is just for debugging!
+        self._pv_detected: Type_PvDict = {}    # it is just for debugging!
         self.pv__detect_names()
 
         if self.PV__ENV_BETTER_THEN_RC:
@@ -228,7 +228,7 @@ class PrivateValues:
         return True
 
     # SHOW ------------------------------------------------------------------------------------------------------------
-    def pv__show_detected(self) -> Type_PvsDict:
+    def pv__show_detected(self) -> Type_PvDict:
         print()     # to pretty print in pytest only
         for name, value in self._pv_detected.items():
             print(f"{name}    ={value}")
