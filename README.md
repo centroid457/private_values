@@ -120,7 +120,7 @@ from private_values import *
 class CustomEnvValues(EnvValues):
     RAISE_EXX = False
     
- class CustomIniValues(IniValues):
+class CustomIniValues(IniValues):
     RAISE_EXX = False
     
 class Cls:
