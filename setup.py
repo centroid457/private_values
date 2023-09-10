@@ -7,7 +7,7 @@ with open('README.md', 'r') as f:
 
 setup(
   name=NAME,
-  version='0.1.0',
+  version='0.2.0',
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
 

@@ -1,25 +1,18 @@
 # private_values
 
 
-## Inspiration
-Designed to use private data like username/pwd kept in OsEnvironment (or RcFile or even both variants) and not open it in public projects.  
+Designed to use private data like username/pwd kept secure in OsEnvironment or IniFile for your several home projects at ones.  
+And not open it in public.  
 Main goals: short implementation and OOP usage.  
-
-So for your projects it helps you to share it in public and keep private data in secure.
 
 
 ## Features
 
-1. Create classes with special attributes, which will be updated from OsEnvirons or RcFile.  
-By default it must startswith PREFIX PV___.  
-In case of OsEnvirons - it is very simple.  
-For RcFile it gives you much more flexibility with ini-sections.
+1. get values from:
+   * Environment
+   * iniFile
 
-2. Ability to set default values.  
-By this way you can share for example open username/pwd data, end user must create private data in the OS.
-
-3. If finally no value withing any special attributes - raise Exception.  
-You can disable this behaviour.
+2. raise if no name in destination
 
 
 ## License
@@ -32,18 +25,86 @@ See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
 See the [HISTORY.md](HISTORY.md) file for release history.
 
 
-## GUIDE
-
-[NEED ADD]
-
 ## Installation
 
 ```commandline
-python pip install environs_os_getter_class
+pip install private-values
 ```
 
 ## Import
 
 ```python
-from private_values import PrivateValues
+from private_values import *
+```
+
+
+## GUIDE
+
+### 1. Env
+
+* what a simple usage
+
+```python
+from private_values import *
+
+class Cls:
+    user = EnvValues.get("NameInEnv_ForUser")
+    pwd = EnvValues.get("NameInEnv_ForPwd")
+```
+
+### 2. IniFile
+
+* Use defaults
+
+```python
+from private_values import *
+
+class Cls:
+    user = IniValues.get("NameInIni_ForUser")
+    pwd = IniValues.get("NameInIni_ForPwd")
+```
+
+* Use different sections
+
+```python
+from private_values import *
+
+class Cls:
+    user = IniValues.get("NameInIni_ForUser")
+    pwd = IniValues.get("NameInIni_ForPwd", section="CustomSection")
+```
+
+* Change directory or filename or default section
+
+str and pathlib are accepted
+
+```python
+from private_values import *
+
+class CustomIniValues(IniValues):
+    DIRPATH = "new/path/"
+    FILENAME = "my.ini"
+    SECTION = "CustomSection"
+
+class Cls:
+    user = CustomIniValues.get("NameInIni_ForUser")
+    pwd = CustomIniValues.get("NameInIni_ForPwd")
+```
+
+### 3. disable Exceptions
+
+`_raise_exx` is useful in all *.get methods for both classes
+
+```python
+from private_values import *
+
+class Cls:
+    user = EnvValues.get("Name_ForUser", _raise_exx=False)
+    pwd = IniValues.get("Name_ForPwd", _raise_exx=False)
+
+    def connect(self):
+        if None in [self.user, self.pwd]:
+            return
+        pass
+
 ```
