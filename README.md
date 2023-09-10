@@ -93,6 +93,8 @@ class Cls:
 
 ### 3. disable Exceptions
 
+* in method
+
 `_raise_exx` is useful in all *.get methods for both classes
 
 ```python
@@ -106,5 +108,27 @@ class Cls:
         if None in [self.user, self.pwd]:
             return
         pass
+```
 
+* in whole class
+
+`_raise_exx` is useful in all *.get methods for both classes
+
+```python
+from private_values import *
+
+class CustomEnvValues(EnvValues):
+    RAISE_EXX = False
+    
+ class CustomIniValues(IniValues):
+    RAISE_EXX = False
+    
+class Cls:
+    user = CustomEnvValues.get("Name_ForUser")
+    pwd = CustomIniValues.get("Name_ForPwd")
+
+    def connect(self):
+        if None in [self.user, self.pwd]:
+            return
+        pass
 ```
