@@ -11,7 +11,7 @@ setup(
   author='Andrei Starichenko',
   author_email='centroid@mail.ru',
 
-  description='Update class attributes from OsEnvironment or RcFile',
+  description='Update class attributes from OsEnvironment or IniFile',
   long_description=readme,
   long_description_content_type='text/markdown',
   keywords='environs environment rc ini private',
