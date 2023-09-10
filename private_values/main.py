@@ -37,27 +37,23 @@ class IniValues:
     DIRPATH: Type_Path = pathlib.Path.home()
     FILENAME: str = "pv.ini"
 
-    def __init__(self):
-        super().__init__()
-
-        if self.DIRPATH:
-            self.DIRPATH = pathlib.Path(self.DIRPATH)
-
+    @classmethod
     @property
-    def FILEPATH(self) -> pathlib.Path:
-        return self.DIRPATH.joinpath(self.FILENAME)
+    def FILEPATH(cls) -> pathlib.Path:
+        return pathlib.Path(cls.DIRPATH, cls.FILENAME)
 
-    def get(self, name: str, section: Optional[str] = None, _raise_exx: bool = True) -> Type_Value:
-        if not self.FILEPATH or not self.FILEPATH.exists():
-            msg = f'[INFO]no file [{self.FILEPATH=}]'
+    @classmethod
+    def get(cls, name: str, section: Optional[str] = None, _raise_exx: bool = True) -> Type_Value:
+        if not cls.FILEPATH or not cls.FILEPATH.exists():
+            msg = f'[INFO]no file [{cls.FILEPATH=}]'
             if _raise_exx:
                 raise Exx_PvNotAccepted(msg)
             else:
                 print(msg)
                 return
 
-        section = section or self.SECTION
-        filetext = self.FILEPATH.read_text()
+        section = section or cls.SECTION
+        filetext = cls.FILEPATH.read_text()
 
         rc = ConfigParser()
         rc.read_string(filetext)
@@ -66,7 +62,7 @@ class IniValues:
             value = rc.get(section=section, option=name)
             return value
 
-        msg = f"[CRITICAL]no {name=}/{section=} in {self.FILEPATH=}!"
+        msg = f"[CRITICAL]no {name=}/{section=} in {cls.FILEPATH=}!"
         msg += f"\n"
         msg += filetext
 
