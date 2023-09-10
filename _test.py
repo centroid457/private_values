@@ -9,7 +9,7 @@ from private_values import *
 
 
 # =====================================================================================================================
-class Test__env_value_get:
+class Test__EnvValues:
     VALUE: str = "VALUE"
     NAME_Exists: str = "Exists"
     NAME_NotExists: str = "NotExists"
@@ -36,18 +36,24 @@ class Test__env_value_get:
         del os.environ[cls.NAME_Exists]
 
     def test__Exists(self):
-        assert env_value_get(self.NAME_Exists) == self.VALUE
+        assert EnvValues.get(self.NAME_Exists) == self.VALUE
 
     def test__notExists_Rise(self):
         try:
-            env_value_get(self.NAME_NotExists)
+            EnvValues.get(self.NAME_NotExists)
         except Exx_PvNotAccepted:
             return
 
         assert False
 
     def test__notExists_noRise(self):
-        assert env_value_get(self.NAME_NotExists, _raise_exx=False) is None
+        assert EnvValues.get(self.NAME_NotExists, _raise_exx=False) is None
+
+    def test__show(self):
+        # uppercase - see docstring for method!
+        envs = EnvValues.show(self.NAME_Exists)
+        print(envs)
+        assert envs.get(self.NAME_Exists.upper()) == self.VALUE
 
 
 # =====================================================================================================================
@@ -322,12 +328,6 @@ class Test__PrivateValues:
             self.pv_name__NotExists_short: self.VALUE_DEF,
             self.pv_name__Exists_short: expected,
         }
-
-    def test__pv__show_os_env(self):
-        # uppercase - see docstring for method!
-        envs = self.VICTIM._pv__show_env(self.pv_name__Exists_short)
-        print(envs)
-        assert envs.get(self.pv_name__Exists_short.upper()) == self.VALUE_ENV
 
 
 # =====================================================================================================================
