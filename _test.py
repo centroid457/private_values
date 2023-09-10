@@ -10,6 +10,8 @@ from private_values import *
 
 # =====================================================================================================================
 class Test__EnvValues:
+    VICTIM: Type[EnvValues] = type("VICTIM", (EnvValues, ), {})
+
     VALUE: str = "VALUE"
     NAME_Exists: str = "Exists"
     NAME_NotExists: str = "NotExists"
@@ -35,23 +37,30 @@ class Test__EnvValues:
     def teardown_class(cls):
         del os.environ[cls.NAME_Exists]
 
-    def test__Exists(self):
-        assert EnvValues.get(self.NAME_Exists) == self.VALUE
+    def setup_method(self, method):
+        self.VICTIM = type("VICTIM", (EnvValues, ), {})
 
-    def test__notExists_Rise(self):
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__Exists(self):
+        assert self.VICTIM.get(self.NAME_Exists) == self.VALUE
+
+    def test__notExists(self):
+        assert self.VICTIM.get(self.NAME_NotExists, _raise_exx=False) is None
+
+        self.VICTIM.RAISE_EXX = False
+        assert self.VICTIM.get(self.NAME_NotExists) is None
+
+        self.VICTIM.RAISE_EXX = True
         try:
-            EnvValues.get(self.NAME_NotExists)
+            self.VICTIM.get(self.NAME_NotExists)
         except Exx_PvNotAccepted:
             return
 
         assert False
 
-    def test__notExists_noRise(self):
-        assert EnvValues.get(self.NAME_NotExists, _raise_exx=False) is None
-
     def test__show(self):
         # uppercase - see docstring for method!
-        envs = EnvValues.show(self.NAME_Exists)
+        envs = self.VICTIM.show(self.NAME_Exists)
         print(envs)
         assert envs.get(self.NAME_Exists.upper()) == self.VALUE
 
@@ -96,6 +105,7 @@ name1=value12
         self.VICTIM.DIRPATH = self.DIRPATH
         self.VICTIM2.DIRPATH = self.DIRPATH
 
+    # -----------------------------------------------------------------------------------------------------------------
     def test__notExist_file(self):
         self.VICTIM.FILENAME = "12345.ini"
 
@@ -107,6 +117,12 @@ name1=value12
         assert False
 
     def test__notExist_name(self):
+        assert self.VICTIM.get("name999", _raise_exx=False) is None
+
+        self.VICTIM.RAISE_EXX = False
+        assert self.VICTIM.get("name999") is None
+
+        self.VICTIM.RAISE_EXX = True
         try:
             self.VICTIM.get("name999")
         except Exx_PvNotAccepted:
