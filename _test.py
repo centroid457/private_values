@@ -47,7 +47,7 @@ class Test__env_value_get:
         assert False
 
     def test__notExists_noRise(self):
-        assert env_value_get(self.NAME_NotExists, raise_exx=False) is None
+        assert env_value_get(self.NAME_NotExists, _raise_exx=False) is None
 
 
 # =====================================================================================================================
@@ -96,13 +96,14 @@ name1=value1
         assert False
 
     def test__Exist_name(self):
-        assert self.VICTIM().get("name", raise_exx=False) == "valueDef"     #1
-        assert self.VICTIM().get("name0", raise_exx=False) == "valueDef"    #2
-        assert self.VICTIM().get("name1", raise_exx=False) is None          #3
+        assert self.VICTIM().get("name", _raise_exx=False) == "valueDef"     #1
+        assert self.VICTIM().get("name0", _raise_exx=False) == "valueDef"    #2
+        assert self.VICTIM().get("name1", _raise_exx=False) is None          #3
 
-        assert self.VICTIM().get("name", section="SEC1", raise_exx=False) == "value1"       #4
-        assert self.VICTIM().get("name0", section="SEC1", raise_exx=False) == "valueDef"    #5
-        assert self.VICTIM().get("name1", section="SEC1", raise_exx=False) == "value1"      #6
+        assert self.VICTIM().get("name", section="SEC1", _raise_exx=False) == "value1"       #4
+        assert self.VICTIM().get("name0", section="SEC1", _raise_exx=False) == "valueDef"    #5
+        assert self.VICTIM().get("name1", section="SEC1", _raise_exx=False) == "value1"      #6
+
 
 # =====================================================================================================================
 class Test__PrivateValues:

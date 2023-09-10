@@ -15,12 +15,12 @@ class Exx_PvNotAccepted(Exception):
 
 
 # =====================================================================================================================
-def env_value_get(name: str, raise_exx: bool = True) -> Type_Value:
+def env_value_get(name: str, _raise_exx: bool = True) -> Type_Value:
     """
     read exact environ
     """
     result = os.getenv(name)
-    if result is None and raise_exx:
+    if result is None and _raise_exx:
         PrivateValues._pv__show_env()
 
         msg = f"[CRITICAL]no [{name=}] in environment!"
@@ -47,10 +47,10 @@ class IniValues:
     def FILEPATH(self) -> pathlib.Path:
         return self.DIRPATH.joinpath(self.FILENAME)
 
-    def get(self, name: str, section: Optional[str] = None, raise_exx: bool = True) -> Type_Value:
+    def get(self, name: str, section: Optional[str] = None, _raise_exx: bool = True) -> Type_Value:
         if not self.FILEPATH or not self.FILEPATH.exists():
             msg = f'[INFO]no file [{self.FILEPATH=}]'
-            if raise_exx:
+            if _raise_exx:
                 raise Exx_PvNotAccepted(msg)
             else:
                 print(msg)
@@ -70,7 +70,7 @@ class IniValues:
         msg += f"\n"
         msg += filetext
 
-        if raise_exx:
+        if _raise_exx:
             raise Exx_PvNotAccepted(msg)
         else:
             print(msg)
