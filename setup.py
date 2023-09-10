@@ -1,22 +1,22 @@
 from setuptools import setup, find_packages
 
-NAME = 'private_values'
+NAME = "private_values"
 
-with open('README.md', 'r') as f:
+with open("README.md", "r") as f:
     readme = f.read()
 
 setup(
   name=NAME,
-  version='0.2.0',
-  author='Andrei Starichenko',
-  author_email='centroid@mail.ru',
+  version="0.2.0.1",
+  author="Andrei Starichenko",
+  author_email="centroid@mail.ru",
 
-  description='Update class attributes from OsEnvironment or IniFile',
+  description="Update class attributes from OsEnvironment or IniFile",
   long_description=readme,
-  long_description_content_type='text/markdown',
-  keywords='environs environment rc ini private',
+  long_description_content_type="text/markdown",
+  keywords=["environs", "environment", "rc", "ini", "private", "test several 123"],
 
-  # url='https://github.com/centroid457/private_values',
+  # url="https://github.com/centroid457/private_values",
   project_urls={
     # "Documentation": "https://github.com/centroid457/private_values/blob/main/GUIDE.md",
     "Source": "https://github.com/centroid457/private_values",
@@ -40,5 +40,5 @@ setup(
     "Natural Language :: English",
     "Typing :: Typed",
   ],
-  python_requires='>=3.6'
+  python_requires=">=3.6"
 )
