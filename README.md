@@ -32,10 +32,9 @@ See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
 See the [HISTORY.md](HISTORY.md) file for release history.
 
 
-## Help
+## GUIDE
 
-See the [GUIDE.md](GUIDE.md) file for get started.
-
+[NEED ADD]
 
 ## Installation
 

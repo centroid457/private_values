@@ -14,11 +14,11 @@ setup(
   description='Update class attributes from OsEnvironment or RcFile',
   long_description=readme,
   long_description_content_type='text/markdown',
-  keywords='environs environment rc private',
+  keywords='environs environment rc ini private',
 
   # url='https://github.com/centroid457/private_values',
   project_urls={
-    "Documentation": "https://github.com/centroid457/private_values/blob/main/GUIDE.md",
+    # "Documentation": "https://github.com/centroid457/private_values/blob/main/GUIDE.md",
     "Source": "https://github.com/centroid457/private_values",
   },
 
