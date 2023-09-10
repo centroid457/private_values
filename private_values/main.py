@@ -21,8 +21,13 @@ class EnvValues:
     """
     read exact environ from Os Environment
     """
+    RAISE_EXX: bool = True
+
     @classmethod
-    def get(cls, name: str, _raise_exx: bool = True) -> Type_Value:
+    def get(cls, name: str, _raise_exx: Optional[bool] = None) -> Type_Value:
+        if _raise_exx is None:
+            _raise_exx = cls.RAISE_EXX
+
         result = os.getenv(name)
         if result is None:
             cls.show()
@@ -77,6 +82,8 @@ class IniValues:
     """
     read exact value from IniFile
     """
+    RAISE_EXX: bool = True
+
     SECTION: str = "DEFAULT"
     DIRPATH: Type_Path = pathlib.Path.home()
     FILENAME: str = "pv.ini"
@@ -87,7 +94,10 @@ class IniValues:
         return pathlib.Path(cls.DIRPATH, cls.FILENAME)
 
     @classmethod
-    def get(cls, name: str, section: Optional[str] = None, _raise_exx: bool = True) -> Type_Value:
+    def get(cls, name: str, section: Optional[str] = None, _raise_exx: Optional[bool] = None) -> Type_Value:
+        if _raise_exx is None:
+            _raise_exx = cls.RAISE_EXX
+
         if not cls.FILEPATH or not cls.FILEPATH.exists():
             msg = f'[CRITICAL]no file [{cls.FILEPATH=}]'
             if _raise_exx:
