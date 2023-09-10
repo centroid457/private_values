@@ -1,6 +1,17 @@
 Release History
 ===============
 
+
+0.2.0 (2023-09-10)
+-------------------
+
+**ADDITIONS**
+- add simple cozy clear-worked classes
+
+**CHANGES**
+- del sophisticated PrivateValues
+
+
 0.1.0 (2023-09-08)
 -------------------
 
