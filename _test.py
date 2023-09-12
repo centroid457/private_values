@@ -10,7 +10,7 @@ from private_values import *
 
 # =====================================================================================================================
 class Test__EnvValues:
-    VICTIM: Type[EnvValues] = type("VICTIM", (EnvValues, ), {})
+    VICTIM: Type[PrivateEnv] = type("VICTIM", (PrivateEnv,), {})
 
     VALUE: str = "VALUE"
     NAME_Exists: str = "Exists"
@@ -38,7 +38,7 @@ class Test__EnvValues:
         del os.environ[cls.NAME_Exists]
 
     def setup_method(self, method):
-        self.VICTIM = type("VICTIM", (EnvValues, ), {})
+        self.VICTIM = type("VICTIM", (PrivateEnv,), {})
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__Exists(self):
@@ -67,8 +67,8 @@ class Test__EnvValues:
 
 # =====================================================================================================================
 class Test__IniValues:
-    VICTIM: Type[IniValues] = type("VICTIM", (IniValues, ), {})
-    VICTIM2: Type[IniValues] = type("VICTIM2", (IniValues, ), {"FILENAME": f"{IniValues.FILENAME}2"})
+    VICTIM: Type[PrivateIni] = type("VICTIM", (PrivateIni,), {})
+    VICTIM2: Type[PrivateIni] = type("VICTIM2", (PrivateIni,), {"FILENAME": f"{PrivateIni.FILENAME}2"})
     DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
     TEXT1: str = f"""
@@ -100,8 +100,8 @@ name1=value12
         shutil.rmtree(cls.DIRPATH)
 
     def setup_method(self, method):
-        self.VICTIM = type("VICTIM", (IniValues, ), {})
-        self.VICTIM2 = type("VICTIM2", (IniValues, ), {"FILENAME": f"{IniValues.FILENAME}2"})
+        self.VICTIM = type("VICTIM", (PrivateIni,), {})
+        self.VICTIM2 = type("VICTIM2", (PrivateIni,), {"FILENAME": f"{PrivateIni.FILENAME}2"})
         self.VICTIM.DIRPATH = self.DIRPATH
         self.VICTIM2.DIRPATH = self.DIRPATH
 

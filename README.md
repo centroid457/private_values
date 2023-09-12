@@ -47,9 +47,10 @@ from private_values import *
 ```python
 from private_values import *
 
+
 class Cls:
-    user = EnvValues.get("NameInEnv_ForUser")
-    pwd = EnvValues.get("NameInEnv_ForPwd")
+   user = PrivateEnv.get("NameInEnv_ForUser")
+   pwd = PrivateEnv.get("NameInEnv_ForPwd")
 ```
 
 ### 2. IniFile
@@ -59,9 +60,10 @@ class Cls:
 ```python
 from private_values import *
 
+
 class Cls:
-    user = IniValues.get("NameInIni_ForUser")
-    pwd = IniValues.get("NameInIni_ForPwd")
+   user = PrivateIni.get("NameInIni_ForUser")
+   pwd = PrivateIni.get("NameInIni_ForPwd")
 ```
 
 * Use different sections
@@ -69,9 +71,10 @@ class Cls:
 ```python
 from private_values import *
 
+
 class Cls:
-    user = IniValues.get("NameInIni_ForUser")
-    pwd = IniValues.get("NameInIni_ForPwd", section="CustomSection")
+   user = PrivateIni.get("NameInIni_ForUser")
+   pwd = PrivateIni.get("NameInIni_ForPwd", section="CustomSection")
 ```
 
 * Change directory or filename or default section
@@ -81,14 +84,16 @@ str and pathlib are accepted
 ```python
 from private_values import *
 
-class CustomIniValues(IniValues):
-    DIRPATH = "new/path/"
-    FILENAME = "my.ini"
-    SECTION = "CustomSection"
+
+class CustomIniValues(PrivateIni):
+   DIRPATH = "new/path/"
+   FILENAME = "my.ini"
+   SECTION = "CustomSection"
+
 
 class Cls:
-    user = CustomIniValues.get("NameInIni_ForUser")
-    pwd = CustomIniValues.get("NameInIni_ForPwd")
+   user = CustomIniValues.get("NameInIni_ForUser")
+   pwd = CustomIniValues.get("NameInIni_ForPwd")
 ```
 
 ### 3. disable Exceptions
@@ -100,14 +105,15 @@ class Cls:
 ```python
 from private_values import *
 
-class Cls:
-    user = EnvValues.get("Name_ForUser", _raise_exx=False)
-    pwd = IniValues.get("Name_ForPwd", _raise_exx=False)
 
-    def connect(self):
-        if None in [self.user, self.pwd]:
-            return
-        pass
+class Cls:
+   user = PrivateEnv.get("Name_ForUser", _raise_exx=False)
+   pwd = PrivateIni.get("Name_ForPwd", _raise_exx=False)
+
+   def connect(self):
+      if None in [self.user, self.pwd]:
+         return
+      pass
 ```
 
 * in whole class
@@ -117,18 +123,21 @@ class Cls:
 ```python
 from private_values import *
 
-class CustomEnvValues(EnvValues):
-    RAISE_EXX = False
-    
-class CustomIniValues(IniValues):
-    RAISE_EXX = False
-    
-class Cls:
-    user = CustomEnvValues.get("Name_ForUser")
-    pwd = CustomIniValues.get("Name_ForPwd")
 
-    def connect(self):
-        if None in [self.user, self.pwd]:
-            return
-        pass
+class CustomEnvValues(PrivateEnv):
+   RAISE_EXX = False
+
+
+class CustomIniValues(PrivateIni):
+   RAISE_EXX = False
+
+
+class Cls:
+   user = CustomEnvValues.get("Name_ForUser")
+   pwd = CustomIniValues.get("Name_ForPwd")
+
+   def connect(self):
+      if None in [self.user, self.pwd]:
+         return
+      pass
 ```

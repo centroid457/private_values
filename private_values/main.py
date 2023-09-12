@@ -17,7 +17,7 @@ class Exx_PvNotAccepted(Exception):
 
 
 # =====================================================================================================================
-class EnvValues:
+class PrivateEnv:
     """
     read exact environ from Os Environment
     """
@@ -78,7 +78,7 @@ class EnvValues:
 
 
 # =====================================================================================================================
-class IniValues:
+class PrivateIni:
     """
     read exact value from IniFile
     """
