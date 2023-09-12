@@ -2,10 +2,17 @@ Release History
 ===============
 
 
+0.2.1 (2023-09-12)
+-------------------
+
+**RENAMES**
+- classes names
+
+
 0.2.0 (2023-09-10)
 -------------------
 
-**ADDITIONS**
+**NEW**
 - add simple cozy clear-worked classes
 
 **CHANGES**
@@ -15,7 +22,7 @@ Release History
 0.1.0 (2023-09-08)
 -------------------
 
-**ADDITIONS**
+**NEW**
 - add RC-file usage
 
 **CHANGES**
@@ -25,7 +32,7 @@ Release History
 0.0.2 (2023-09-07)
 -------------------
 
-**ADDITIONS**
+**NEW**
 - tests
 
 **RENAMES**
