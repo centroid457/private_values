@@ -14,7 +14,7 @@ NAME = "private_values"
 setup(
   version="0.2.1",
   description="Update class attributes from OsEnvironment or IniFile",
-  keywords=["environs", "environment", "rc", "ini", "private", "test several 123"],
+  keywords=["environs", "environment", "rc", "ini", "private"],
   classifiers=[
     # "Framework :: ",
     "Topic :: Security",
