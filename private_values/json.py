@@ -5,6 +5,8 @@ import json
 
 # =====================================================================================================================
 class PrivateJson(PrivateBaseWFile):
+    FILENAME: str = "pv.json"
+
     def _get_value_unsafe(self, name: str, section: str, text: str) -> Optional[str]:
         """
         section only in first level!

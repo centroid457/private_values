@@ -9,6 +9,7 @@ class PrivateIni(PrivateBaseWFile):
     read exact value from IniFile
     """
     SECTION: str = "DEFAULT"
+    FILENAME: str = "pv.ini"
 
     def _get_value_unsafe(self, name: str, section: str, text: str) -> Optional[str]:
         ini = ConfigParser()

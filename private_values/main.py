@@ -24,7 +24,7 @@ class PrivateBaseWFile(PrivateBase):
     SECTION: str = None
 
     DIRPATH: Type_Path = pathlib.Path.home()
-    FILENAME: str = "pv.ini"
+    FILENAME: str = None
 
     def __init__(
             self,
