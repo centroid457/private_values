@@ -47,7 +47,6 @@ from private_values import *
 ```python
 from private_values import *
 
-
 class Cls:
    user = PrivateEnv.get("NameInEnv_ForUser")
    pwd = PrivateEnv.get("NameInEnv_ForPwd")
@@ -55,15 +54,14 @@ class Cls:
 
 ### 2. IniFile
 
-* Use defaults
+* Use defaults (common usage)
 
 ```python
 from private_values import *
 
-
 class Cls:
-   user = PrivateIni.get("NameInIni_ForUser")
-   pwd = PrivateIni.get("NameInIni_ForPwd")
+   user = PrivateIni().get("NameInIni_ForUser")
+   pwd = PrivateIni().get("NameInIni_ForPwd")
 ```
 
 * Use different sections
@@ -71,10 +69,9 @@ class Cls:
 ```python
 from private_values import *
 
-
 class Cls:
-   user = PrivateIni.get("NameInIni_ForUser")
-   pwd = PrivateIni.get("NameInIni_ForPwd", section="CustomSection")
+   user = PrivateIni().get("NameInIni_ForUser")
+   pwd = PrivateIni().get("NameInIni_ForPwd", _section="CustomSection")
 ```
 
 * Change directory or filename or default section
@@ -84,19 +81,26 @@ str and pathlib are accepted
 ```python
 from private_values import *
 
-
 class CustomIniValues(PrivateIni):
    DIRPATH = "new/path/"
    FILENAME = "my.ini"
    SECTION = "CustomSection"
-
 
 class Cls:
    user = CustomIniValues.get("NameInIni_ForUser")
    pwd = CustomIniValues.get("NameInIni_ForPwd")
 ```
 
-### 3. disable Exceptions
+### 3. Without creating new class
+```python
+from private_values import *
+
+class Cls:
+   pv1 = PrivateIni(_filename="otherFilename").get("pv1")
+   pv2 = PrivateIni(_section="otherSection").get("pv2")
+```
+
+### 4. disable Exceptions
 
 * in method
 
@@ -105,10 +109,9 @@ class Cls:
 ```python
 from private_values import *
 
-
 class Cls:
    user = PrivateEnv.get("Name_ForUser", _raise_exx=False)
-   pwd = PrivateIni.get("Name_ForPwd", _raise_exx=False)
+   pwd = PrivateIni().get("Name_ForPwd", _raise_exx=False)
 
    def connect(self):
       if None in [self.user, self.pwd]:
@@ -123,14 +126,11 @@ class Cls:
 ```python
 from private_values import *
 
-
 class CustomEnvValues(PrivateEnv):
    RAISE_EXX = False
 
-
 class CustomIniValues(PrivateIni):
    RAISE_EXX = False
-
 
 class Cls:
    user = CustomEnvValues.get("Name_ForUser")

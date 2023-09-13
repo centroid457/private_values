@@ -9,7 +9,7 @@ from private_values import *
 
 
 # =====================================================================================================================
-class Test__EnvValues:
+class Test__Env:
     VICTIM: Type[PrivateEnv] = type("VICTIM", (PrivateEnv,), {})
 
     VALUE: str = "VALUE"
@@ -66,9 +66,10 @@ class Test__EnvValues:
 
 
 # =====================================================================================================================
-class Test__IniValues:
+class Test__Ini:
     VICTIM: Type[PrivateIni] = type("VICTIM", (PrivateIni,), {})
-    VICTIM2: Type[PrivateIni] = type("VICTIM2", (PrivateIni,), {"FILENAME": f"{PrivateIni.FILENAME}2"})
+    VICTIM2_FILENAME: str = f"{PrivateIni.FILENAME}2"
+    VICTIM2: Type[PrivateIni] = type("VICTIM2", (PrivateIni,), {"FILENAME": VICTIM2_FILENAME})
     DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
     TEXT1: str = f"""
@@ -101,7 +102,7 @@ name1=value12
 
     def setup_method(self, method):
         self.VICTIM = type("VICTIM", (PrivateIni,), {})
-        self.VICTIM2 = type("VICTIM2", (PrivateIni,), {"FILENAME": f"{PrivateIni.FILENAME}2"})
+        self.VICTIM2 = type("VICTIM2", (PrivateIni,), {"FILENAME": self.VICTIM2_FILENAME})
         self.VICTIM.DIRPATH = self.DIRPATH
         self.VICTIM2.DIRPATH = self.DIRPATH
 
@@ -110,21 +111,21 @@ name1=value12
         self.VICTIM.FILENAME = "12345.ini"
 
         try:
-            self.VICTIM.get("name")
+            self.VICTIM().get("name")
         except Exx_PvNotAccepted:
             return
 
         assert False
 
     def test__notExist_name(self):
-        assert self.VICTIM.get("name999", _raise_exx=False) is None
+        assert self.VICTIM().get("name999", _raise_exx=False) is None
 
         self.VICTIM.RAISE_EXX = False
-        assert self.VICTIM.get("name999") is None
+        assert self.VICTIM().get("name999") is None
 
         self.VICTIM.RAISE_EXX = True
         try:
-            self.VICTIM.get("name999")
+            self.VICTIM().get("name999")
         except Exx_PvNotAccepted:
             return
 
@@ -132,22 +133,41 @@ name1=value12
 
     def test__Exist_name(self):
         # VICTIM1
-        assert self.VICTIM.get("name", _raise_exx=False) == "valueDef"
-        assert self.VICTIM.get("name0", _raise_exx=False) == "valueDef"
-        assert self.VICTIM.get("name1", _raise_exx=False) is None
+        assert self.VICTIM().get("name", _raise_exx=False) == "valueDef"
+        assert self.VICTIM().get("name0", _raise_exx=False) == "valueDef"
+        assert self.VICTIM().get("name1", _raise_exx=False) is None
 
-        assert self.VICTIM.get("name", section="SEC1", _raise_exx=False) == "value1"
-        assert self.VICTIM.get("name0", section="SEC1", _raise_exx=False) == "valueDef"
-        assert self.VICTIM.get("name1", section="SEC1", _raise_exx=False) == "value1"
+        assert self.VICTIM().get("name", _section="SEC1", _raise_exx=False) == "value1"
+        assert self.VICTIM().get("name0", _section="SEC1", _raise_exx=False) == "valueDef"
+        assert self.VICTIM().get("name1", _section="SEC1", _raise_exx=False) == "value1"
 
         # VICTIM2
-        assert self.VICTIM2.get("name", _raise_exx=False) == "valueDef2"
-        assert self.VICTIM2.get("name0", _raise_exx=False) == "valueDef2"
-        assert self.VICTIM2.get("name1", _raise_exx=False) is None
+        assert self.VICTIM2().get("name", _raise_exx=False) == "valueDef2"
+        assert self.VICTIM2().get("name0", _raise_exx=False) == "valueDef2"
+        assert self.VICTIM2().get("name1", _raise_exx=False) is None
 
-        assert self.VICTIM2.get("name", section="SEC1", _raise_exx=False) == "value12"
-        assert self.VICTIM2.get("name0", section="SEC1", _raise_exx=False) == "valueDef2"
-        assert self.VICTIM2.get("name1", section="SEC1", _raise_exx=False) == "value12"
+        assert self.VICTIM2().get("name", _section="SEC1", _raise_exx=False) == "value12"
+        assert self.VICTIM2().get("name0", _section="SEC1", _raise_exx=False) == "valueDef2"
+        assert self.VICTIM2().get("name1", _section="SEC1", _raise_exx=False) == "value12"
+
+    def test__use_get_with_other_params(self):
+        # VICTIM1
+        assert self.VICTIM().get("name") == "valueDef"
+        assert self.VICTIM().get("name", _filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)) == "valueDef2"
+        assert self.VICTIM().get("name", _filename=self.VICTIM2_FILENAME) == "valueDef2"
+        assert self.VICTIM().get("name", _filename=self.VICTIM2_FILENAME, _section="SEC1") == "value12"
+        assert self.VICTIM().get("name1", _filename=self.VICTIM2_FILENAME, _section="SEC1") == "value12"
+
+    def test__use_init(self):
+        # VICTIM1
+        assert self.VICTIM().get("name") == "valueDef"
+        assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).get("name") == "valueDef2"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME).get("name") == "valueDef2"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").get("name") == "value12"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").get("name1") == "value12"
+
+        VICTIM_obj = self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1")
+        assert VICTIM_obj.get("name1") == "value12"
 
 
 # =====================================================================================================================
