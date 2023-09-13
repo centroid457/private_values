@@ -16,8 +16,6 @@ setup(
   description="Update class attributes from OsEnvironment or IniFile",
   keywords=["environs", "environment", "rc", "ini", "private"],
   classifiers=[
-    # "Framework :: ",
-    "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Security",
 
     # EDIT ============================================================================================================
@@ -26,13 +24,15 @@ setup(
     # EDIT ============================================================================================================
     # EDIT ============================================================================================================
 
+    # "Framework :: ",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent",
-    "Environment :: Console",
+    # "Environment :: Console",
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Typing :: Typed",
