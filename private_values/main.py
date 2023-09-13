@@ -76,7 +76,9 @@ class PrivateBaseWFile(PrivateBase):
                 print(msg)
                 return
 
-        _section = _section or self.SECTION
+        if _section is None:
+            _section = self.SECTION
+
         filetext = _filepath.read_text()
 
         value = self._get_value_unsafe(name=name, section=_section, text=filetext)
@@ -121,7 +123,9 @@ class PrivateBaseWFile(PrivateBase):
                 print(msg)
                 return
 
-        _section = _section or self.SECTION
+        if _section is None:
+            _section = self.SECTION
+
         filetext = _filepath.read_text()
 
         section_dict = self._get_section_unsafe(section=_section, text=filetext)

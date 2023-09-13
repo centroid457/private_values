@@ -294,5 +294,15 @@ class Test__Json:
         assert VICTIM_obj.name1 == "value1"
         assert VICTIM_obj.name2 == "value11"
 
+        VICTIM_obj = self.VICTIM().get_section("")
+        assert VICTIM_obj.SEC1 == {
+            "name1": "value1",
+            "name2": "value11"
+        }
+        assert VICTIM_obj.SEC2 == {
+            "name1": "value2",
+            "name2": "value22"
+        }
+        
 
 # =====================================================================================================================
