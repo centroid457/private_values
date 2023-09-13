@@ -41,6 +41,10 @@ class Test__Env:
         self.VICTIM = type("VICTIM", (PrivateEnv,), {})
 
     # -----------------------------------------------------------------------------------------------------------------
+    def test__ClassMethod_and_obj(self):
+        assert self.VICTIM.get(self.NAME_Exists) == self.VALUE
+        assert self.VICTIM().get(self.NAME_Exists) == self.VALUE
+
     def test__Exists(self):
         assert self.VICTIM().get(self.NAME_Exists) == self.VALUE
 

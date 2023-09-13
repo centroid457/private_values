@@ -24,6 +24,7 @@ class PrivateEnv:
     """
     RAISE_EXX: bool = True
 
+    @classmethod
     def get(cls, name: str, _raise_exx: Optional[bool] = None) -> Type_Value:
         if _raise_exx is None:
             _raise_exx = cls.RAISE_EXX

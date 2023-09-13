@@ -42,13 +42,14 @@ from private_values import *
 
 ### 1. Env
 
-* what a simple usage
+* what a simple usage  
+can use bot class- and object-method
 
 ```python
 from private_values import *
 
 class Cls:
-   user = PrivateEnv().get("NameInEnv_ForUser")
+   user = PrivateEnv.get("NameInEnv_ForUser")
    pwd = PrivateEnv().get("NameInEnv_ForPwd")
 ```
 
