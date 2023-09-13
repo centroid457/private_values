@@ -12,14 +12,13 @@ with open("README.md", "r") as f:
 NAME = "private_values"
 
 setup(
-  version="0.2.1",
+  version="0.2.2",
   description="Update class attributes from OsEnvironment or IniFile",
   keywords=["environs", "environment", "rc", "ini", "private"],
   classifiers=[
     # "Framework :: ",
-    "Topic :: Security",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: System :: Logging",
+    "Topic :: Security",
 
     # EDIT ============================================================================================================
     # EDIT ============================================================================================================
