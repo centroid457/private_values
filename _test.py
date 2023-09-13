@@ -163,7 +163,6 @@ name1=value12
         assert self.VICTIM().get("name1", _filename=self.VICTIM2_FILENAME, _section="SEC1") == "value12"
 
     def test__use_init(self):
-        # VICTIM1
         assert self.VICTIM().get("name") == "valueDef"
         assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).get("name") == "valueDef2"
         assert self.VICTIM(_filename=self.VICTIM2_FILENAME).get("name") == "valueDef2"
@@ -172,6 +171,11 @@ name1=value12
 
         VICTIM_obj = self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1")
         assert VICTIM_obj.get("name1") == "value12"
+
+    def test__get_section(self):
+        VICTIM_obj = self.VICTIM().get_section()
+        assert VICTIM_obj.name == "valueDef"
+        assert VICTIM_obj.name0 == "valueDef"
 
 
 # =====================================================================================================================

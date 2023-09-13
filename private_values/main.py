@@ -124,11 +124,11 @@ class PrivateBaseWFile(PrivateBase):
         _section = _section or self.SECTION
         filetext = _filepath.read_text()
 
-        section = self._get_section_unsafe(section=_section, text=filetext)
-        if section is not None:
-            for key, value in section.items():
+        section_dict = self._get_section_unsafe(section=_section, text=filetext)
+        if section_dict is not None:
+            for key, value in section_dict.items():
                 setattr(self, key, value)
-                return self
+            return self
 
         msg = f"[CRITICAL]no {_section=} in {_filepath=}!"
         msg += f"\n"
