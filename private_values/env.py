@@ -4,12 +4,10 @@ import os
 
 
 # =====================================================================================================================
-class PrivateEnv:
+class PrivateEnv(PrivateBase):
     """
     read exact environ from Os Environment
     """
-    RAISE_EXX: bool = True
-
     @classmethod
     def get(cls, name: str, _raise_exx: Optional[bool] = None) -> Type_Value:
         if _raise_exx is None:
