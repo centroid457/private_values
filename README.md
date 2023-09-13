@@ -8,6 +8,7 @@ Main goals: short implementation and OOP usage.
 1. get values from:
    * Environment
    * iniFile
+   * JsonFile
 
 2. raise if no name in destination
 
@@ -78,7 +79,7 @@ class Cls:
    pwd = CustomIniValues.get("NameInIni_ForPwd")
 ```
 
-### 3. Without creating new class
+* Without creating new class
 ```python
 from private_values import *
 
@@ -86,6 +87,36 @@ class Cls:
    pv1 = PrivateIni(_filename="otherFilename").get("pv1")
    pv2 = PrivateIni(_section="otherSection").get("pv2")
 ```
+
+### 3. JsonFile
+```python
+from private_values import *
+
+class Cls:
+   user = PrivateJson().get("name1")
+   pwd = PrivateIni().get("name2")
+```
+or by instance attributes
+```python
+# for Json
+"""
+{"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
+"""
+
+from private_values import *
+
+class MyPrivateJson(PrivateJson):
+    SECTION = "AUTH"
+    NAME: str
+    PWD: str
+
+class Cls:
+    data = MyPrivateJson().get_section()
+    def connect(self):
+        name = self.data.NAME   # 
+        pwd = self.data.PWD
+```
+The same exists for PrivateIni
 
 ### 4. disable Exceptions
 
