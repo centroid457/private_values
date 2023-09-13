@@ -1,13 +1,10 @@
 # private_values
 
-
 Designed to use private data like username/pwd kept secure in OsEnvironment or IniFile for your several home projects at ones.  
 And not open it in public.  
 Main goals: short implementation and OOP usage.  
 
-
 ## Features
-
 1. get values from:
    * Environment
    * iniFile
@@ -16,23 +13,19 @@ Main goals: short implementation and OOP usage.
 
 
 ## License
-
 See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
 
 
 ## Release history
-
 See the [HISTORY.md](HISTORY.md) file for release history.
 
 
 ## Installation
-
 ```commandline
 pip install private-values
 ```
 
 ## Import
-
 ```python
 from private_values import *
 ```
@@ -41,10 +34,8 @@ from private_values import *
 ## GUIDE
 
 ### 1. Env
-
 * what a simple usage  
 can use bot class- and object-method
-
 ```python
 from private_values import *
 
@@ -54,9 +45,7 @@ class Cls:
 ```
 
 ### 2. IniFile
-
 * Use defaults (common usage)
-
 ```python
 from private_values import *
 
@@ -66,7 +55,6 @@ class Cls:
 ```
 
 * Use different sections
-
 ```python
 from private_values import *
 
@@ -76,14 +64,12 @@ class Cls:
 ```
 
 * Change directory or filename or default section
-
-str and pathlib are accepted
-
 ```python
 from private_values import *
 
 class CustomIniValues(PrivateIni):
    DIRPATH = "new/path/"
+   DIRPATH = pathlib.Path("new/path/")
    FILENAME = "my.ini"
    SECTION = "CustomSection"
 
@@ -104,9 +90,6 @@ class Cls:
 ### 4. disable Exceptions
 
 * in method
-
-`_raise_exx` is useful in all *.get methods for both classes
-
 ```python
 from private_values import *
 
@@ -121,9 +104,6 @@ class Cls:
 ```
 
 * in whole class
-
-`_raise_exx` is useful in all *.get methods for both classes
-
 ```python
 from private_values import *
 
