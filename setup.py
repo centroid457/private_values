@@ -12,9 +12,9 @@ with open("README.md", "r") as f:
 NAME = "private_values"
 
 setup(
-  version="0.2.2",
-  description="Update class attributes from OsEnvironment or IniFile",
-  keywords=["environs", "environment", "rc", "ini", "private"],
+  version="0.3.0",
+  description="Get  from OsEnvironment or Ini/Json File",
+  keywords=["environs", "environment", "private", "rc", "ini", "json"],
   classifiers=[
     "Topic :: Security",
 
@@ -26,13 +26,13 @@ setup(
 
     # "Framework :: ",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "Development Status :: 5 - Production/Stable",
+    # "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent",
-    # "Environment :: Console",
+    "Environment :: Console",
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Typing :: Typed",
