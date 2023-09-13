@@ -48,8 +48,8 @@ from private_values import *
 from private_values import *
 
 class Cls:
-   user = PrivateEnv.get("NameInEnv_ForUser")
-   pwd = PrivateEnv.get("NameInEnv_ForPwd")
+   user = PrivateEnv().get("NameInEnv_ForUser")
+   pwd = PrivateEnv().get("NameInEnv_ForPwd")
 ```
 
 ### 2. IniFile
@@ -110,7 +110,7 @@ class Cls:
 from private_values import *
 
 class Cls:
-   user = PrivateEnv.get("Name_ForUser", _raise_exx=False)
+   user = PrivateEnv().get("Name_ForUser", _raise_exx=False)
    pwd = PrivateIni().get("Name_ForPwd", _raise_exx=False)
 
    def connect(self):

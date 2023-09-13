@@ -42,17 +42,17 @@ class Test__Env:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__Exists(self):
-        assert self.VICTIM.get(self.NAME_Exists) == self.VALUE
+        assert self.VICTIM().get(self.NAME_Exists) == self.VALUE
 
     def test__notExists(self):
-        assert self.VICTIM.get(self.NAME_NotExists, _raise_exx=False) is None
+        assert self.VICTIM().get(self.NAME_NotExists, _raise_exx=False) is None
 
         self.VICTIM.RAISE_EXX = False
-        assert self.VICTIM.get(self.NAME_NotExists) is None
+        assert self.VICTIM().get(self.NAME_NotExists) is None
 
         self.VICTIM.RAISE_EXX = True
         try:
-            self.VICTIM.get(self.NAME_NotExists)
+            self.VICTIM().get(self.NAME_NotExists)
         except Exx_PvNotAccepted:
             return
 
