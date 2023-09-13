@@ -1,4 +1,4 @@
-from .env import *
+from .main import *
 
 from configparser import ConfigParser
 
