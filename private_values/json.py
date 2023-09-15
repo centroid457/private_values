@@ -40,9 +40,9 @@ class PrivateJsonAuth(PrivateJson):
     PWD: str
 
 
-class TelegramBotAddress(PrivateJson):
-    LINK_ID: str  # @mybot20230913
-    NAME: str  # MyBot - PublicName
+class PrivateJsonTgBotAddress(PrivateJson):
+    LINK_ID: str     # @mybot20230913
+    NAME: str        # MyBotPublicName
     TOKEN: str
 
 

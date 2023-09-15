@@ -113,10 +113,26 @@ class MyPrivateJson(PrivateJson):
 class Cls:
     data = MyPrivateJson().get_section()
     def connect(self):
-        name = self.data.NAME   # 
+        name = self.data.NAME
         pwd = self.data.PWD
 ```
 The same exists for PrivateIni
+
+* use already created templates for standard attributes
+```python
+# for Json
+"""
+{"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
+"""
+
+from private_values import *
+
+class Cls:
+    data = PrivateJsonAuth().get_section("AUTH")
+    def connect(self):
+        name = self.data.NAME
+        pwd = self.data.PWD
+```
 
 ### 4. disable Exceptions
 

@@ -189,7 +189,10 @@ class Test__Json:
 {
 "SEC1": {
     "name1": "value1",
-    "name2": "value11"
+    "name2": "value11",
+    
+    "USER": "NAME1",
+    "PWD": "PWD1"
     },
 "SEC2": {
     "name1": "value2",
@@ -303,6 +306,11 @@ class Test__Json:
             "name1": "value2",
             "name2": "value22"
         }
-        
+
+    def test__PrivateJsonAuth(self):
+        VICTIM_obj = PrivateJsonAuth(_filepath=self.VICTIM().filepath).get_section("SEC1")
+        assert VICTIM_obj.USER == "NAME1"
+        assert VICTIM_obj.PWD == "PWD1"
+
 
 # =====================================================================================================================

@@ -1,11 +1,16 @@
 Release History
 ===============
 
+0.3.1 (2023-09-15)
+-------------------
+**NEW**
+- PrivateJsonAuth/PrivateJsonTgBotAddress
+
 0.3.0 (2023-09-13)
 -------------------
-**CHANGES**
-- add Json
-- add get_section
+**NEW**
+- Json
+- get_section
 
 0.2.2 (2023-09-13)
 -------------------
@@ -31,7 +36,7 @@ Release History
 - add RC-file usage
 
 **CHANGES**
-- change project name 
+- project name 
 
 0.0.2 (2023-09-07)
 -------------------
@@ -40,9 +45,6 @@ Release History
 
 **RENAMES**
 - EnvsNotAccepted to Exx_EnvsNotAccepted
-
-**CHANGES**
-- (None)
 
 0.0.1 (2023-09-06)
 -------------------
