@@ -35,3 +35,15 @@ class PrivateJson(PrivateBaseWFile):
 
 
 # =====================================================================================================================
+class PrivateJsonAuth(PrivateJson):
+    USER: str
+    PWD: str
+
+
+class TelegramBotAddress(PrivateJson):
+    LINK_ID: str  # @mybot20230913
+    NAME: str  # MyBot - PublicName
+    TOKEN: str
+
+
+# =====================================================================================================================
