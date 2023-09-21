@@ -13,8 +13,13 @@ NAME = "private_values"
 
 setup(
   version="0.3.1",
-  description="Get  from OsEnvironment or Ini/Json File",
-  keywords=["environs", "environment", "private", "rc", "ini", "json"],
+  description="Get values from OsEnvironment or Ini/Json File",
+  keywords=[
+      "environs", "environment",
+      "private",
+      "rc", "ini",
+      "json"
+  ],
   classifiers=[
     "Topic :: Security",
 
