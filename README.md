@@ -133,39 +133,3 @@ class Cls:
         name = self.data.NAME
         pwd = self.data.PWD
 ```
-
-### 4. disable Exceptions
-
-* in method
-```python
-from private_values import *
-
-class Cls:
-   user = PrivateEnv().get("Name_ForUser", _raise_exx=False)
-   pwd = PrivateIni().get("Name_ForPwd", _raise_exx=False)
-
-   def connect(self):
-      if None in [self.user, self.pwd]:
-         return
-      pass
-```
-
-* in whole class
-```python
-from private_values import *
-
-class CustomEnvValues(PrivateEnv):
-   RAISE_EXX = False
-
-class CustomIniValues(PrivateIni):
-   RAISE_EXX = False
-
-class Cls:
-   user = CustomEnvValues.get("Name_ForUser")
-   pwd = CustomIniValues.get("Name_ForPwd")
-
-   def connect(self):
-      if None in [self.user, self.pwd]:
-         return
-      pass
-```

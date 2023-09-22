@@ -31,8 +31,6 @@ class PrivateTgBotAddress:
 
 # =====================================================================================================================
 class PrivateBase:
-    RAISE_EXX: bool = True
-
     def create_attributes(self, attrs: Dict[str, Any]) -> None:
         for key, value in attrs.items():
             setattr(self, key, value)
@@ -86,16 +84,12 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
     def __init__(
             self,
             _section: Optional[str] = None,
-
             _dirpath: Type_Path = None,
             _filename: str = None,
-
-            _filepath: Type_Path = None,
-            _raise_exx: Optional[bool] = None
+            _filepath: Type_Path = None
     ):
         super().__init__()
 
-        self.RAISE_EXX = _raise_exx or self.RAISE_EXX
         self.SECTION = _section or self.SECTION
 
         if not _filepath:
@@ -105,59 +99,30 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
             self.DIRPATH = pathlib.Path(_filepath).parent
             self.FILENAME = pathlib.Path(_filepath).name
 
-        self.get()
+        self.load_values()
 
     @property
     def filepath(self) -> pathlib.Path:
         return pathlib.Path(self.DIRPATH, self.FILENAME)
 
     # -----------------------------------------------------------------------------------------------------------------
-    def get(
-            self,
-            _name: Optional[str] = None,
-            _section: Optional[str] = None,
-            _dirpath: Type_Path = None,
-            _filename: str = None,
-            _filepath: Type_Path = None,
-            _raise_exx: Optional[bool] = None
-    ) -> Union['PrivateBaseWFile', Type_Value, NoReturn, None]:
-        _section = _section or self.SECTION
+    def load_values(self) -> Union[True, NoReturn]:
+        if not self.filepath.exists():
+            msg = f'[CRITICAL]no[{self.filepath=}]'
+            raise Exx_PvNotAccepted(msg)
 
-        if _raise_exx is None:
-            _raise_exx = self.RAISE_EXX
+        filetext = self.filepath.read_text()
 
-        if not _filepath:
-            _filepath = pathlib.Path(_dirpath or self.DIRPATH, _filename or self.FILENAME)
+        section_dict = self._get_section_unsafe(section=self.SECTION, text=filetext)
+        if section_dict:
+            self.create_attributes(section_dict)
+            return True
 
-        if not _filepath or not _filepath.exists():
-            msg = f'[CRITICAL]no file [{_filepath=}]'
-            if _raise_exx:
-                raise Exx_PvNotAccepted(msg)
-            else:
-                print(msg)
-                return
-
-        filetext = _filepath.read_text()
-
-        if _name:
-            value = self._get_value_unsafe(name=_name, section=_section, text=filetext)
-            if value is not None:
-                return value
-        else:
-            section_dict = self._get_section_unsafe(section=_section, text=filetext)
-            if section_dict:
-                self.create_attributes(section_dict)
-                return self
-
-        msg = f"[CRITICAL]no {_name=}/{_section=} in {_filepath=}!"
+        msg = f"[CRITICAL]no {self.SECTION=} in {self.filepath=}!"
         msg += f"\n"
         msg += filetext
 
-        if _raise_exx:
-            raise Exx_PvNotAccepted(msg)
-        else:
-            print(msg)
-            return
+        raise Exx_PvNotAccepted(msg)
 
 
 # =====================================================================================================================

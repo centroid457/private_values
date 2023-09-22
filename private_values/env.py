@@ -16,20 +16,14 @@ class PrivateEnv(PrivateBase):
 
 
     @classmethod
-    def get(cls, name: str, _raise_exx: Optional[bool] = None) -> Type_Value:
-        if _raise_exx is None:
-            _raise_exx = cls.RAISE_EXX
-
+    def get(cls, name: str) -> Type_Value:
         result = os.getenv(name)
         if result is None:
             cls.show()
 
             msg = f"[CRITICAL]no [{name=}] in environment!"
             msg += f"\n\tIf you just now add it - dont forget reboot!"
-            if _raise_exx:
-                raise Exx_PvNotAccepted(msg)
-            else:
-                print(msg)
+            raise Exx_PvNotAccepted(msg)
         return result
 
     @staticmethod

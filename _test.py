@@ -49,12 +49,6 @@ class Test__Env:
         assert self.VICTIM().get(self.NAME_Exists) == self.VALUE
 
     def test__notExists(self):
-        assert self.VICTIM().get(self.NAME_NotExists, _raise_exx=False) is None
-
-        self.VICTIM.RAISE_EXX = False
-        assert self.VICTIM().get(self.NAME_NotExists) is None
-
-        self.VICTIM.RAISE_EXX = True
         try:
             self.VICTIM().get(self.NAME_NotExists)
         except Exx_PvNotAccepted:
@@ -126,37 +120,31 @@ name1=value12
         assert False
 
     def test__notExist_name(self):
-        assert self.VICTIM().get("name999", _raise_exx=False) is None
-
-        self.VICTIM.RAISE_EXX = False
-        assert self.VICTIM().get("name999") is None
-
-        self.VICTIM.RAISE_EXX = True
         try:
-            self.VICTIM().get("name999")
+            self.VICTIM().name999
         except Exx_PvNotAccepted:
             return
-
-        assert False
+        else:
+            assert False
 
     def test__Exist_name(self):
         # VICTIM1
-        assert self.VICTIM().get("name", _raise_exx=False) == "valueDef"
-        assert self.VICTIM().get("name0", _raise_exx=False) == "valueDef"
-        assert self.VICTIM().get("name1", _raise_exx=False) is None
+        assert self.VICTIM().get("name") == "valueDef"
+        assert self.VICTIM().get("name0") == "valueDef"
+        assert self.VICTIM().get("name1")
 
-        assert self.VICTIM().get("name", _section="SEC1", _raise_exx=False) == "value1"
-        assert self.VICTIM().get("name0", _section="SEC1", _raise_exx=False) == "valueDef"
-        assert self.VICTIM().get("name1", _section="SEC1", _raise_exx=False) == "value1"
+        assert self.VICTIM().get("name", _section="SEC1") == "value1"
+        assert self.VICTIM().get("name0", _section="SEC1") == "valueDef"
+        assert self.VICTIM().get("name1", _section="SEC1") == "value1"
 
         # VICTIM2
-        assert self.VICTIM2().get("name", _raise_exx=False) == "valueDef2"
-        assert self.VICTIM2().get("name0", _raise_exx=False) == "valueDef2"
-        assert self.VICTIM2().get("name1", _raise_exx=False) is None
+        assert self.VICTIM2().get("name") == "valueDef2"
+        assert self.VICTIM2().get("name0") == "valueDef2"
+        assert self.VICTIM2().get("name1")
 
-        assert self.VICTIM2().get("name", _section="SEC1", _raise_exx=False) == "value12"
-        assert self.VICTIM2().get("name0", _section="SEC1", _raise_exx=False) == "valueDef2"
-        assert self.VICTIM2().get("name1", _section="SEC1", _raise_exx=False) == "value12"
+        assert self.VICTIM2().get("name", _section="SEC1") == "value12"
+        assert self.VICTIM2().get("name0", _section="SEC1") == "valueDef2"
+        assert self.VICTIM2().get("name1", _section="SEC1") == "value12"
 
     def test__use_get_with_other_params(self):
         # VICTIM1
@@ -264,12 +252,8 @@ class Test__Json:
         assert False
 
     def test__notExist_name(self):
-        assert self.VICTIM().get("name999", _raise_exx=False) is None
-
-        self.VICTIM.RAISE_EXX = False
         assert self.VICTIM().get("name999") is None
 
-        self.VICTIM.RAISE_EXX = True
         try:
             self.VICTIM().get("name999")
         except Exx_PvNotAccepted:
@@ -279,20 +263,20 @@ class Test__Json:
 
     def test__Exist_name(self):
         # VICTIM1
-        assert self.VICTIM().get("name1", _raise_exx=False) == "value1"
-        assert self.VICTIM().get("name2", _raise_exx=False) == "value11"
-        assert self.VICTIM().get("name3", _raise_exx=False) is None
+        assert self.VICTIM().get("name1") == "value1"
+        assert self.VICTIM().get("name2") == "value11"
+        assert self.VICTIM().get("name3") is None
 
-        assert self.VICTIM().get("name1", _section="SEC2", _raise_exx=False) == "value2"
-        assert self.VICTIM().get("name2", _section="SEC2", _raise_exx=False) == "value22"
-        assert self.VICTIM().get("name3", _section="SEC2", _raise_exx=False) is None
+        assert self.VICTIM().get("name1", _section="SEC2") == "value2"
+        assert self.VICTIM().get("name2", _section="SEC2") == "value22"
+        assert self.VICTIM().get("name3", _section="SEC2")
 
-        assert self.VICTIM().get("name1", _section="SEC3", _raise_exx=False) is None
+        assert self.VICTIM().get("name1", _section="SEC3")
 
         # VICTIM2
-        assert self.VICTIM2().get("name1", _raise_exx=False) == "value1*"
-        assert self.VICTIM2().get("name2", _raise_exx=False) == "value11*"
-        assert self.VICTIM2().get("name3", _raise_exx=False) is None
+        assert self.VICTIM2().get("name1") == "value1*"
+        assert self.VICTIM2().get("name2") == "value11*"
+        assert self.VICTIM2().get("name3")
 
     def test__use_get_with_other_params(self):
         # VICTIM1
