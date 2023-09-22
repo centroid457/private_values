@@ -1,7 +1,7 @@
 Release History
 ===============
 
-0.3.2 (2023-09-22)
+0.3.2 (2023-09-23)
 -------------------
 **RENAMES**
 - to PrivateAuthJson/PrivateTgBotAddressJson
