@@ -36,9 +36,9 @@ class PrivateBase:
     def create_attributes(self, attrs: Dict[str, Any]) -> None:
         for key, value in attrs.items():
             setattr(self, key, value)
-        self.check_annotations()
+        self.annotations_check_values()
 
-    def check_annotations(self) -> Optional[NoReturn]:
+    def annotations_check_values(self) -> Optional[NoReturn]:
         # print(self.__class__.__mro__)
         annots = set()
         for cls in self.__class__.__mro__[:-1]:
