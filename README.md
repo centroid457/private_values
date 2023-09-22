@@ -51,8 +51,8 @@ class Cls:
 from private_values import *
 
 class Cls:
-   user = PrivateIni().get("NameInIni_ForUser")
-   pwd = PrivateIni().get("NameInIni_ForPwd")
+   user = PrivateIni().NameInIni_ForUser
+   pwd = PrivateIni().NameInIni_ForPwd
 ```
 
 * Use different sections
@@ -60,8 +60,8 @@ class Cls:
 from private_values import *
 
 class Cls:
-   user = PrivateIni().get("NameInIni_ForUser")
-   pwd = PrivateIni().get("NameInIni_ForPwd", _section="CustomSection")
+   user = PrivateIni().NameInIni_ForUser
+   pwd = PrivateIni(_section="CustomSection").NameInIni_ForPwd
 ```
 
 * Change directory or filename or default section
@@ -75,8 +75,8 @@ class CustomIniValues(PrivateIni):
    SECTION = "CustomSection"
 
 class Cls:
-   user = CustomIniValues.get("NameInIni_ForUser")
-   pwd = CustomIniValues.get("NameInIni_ForPwd")
+   user = CustomIniValues.NameInIni_ForUser
+   pwd = CustomIniValues.NameInIni_ForPwd
 ```
 
 * Without creating new class
@@ -84,8 +84,8 @@ class Cls:
 from private_values import *
 
 class Cls:
-   pv1 = PrivateIni(_filename="otherFilename").get("pv1")
-   pv2 = PrivateIni(_section="otherSection").get("pv2")
+   pv1 = PrivateIni(_filename="otherFilename").pv1
+   pv2 = PrivateIni(_section="otherSection").pv2
 ```
 
 ### 3. JsonFile
@@ -93,8 +93,8 @@ class Cls:
 from private_values import *
 
 class Cls:
-   user = PrivateJson().get("name1")
-   pwd = PrivateIni().get("name2")
+   user = PrivateJson().name1
+   pwd = PrivateIni().name2
 ```
 or by instance attributes
 ```python
@@ -128,7 +128,7 @@ The same exists for PrivateIni
 from private_values import *
 
 class Cls:
-    data = PrivateAuthJson().get(_section="AUTH")
+    data = PrivateAuthJson(_section="AUTH")
     def connect(self):
         name = self.data.NAME
         pwd = self.data.PWD
