@@ -7,6 +7,8 @@ from configparser import ConfigParser
 class PrivateIni(PrivateBaseWFile):
     """
     read exact value from IniFile
+
+    Not recommended using DEFAULT SECTION!
     """
     SECTION: str = "DEFAULT"
     FILENAME: str = "pv.ini"
@@ -26,6 +28,15 @@ class PrivateIni(PrivateBaseWFile):
         if section == "DEFAULT" or ini.has_section(section=section):
             result = dict(ini[section])
             return result
+
+
+# =====================================================================================================================
+class PrivateAuthIni(PrivateAuth, PrivateIni):
+    pass
+
+
+class PrivateTgBotAddressIni(PrivateTgBotAddress, PrivateIni):
+    pass
 
 
 # =====================================================================================================================

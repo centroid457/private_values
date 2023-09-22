@@ -84,6 +84,10 @@ name0=valueDef
 [SEC1]
 name=value1
 name1=value1
+
+[AUTH]
+USER=NAME1
+PWD=PWD1
     """
     TEXT2: str = f"""
 [DEFAULT]
@@ -176,6 +180,21 @@ name1=value12
         VICTIM_obj = self.VICTIM().get_section()
         assert VICTIM_obj.name == "valueDef"
         assert VICTIM_obj.name0 == "valueDef"
+
+    def test__call_class(self):
+        VICTIM_obj = PrivateAuthIni(_filepath=self.VICTIM().filepath, _section="AUTH")
+        assert VICTIM_obj.USER == "NAME1"
+        assert VICTIM_obj.PWD == "PWD1"
+
+        class Cls(PrivateAuthIni):
+            PWD2: str
+
+        try:
+            Cls(_filepath=self.VICTIM().filepath, _section="AUTH")
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
 
 # =====================================================================================================================
@@ -308,10 +327,25 @@ class Test__Json:
             "name2": "value22"
         }
 
-    def test__PrivateJsonAuth(self):
-        VICTIM_obj = PrivateJsonAuth(_filepath=self.VICTIM().filepath).get_section("AUTH")
+    def test__PrivateAuthJson(self):
+        VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH").get_section()
         assert VICTIM_obj.USER == "NAME1"
         assert VICTIM_obj.PWD == "PWD1"
+
+    def test__call_class(self):
+        VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH")
+        assert VICTIM_obj.USER == "NAME1"
+        assert VICTIM_obj.PWD == "PWD1"
+
+        class Cls(PrivateAuthJson):
+            PWD2: str
+
+        try:
+            Cls(_filepath=self.VICTIM().filepath, _section="AUTH")
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
 
 # =====================================================================================================================

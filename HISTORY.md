@@ -1,6 +1,14 @@
 Release History
 ===============
 
+0.3.2 (2023-09-22)
+-------------------
+**RENAMES**
+- to PrivateAuthJson/PrivateTgBotAddressJson
+**NEW**
+- add PrivateAuthIni/PrivateTgBotAddressIni
+- work as class calls without get!
+
 0.3.1 (2023-09-15)
 -------------------
 **NEW**

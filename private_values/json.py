@@ -35,15 +35,12 @@ class PrivateJson(PrivateBaseWFile):
 
 
 # =====================================================================================================================
-class PrivateJsonAuth(PrivateJson):
-    USER: str
-    PWD: str
+class PrivateAuthJson(PrivateAuth, PrivateJson):
+    pass
 
 
-class PrivateJsonTgBotAddress(PrivateJson):
-    LINK_ID: str     # @mybot20230913
-    NAME: str        # MyBotPublicName
-    TOKEN: str
+class PrivateTgBotAddressJson(PrivateTgBotAddress, PrivateJson):
+    pass
 
 
 # =====================================================================================================================

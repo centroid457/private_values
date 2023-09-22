@@ -128,7 +128,7 @@ The same exists for PrivateIni
 from private_values import *
 
 class Cls:
-    data = PrivateJsonAuth().get_section("AUTH")
+    data = PrivateAuthJson().get_section("AUTH")
     def connect(self):
         name = self.data.NAME
         pwd = self.data.PWD
