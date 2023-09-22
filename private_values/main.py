@@ -31,12 +31,16 @@ class PrivateTgBotAddress:
 
 # =====================================================================================================================
 class PrivateBase:
-    def create_attributes(self, attrs: Dict[str, Any]) -> None:
+
+    def __getattr__(self, item: str) -> Union[str, NoReturn]:
+        return self.attr_get_case_insensitive(item)
+
+    def attrs_create(self, attrs: Dict[str, Any]) -> None:
         for key, value in attrs.items():
             setattr(self, key, value)
-        self.annotations_check_values()
+        self.attrs_check_values()
 
-    def annotations_check_values(self) -> Optional[NoReturn]:
+    def attrs_check_values(self) -> Optional[NoReturn]:
         # print(self.__class__.__mro__)
         annots = set()
         for cls in self.__class__.__mro__[:-1]:
@@ -55,6 +59,18 @@ class PrivateBase:
                 msg += f"\n{self.__class__.__name__}"
                 msg += f"\nall your annotations={annots}"
                 raise Exx_PvNotAccepted(msg)
+
+    def attr_get_case_insensitive(self, name) -> Union[str, NoReturn]:
+        attrs_all = list(filter(lambda attr: not callable(getattr(self, attr)), dir(self)))
+        attrs_similar = list(filter(lambda attr: attr.lower() == name.lower(), attrs_all))
+        if len(attrs_similar) == 1:
+            return getattr(self, attrs_similar[0])
+        elif len(attrs_similar) == 0:
+            msg = f"[CRITICAL]no[{name=}] in any cases [{attrs_all=}]"
+            raise Exx_PvNotAccepted(msg)
+        else:
+            msg = f"[CRITICAL]exists several similar [{attrs_similar=}]"
+            raise Exx_PvNotAccepted(msg)
 
 
 # =====================================================================================================================
@@ -115,7 +131,7 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
 
         section_dict = self._get_section_unsafe(section=self.SECTION, text=filetext)
         if section_dict:
-            self.create_attributes(section_dict)
+            self.attrs_create(section_dict)
             return True
 
         msg = f"[CRITICAL]no {self.SECTION=} in {self.filepath=}!"

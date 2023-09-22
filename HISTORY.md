@@ -8,6 +8,7 @@ Release History
 **NEW**
 - add PrivateAuthIni/PrivateTgBotAddressIni
 - work as class calls without get!
+- any lettercase for name attrs!
 
 0.3.1 (2023-09-15)
 -------------------

@@ -129,40 +129,42 @@ name1=value12
 
     def test__Exist_name(self):
         # VICTIM1
-        assert self.VICTIM().get("name") == "valueDef"
-        assert self.VICTIM().get("name0") == "valueDef"
-        assert self.VICTIM().get("name1")
+        assert self.VICTIM().nAme == "valueDef"
+        assert self.VICTIM().name0 == "valueDef"
+        try:
+            self.VICTIM().get("name1")
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
-        assert self.VICTIM().get("name", _section="SEC1") == "value1"
-        assert self.VICTIM().get("name0", _section="SEC1") == "valueDef"
-        assert self.VICTIM().get("name1", _section="SEC1") == "value1"
+        assert self.VICTIM(_section="SEC1").name == "value1"
+        assert self.VICTIM(_section="SEC1").name0 == "valueDef"
+        assert self.VICTIM(_section="SEC1").name1 == "value1"
 
         # VICTIM2
-        assert self.VICTIM2().get("name") == "valueDef2"
-        assert self.VICTIM2().get("name0") == "valueDef2"
-        assert self.VICTIM2().get("name1")
+        assert self.VICTIM2().name == "valueDef2"
+        assert self.VICTIM2().name0 == "valueDef2"
+        try:
+            self.VICTIM2().name1
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
-        assert self.VICTIM2().get("name", _section="SEC1") == "value12"
-        assert self.VICTIM2().get("name0", _section="SEC1") == "valueDef2"
-        assert self.VICTIM2().get("name1", _section="SEC1") == "value12"
-
-    def test__use_get_with_other_params(self):
-        # VICTIM1
-        assert self.VICTIM().get("name") == "valueDef"
-        assert self.VICTIM().get("name", _filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)) == "valueDef2"
-        assert self.VICTIM().get("name", _filename=self.VICTIM2_FILENAME) == "valueDef2"
-        assert self.VICTIM().get("name", _filename=self.VICTIM2_FILENAME, _section="SEC1") == "value12"
-        assert self.VICTIM().get("name1", _filename=self.VICTIM2_FILENAME, _section="SEC1") == "value12"
+        assert self.VICTIM2(_section="SEC1").name == "value12"
+        assert self.VICTIM2(_section="SEC1").name0 == "valueDef2"
+        assert self.VICTIM2(_section="SEC1").name1 == "value12"
 
     def test__use_init(self):
-        assert self.VICTIM().get("name") == "valueDef"
-        assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).get("name") == "valueDef2"
-        assert self.VICTIM(_filename=self.VICTIM2_FILENAME).get("name") == "valueDef2"
-        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").get("name") == "value12"
-        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").get("name1") == "value12"
+        assert self.VICTIM().name == "valueDef"
+        assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).name == "valueDef2"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME).name == "valueDef2"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").name == "value12"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").name1 == "value12"
 
         VICTIM_obj = self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1")
-        assert VICTIM_obj.get("name1") == "value12"
+        assert VICTIM_obj.name1 == "value12"
 
     def test__get_section(self):
         VICTIM_obj = self.VICTIM()
@@ -243,58 +245,67 @@ class Test__Json:
     # -----------------------------------------------------------------------------------------------------------------
     def test__notExist_file(self):
         self.VICTIM.FILENAME = "12345.ini"
-
         try:
-            self.VICTIM().get("name")
+            self.VICTIM()
         except Exx_PvNotAccepted:
-            return
-
-        assert False
+            pass
+        else:
+            assert False
 
     def test__notExist_name(self):
-        assert self.VICTIM().get("name999") is None
-
         try:
-            self.VICTIM().get("name999")
+            self.VICTIM().name999
         except Exx_PvNotAccepted:
-            return
-
-        assert False
+            pass
+        else:
+            assert False
 
     def test__Exist_name(self):
         # VICTIM1
-        assert self.VICTIM().get("name1") == "value1"
-        assert self.VICTIM().get("name2") == "value11"
-        assert self.VICTIM().get("name3") is None
+        assert self.VICTIM().name1 == "value1"
+        assert self.VICTIM().name2 == "value11"
+        try:
+            self.VICTIM().name3
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
-        assert self.VICTIM().get("name1", _section="SEC2") == "value2"
-        assert self.VICTIM().get("name2", _section="SEC2") == "value22"
-        assert self.VICTIM().get("name3", _section="SEC2")
+        assert self.VICTIM(_section="SEC2").name1 == "value2"
+        assert self.VICTIM(_section="SEC2").name2 == "value22"
+        try:
+            self.VICTIM(_section="SEC2").name3
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
-        assert self.VICTIM().get("name1", _section="SEC3")
+        try:
+            self.VICTIM(_section="SEC3").name1
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
         # VICTIM2
-        assert self.VICTIM2().get("name1") == "value1*"
-        assert self.VICTIM2().get("name2") == "value11*"
-        assert self.VICTIM2().get("name3")
-
-    def test__use_get_with_other_params(self):
-        # VICTIM1
-        assert self.VICTIM().get("name1") == "value1"
-        assert self.VICTIM().get("name1", _filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)) == "value1*"
-        assert self.VICTIM().get("name1", _filename=self.VICTIM2_FILENAME) == "value1*"
-        assert self.VICTIM().get("name1", _filename=self.VICTIM2_FILENAME, _section="SEC2") == "value2*"
-        assert self.VICTIM().get("name2", _filename=self.VICTIM2_FILENAME, _section="SEC1") == "value11*"
+        assert self.VICTIM2().name1 == "value1*"
+        assert self.VICTIM2().name2 == "value11*"
+        try:
+            self.VICTIM2().name3
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
 
     def test__use_init(self):
-        assert self.VICTIM().get("name1") == "value1"
-        assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).get("name1") == "value1*"
-        assert self.VICTIM(_filename=self.VICTIM2_FILENAME).get("name1") == "value1*"
-        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").get("name1") == "value1*"
-        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").get("name2") == "value11*"
+        assert self.VICTIM().name1 == "value1"
+        assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).name1 == "value1*"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME).name1 == "value1*"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").name1 == "value1*"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1").name2 == "value11*"
 
         VICTIM_obj = self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1")
-        assert VICTIM_obj.get("name1") == "value1*"
+        assert VICTIM_obj.name1 == "value1*"
 
     def test__get_section(self):
         VICTIM_obj = self.VICTIM()
