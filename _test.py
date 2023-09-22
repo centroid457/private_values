@@ -177,7 +177,7 @@ name1=value12
         assert VICTIM_obj.get("name1") == "value12"
 
     def test__get_section(self):
-        VICTIM_obj = self.VICTIM().get_section()
+        VICTIM_obj = self.VICTIM()
         assert VICTIM_obj.name == "valueDef"
         assert VICTIM_obj.name0 == "valueDef"
 
@@ -313,22 +313,12 @@ class Test__Json:
         assert VICTIM_obj.get("name1") == "value1*"
 
     def test__get_section(self):
-        VICTIM_obj = self.VICTIM().get_section()
+        VICTIM_obj = self.VICTIM()
         assert VICTIM_obj.name1 == "value1"
         assert VICTIM_obj.name2 == "value11"
 
-        VICTIM_obj = self.VICTIM().get_section("")
-        assert VICTIM_obj.SEC1 == {
-            "name1": "value1",
-            "name2": "value11"
-        }
-        assert VICTIM_obj.SEC2 == {
-            "name1": "value2",
-            "name2": "value22"
-        }
-
     def test__PrivateAuthJson(self):
-        VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH").get_section()
+        VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH")
         assert VICTIM_obj.USER == "NAME1"
         assert VICTIM_obj.PWD == "PWD1"
 

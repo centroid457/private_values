@@ -111,7 +111,7 @@ class MyPrivateJson(PrivateJson):
     PWD: str
 
 class Cls:
-    data = MyPrivateJson().get_section()
+    data = MyPrivateJson()
     def connect(self):
         name = self.data.NAME
         pwd = self.data.PWD
@@ -128,7 +128,7 @@ The same exists for PrivateIni
 from private_values import *
 
 class Cls:
-    data = PrivateAuthJson().get_section("AUTH")
+    data = PrivateAuthJson().get(_section="AUTH")
     def connect(self):
         name = self.data.NAME
         pwd = self.data.PWD

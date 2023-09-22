@@ -105,7 +105,7 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
             self.DIRPATH = pathlib.Path(_filepath).parent
             self.FILENAME = pathlib.Path(_filepath).name
 
-        self.get_section()
+        self.get()
 
     @property
     def filepath(self) -> pathlib.Path:
@@ -114,13 +114,15 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
     # -----------------------------------------------------------------------------------------------------------------
     def get(
             self,
-            name: str,
+            _name: Optional[str] = None,
             _section: Optional[str] = None,
             _dirpath: Type_Path = None,
             _filename: str = None,
             _filepath: Type_Path = None,
             _raise_exx: Optional[bool] = None
-    ) -> Type_Value:
+    ) -> Union['PrivateBaseWFile', Type_Value, NoReturn, None]:
+        _section = _section or self.SECTION
+
         if _raise_exx is None:
             _raise_exx = self.RAISE_EXX
 
@@ -135,59 +137,19 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
                 print(msg)
                 return
 
-        if _section is None:
-            _section = self.SECTION
-
         filetext = _filepath.read_text()
 
-        value = self._get_value_unsafe(name=name, section=_section, text=filetext)
-        if value is not None:
-            return value
-
-        msg = f"[CRITICAL]no {name=}/{_section=} in {_filepath=}!"
-        msg += f"\n"
-        msg += filetext
-
-        if _raise_exx:
-            raise Exx_PvNotAccepted(msg)
+        if _name:
+            value = self._get_value_unsafe(name=_name, section=_section, text=filetext)
+            if value is not None:
+                return value
         else:
-            print(msg)
-            return
+            section_dict = self._get_section_unsafe(section=_section, text=filetext)
+            if section_dict:
+                self.create_attributes(section_dict)
+                return self
 
-    # -----------------------------------------------------------------------------------------------------------------
-    def get_section(
-            self,
-            _section: Optional[str] = None,
-            _dirpath: Type_Path = None,
-            _filename: str = None,
-            _filepath: Type_Path = None,
-            _raise_exx: Optional[bool] = None
-    ) -> Union['PrivateBaseWFile', NoReturn, None]:
-        if _raise_exx is None:
-            _raise_exx = self.RAISE_EXX
-
-        if not _filepath:
-            _filepath = pathlib.Path(_dirpath or self.DIRPATH, _filename or self.FILENAME)
-
-        if not _filepath or not _filepath.exists():
-            msg = f'[CRITICAL]no file [{_filepath=}]'
-            if _raise_exx:
-                raise Exx_PvNotAccepted(msg)
-            else:
-                print(msg)
-                return
-
-        if _section is None:
-            _section = self.SECTION
-
-        filetext = _filepath.read_text()
-
-        section_dict = self._get_section_unsafe(section=_section, text=filetext)
-        if section_dict:
-            self.create_attributes(section_dict)
-            return self
-
-        msg = f"[CRITICAL]no {_section=} in {_filepath=}!"
+        msg = f"[CRITICAL]no {_name=}/{_section=} in {_filepath=}!"
         msg += f"\n"
         msg += filetext
 
