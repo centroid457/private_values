@@ -307,6 +307,17 @@ class Test__Json:
         VICTIM_obj = self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1")
         assert VICTIM_obj.name1 == "value1*"
 
+    def test__case_sense(self):
+        assert self.VICTIM().name1 == "value1"
+        assert self.VICTIM().NAME1 == "value1"
+        assert self.VICTIM().NamE1 == "value1"
+
+        assert getattr(self.VICTIM(), "name1") == "value1"
+        assert getattr(self.VICTIM(), "NamE1") == "value1"
+
+        assert hasattr(self.VICTIM(), "name1")
+        assert hasattr(self.VICTIM(), "Name1")
+
     def test__get_section(self):
         VICTIM_obj = self.VICTIM()
         assert VICTIM_obj.name1 == "value1"
