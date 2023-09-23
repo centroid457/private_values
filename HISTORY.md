@@ -1,15 +1,19 @@
 Release History
 ===============
 
-0.3.2 (2023-09-23)
+0.4.0 (2023-09-23)
 -------------------
+BIG REF!
+
 **RENAMES**
 - to PrivateAuthJson/PrivateTgBotAddressJson
+
 **NEW**
-- attr acess via any lettercase attr on instance and via dict key
+- attr acess
+  - via any lettercase 
+  - as attr on instance and via dict key
 - add PrivateAuthIni/PrivateTgBotAddressIni
 - work as class calls without get!
-- any lettercase for name attrs!
 
 0.3.1 (2023-09-15)
 -------------------
