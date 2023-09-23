@@ -10,9 +10,33 @@ And not open it in public.
    * iniFile
    * JsonFile
 2. attr acess
-   * via any lettercase 
-   * as attr on instance
-   * like dict key on instance
+   * via any lettercase  
+   see below
+   * by instanse attr
+```python
+# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
+
+from private_values import *
+
+class Cls:
+    data = PrivateAuthJson(_section="AUTH")
+    def connect(self):
+        name = self.data.NAME
+        name = self.data.NamE     # case insensitive
+```
+  * like dict key on instance  
+```python
+# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
+
+from private_values import *
+
+class Cls:
+    data = PrivateAuthJson(_section="AUTH")
+    def connect(self):
+        name = self.data["NAME"]
+        name = self.data["NamE"]   # case insensitive
+```
+
 
 ## License
 See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
@@ -34,37 +58,6 @@ from private_values import *
 
 
 ## GUIDE
-
-
-### main principals to get value in all classes 
-1. always case insensitive  
-see below
-
-2. by instanse attr
-```python
-# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
-
-from private_values import *
-
-class Cls:
-    data = PrivateAuthJson(_section="AUTH")
-    def connect(self):
-        name = self.data.NAME
-        name = self.data.NamE     # case insensitive
-```
-
-3. like dict key
-```python
-# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
-
-from private_values import *
-
-class Cls:
-    data = PrivateAuthJson(_section="AUTH")
-    def connect(self):
-        name = self.data["NAME"]
-        name = self.data["NamE"]   # case insensitive
-```
 
 
 ### 1. Env
@@ -117,10 +110,7 @@ class Cls:
 
 ### 3. JsonFile
 ```python
-# for Json
-"""
-{"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
-"""
+# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
 
 from private_values import *
 
@@ -137,10 +127,7 @@ class Cls:
 
 * use already created templates (PrivateAuthJson/PrivateTgBotAddressJson) for standard attributes
 ```python
-# for Json
-"""
-{"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
-"""
+# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
 
 from private_values import *
 
