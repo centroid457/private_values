@@ -9,10 +9,10 @@ And not open it in public.
    * Environment
    * iniFile
    * JsonFile
-2. attr acess
+2. attr access
    * via any lettercase  
-   see below
-   * by instanse attr
+   see examples below
+   * by instance attr
 ```python
 # {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
 
@@ -60,6 +60,28 @@ from private_values import *
 ## GUIDE
 
 
+### use annotations for your param names (best practice!)  
+when instantiating if it will not get loaded these exact params from your private sources - RAISE!  
+but you could not use it and however keep access to all existed params in used section!
+```python
+# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
+
+from private_values import *
+
+class MyPrivateJson(PrivateJson):
+    NAME: str
+    PWD: str
+
+name = MyPrivateJson().NAME
+```
+
+in example above you could simply use existed classes
+```python
+from private_values import *
+
+name = PrivateAuthJson().NAME
+```
+
 ### 1. Env
 ```python
 from private_values import *
@@ -70,14 +92,6 @@ class Cls:
 ```
 
 ### 2. IniFile
-* Use defaults (common usage)
-```python
-from private_values import *
-
-class Cls:
-   user = PrivateIni().NAME
-```
-
 * Use different sections
 ```python
 from private_values import *
@@ -135,4 +149,22 @@ class Cls:
     data = PrivateAuthJson(_section="AUTH")
     def connect(self):
         name = self.data.NAME
+```
+
+### 4. Auto  
+you can use universal class  
+it will trying get all your annotated params from one source of Json/Ini/Env (in exact order)  
+in this case you cant use FileName and must use annotations!
+
+```python
+# {"AUTH": {"NAME": "MyName", "PWD": "MyPwd"}}
+
+from private_values import *
+
+class MyPrivate(PrivateAuto):
+    SECTION = "AUTH"
+    NAME: str
+    PWD: str
+
+name = MyPrivate().NAME
 ```
