@@ -4,30 +4,30 @@ from configparser import ConfigParser
 
 
 # =====================================================================================================================
-class PrivateIni(PrivateBaseWFile):
+class PrivateIni(PrivateBase):
     """
-    read exact value from IniFile
-
+    read exact section from IniFile
     Not recommended using DEFAULT SECTION!
     """
     SECTION: str = "DEFAULT"
     FILENAME: str = "pv.ini"
 
-    def _get_value_unsafe(self, name: str, section: str, text: str) -> Optional[str]:
+    def get_as_dict(self) -> Union[Type_PvDict, NoReturn]:
         ini = ConfigParser()
-        ini.read_string(text)
 
-        if ini.has_option(section=section, option=name):
-            value = ini.get(section=section, option=name)
-            return value
+        try:
+            ini.read_string(self.filepath.read_text())
+        except Exception as exx:
+            msg = f"[CRITICAL] incorrect format file!\n{exx!r}"
+            raise Exx_PvNotAccepted(msg)
 
-    def _get_section_unsafe(self, section: str, text: str) -> Optional[Dict[str, Any]]:
-        ini = ConfigParser()
-        ini.read_string(text)
-
-        if section == "DEFAULT" or ini.has_section(section=section):
-            result = dict(ini[section])
+        if self.SECTION == "DEFAULT" or ini.has_section(section=self.SECTION):
+            result = dict(ini[self.SECTION])
             return result
+        else:
+            msg = f"[CRITICAL] NO [{self.SECTION=} in {self.filepath=}]\n"
+            msg += self.filepath.read_text()
+            raise Exx_PvNotAccepted(msg)
 
 
 # =====================================================================================================================

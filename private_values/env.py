@@ -8,26 +8,7 @@ class PrivateEnv(PrivateBase):
     """
     read exact environ from Os Environment
     """
-    def __init__(
-            self,
-            _name: Optional[str] = None,
-    ):
-        super().__init__()
-
-
-    @classmethod
-    def get(cls, name: str) -> Type_Value:
-        result = os.getenv(name)
-        if result is None:
-            cls.show()
-
-            msg = f"[CRITICAL]no [{name=}] in environment!"
-            msg += f"\n\tIf you just now add it - dont forget reboot!"
-            raise Exx_PvNotAccepted(msg)
-        return result
-
-    @staticmethod
-    def show(prefix: Optional[str] = None) -> Type_PvDict:
+    def get_as_dict(self, _prefix: Optional[str] = None) -> Type_PvDict:
         """
         mainly it is only for PRINTing and debugging! don't use result!
 
@@ -52,7 +33,7 @@ class PrivateEnv(PrivateBase):
 
         # filter ---------------
         for name, value in envs_all.items():
-            if not prefix or (prefix and name.upper().startswith(prefix.upper())):
+            if not _prefix or (_prefix and name.upper().startswith(_prefix.upper())):
                 result.update({name: value})
 
         # print ---------------

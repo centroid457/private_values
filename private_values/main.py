@@ -4,7 +4,7 @@ import abc
 
 
 # =====================================================================================================================
-Type_PvDict = Dict[str, Optional[str]]
+Type_PvDict = Dict[str, Any]
 Type_Path = Union[str, pathlib.Path]
 Type_Value = Union[str, NoReturn, None]
 
@@ -30,68 +30,7 @@ class PrivateTgBotAddress:
 
 
 # =====================================================================================================================
-class PrivateBase:
-
-    def __getattr__(self, item: str) -> Union[str, NoReturn]:
-        return self.attr_get_case_insensitive(item)
-
-    def attrs_create(self, attrs: Dict[str, Any]) -> None:
-        for key, value in attrs.items():
-            setattr(self, key, value)
-        self.attrs_check_values()
-
-    def attrs_check_values(self) -> Optional[NoReturn]:
-        # print(self.__class__.__mro__)
-        annots = set()
-        for cls in self.__class__.__mro__[:-1]:
-            annots.update(set(cls.__annotations__))
-        # print(annots)
-
-        for attr in annots:
-            # apply losercase for INI
-            if not hasattr(self, attr) and hasattr(self, attr.lower()):
-                setattr(self, attr, getattr(self, attr.lower()))
-
-            if not hasattr(self, attr):
-                msg = f"[CRITICAL]no[{attr=}]"
-                if attr.lower() != attr:
-                    msg += f"\nif used Ini - use only LOWERCASE attrs!!!"
-                msg += f"\n{self.__class__.__name__}"
-                msg += f"\nall your annotations={annots}"
-                raise Exx_PvNotAccepted(msg)
-
-    def attr_get_case_insensitive(self, name) -> Union[str, NoReturn]:
-        attrs_all = list(filter(lambda attr: not callable(getattr(self, attr)), dir(self)))
-        attrs_similar = list(filter(lambda attr: attr.lower() == name.lower(), attrs_all))
-        if len(attrs_similar) == 1:
-            return getattr(self, attrs_similar[0])
-        elif len(attrs_similar) == 0:
-            msg = f"[CRITICAL]no[{name=}] in any cases [{attrs_all=}]"
-            raise Exx_PvNotAccepted(msg)
-        else:
-            msg = f"[CRITICAL]exists several similar [{attrs_similar=}]"
-            raise Exx_PvNotAccepted(msg)
-
-
-# =====================================================================================================================
-class _PrivateBaseWFile_Interface(abc.ABC):
-    @abc.abstractmethod
-    def _get_value_unsafe(self, name: str, section: str, text: str) -> Optional[str]:
-        # NOTICE!!!! "section: Optional[str] = None" - dont code like this!!!
-        # the method work always UNSAFE! any param can't be NONE!
-        pass
-
-    @abc.abstractmethod
-    def _get_section_unsafe(self, section: str, text: str) -> Optional[Dict[str, Any]]:
-        """
-        return
-            NONE - if no section! dont raise inside!
-            {} - if no names!
-        """
-        pass
-
-
-class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
+class PrivateBase(abc.ABC):
     SECTION: str = None
 
     DIRPATH: Type_Path = pathlib.Path.home()
@@ -115,30 +54,87 @@ class PrivateBaseWFile(PrivateBase, _PrivateBaseWFile_Interface):
             self.DIRPATH = pathlib.Path(_filepath).parent
             self.FILENAME = pathlib.Path(_filepath).name
 
-        self.load_values()
-
-    @property
-    def filepath(self) -> pathlib.Path:
-        return pathlib.Path(self.DIRPATH, self.FILENAME)
-
-    # -----------------------------------------------------------------------------------------------------------------
-    def load_values(self) -> Union[True, NoReturn]:
-        if not self.filepath.exists():
+        if self.filepath and not self.filepath.exists():
             msg = f'[CRITICAL]no[{self.filepath=}]'
             raise Exx_PvNotAccepted(msg)
 
-        filetext = self.filepath.read_text()
+        self.load()
 
-        section_dict = self._get_section_unsafe(section=self.SECTION, text=filetext)
+    def __getattr__(self, item: str) -> Union[str, NoReturn]:
+        return self.get_case_insensitive(item)
+
+    def __getitem__(self, key: str) -> Union[str, NoReturn]:
+        return self.get_case_insensitive(key)
+
+    @property
+    def filepath(self) -> Optional[pathlib.Path]:
+        try:
+            if self.FILENAME:
+                return pathlib.Path(self.DIRPATH, self.FILENAME)
+        except:
+            pass
+
+    def apply_dict(self, attrs: Dict[str, Any]) -> None:
+        for key, value in attrs.items():
+            setattr(self, key, value)
+        self.check_by_annotations()
+
+    def check_by_annotations(self) -> Optional[NoReturn]:
+        # print(self.__class__.__mro__)
+        annots = set()
+        for cls in self.__class__.__mro__[:-1]:
+            annots.update(set(cls.__annotations__))
+        # print(annots)
+
+        for attr in annots:
+            # apply losercase for INI
+            if not hasattr(self, attr) and hasattr(self, attr.lower()):
+                setattr(self, attr, getattr(self, attr.lower()))
+
+            if not hasattr(self, attr):
+                msg = f"[CRITICAL]no[{attr=}]"
+                if attr.lower() != attr:
+                    msg += f"\nif used Ini - use only LOWERCASE attrs!!!"
+                msg += f"\n{self.__class__.__name__}"
+                msg += f"\nall your annotations={annots}"
+                raise Exx_PvNotAccepted(msg)
+
+    def get_case_insensitive(self, name) -> Union[str, NoReturn]:
+        attrs_all = list(filter(lambda attr: not callable(getattr(self, attr)), dir(self)))
+        attrs_similar = list(filter(lambda attr: attr.lower() == name.lower(), attrs_all))
+        if len(attrs_similar) == 1:
+            return getattr(self, attrs_similar[0])
+        elif len(attrs_similar) == 0:
+            msg = f"[CRITICAL]no[{name=}] in any cases [{attrs_all=}]"
+            raise Exx_PvNotAccepted(msg)
+        else:
+            msg = f"[CRITICAL]exists several similar [{attrs_similar=}]"
+            raise Exx_PvNotAccepted(msg)
+
+    def print(self) -> None:
+        for key, value in self.get_as_dict():
+            print(f"{key}={value}")
+
+    def load(self) -> Union[True, NoReturn]:
+        section_dict = self.get_as_dict()
         if section_dict:
-            self.attrs_create(section_dict)
+            self.apply_dict(section_dict)
             return True
 
-        msg = f"[CRITICAL]no {self.SECTION=} in {self.filepath=}!"
-        msg += f"\n"
-        msg += filetext
-
+        msg = f"[CRITICAL]no values!"
+        if self.filepath and self.filepath.exists():
+            msg += self.filepath.read_text()
         raise Exx_PvNotAccepted(msg)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @abc.abstractmethod
+    def get_as_dict(self) -> Optional[Dict[str, Any]]:
+        """
+        return
+            NONE - if no section! dont raise inside!
+            {} - if no names!
+        """
+        pass
 
 
 # =====================================================================================================================
