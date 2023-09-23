@@ -61,7 +61,10 @@ class PrivateBase(abc.ABC):
         self.load()
 
     def __getattr__(self, item: str) -> Union[str, NoReturn]:
-        return self.get_case_insensitive(item)
+        if item in ["__isabstractmethod__", ]:
+            return
+        else:
+            return self.get_case_insensitive(item)
 
     def __getitem__(self, key: str) -> Union[str, NoReturn]:
         return self.get_case_insensitive(key)
@@ -100,7 +103,7 @@ class PrivateBase(abc.ABC):
                 raise Exx_PvNotAccepted(msg)
 
     def get_case_insensitive(self, name) -> Union[str, NoReturn]:
-        attrs_all = list(filter(lambda attr: not callable(getattr(self, attr)), dir(self)))
+        attrs_all = list(filter(lambda attr: not callable(getattr(self, attr)) and not attr.startswith("__"), dir(self)))
         attrs_similar = list(filter(lambda attr: attr.lower() == name.lower(), attrs_all))
         if len(attrs_similar) == 1:
             return getattr(self, attrs_similar[0])

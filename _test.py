@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from typing import *
 from configparser import ConfigParser
 from private_values import *
+import abc
 
 
 # =====================================================================================================================
@@ -331,6 +332,31 @@ class Test__Json:
 
         try:
             Cls(_filepath=self.VICTIM().filepath, _section="AUTH")
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
+
+    def test__ABC(self):
+        VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH")
+        assert VICTIM_obj.USER == "NAME1"
+        assert VICTIM_obj.PWD == "PWD1"
+
+        class Cls(PrivateAuthJson, abc.ABC):
+            PWD2: str
+
+            @abc.abstractmethod
+            def meth(self):
+                pass
+
+        class Cls2(Cls):
+            PWD2: str
+
+            def meth(self):
+                pass
+
+        try:
+            Cls2(_filepath=self.VICTIM().filepath, _section="AUTH")
         except Exx_PvNotAccepted:
             pass
         else:
