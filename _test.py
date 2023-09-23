@@ -364,3 +364,86 @@ class Test__Json:
 
 
 # =====================================================================================================================
+class Test__Auto:
+    VICTIM: Type[PrivateAuto] = type("VICTIM", (PrivateAuto,), {})
+    DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
+
+    TEXT1: str = f"""
+[SEC1111]
+name1=ini1
+name2=ini2
+
+[SEC1110]
+name1=ini1
+name2=ini2
+
+[SEC1100]
+name1=ini1
+name2=ini2
+
+[SEC1000]
+name1=ini1
+
+[SEC0000]
+    """
+    TEXT2: str = """
+{
+"SEC1111": {
+    "name1": "json1",
+    "name2": "json2"
+    },
+"SEC0011": {
+    "name1": "json1",
+    "name2": "json2"
+    },
+"SEC1110": {
+    "name1": "json1"
+    },
+"SEC0000": {
+    }
+}
+    """
+    @classmethod
+    def setup_class(cls):
+        cls.DIRPATH.mkdir()
+        cls.DIRPATH.joinpath(PrivateIni.FILENAME).write_text(cls.TEXT1)
+        cls.DIRPATH.joinpath(PrivateJson.FILENAME).write_text(cls.TEXT2)
+
+        os.environ["name1"] = "env1"
+        os.environ["name2"] = "env2"
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree(cls.DIRPATH)
+
+    def setup_method(self, method):
+        self.VICTIM = type("VICTIM", (PrivateAuto,), {})
+        self.VICTIM.DIRPATH = self.DIRPATH
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__auto(self):
+        class Victim(self.VICTIM):
+            name1: str
+            name2: str
+
+        assert Victim(_section="SEC1111").name1 == "json1"
+        assert Victim(_section="SEC0011").name1 == "json1"
+
+        assert Victim(_section="SEC1110").name1 == "ini1"
+        assert Victim(_section="SEC1100").name1 == "ini1"
+
+        assert Victim(_section="SEC1000").name1 == "env1"
+        assert Victim(_section="SEC0000").name1 == "env1"
+
+        class Victim(self.VICTIM):
+            name1: str
+            name200: str
+        try:
+            Victim(_section="SEC0000")
+        except Exx_PvNotAccepted:
+            pass
+        else:
+            assert False
+
+
+# =====================================================================================================================
