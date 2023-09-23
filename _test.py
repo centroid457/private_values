@@ -9,6 +9,10 @@ from private_values import *
 
 
 # =====================================================================================================================
+# TODO: merge Ini/Json tests via parametrisation
+
+
+# =====================================================================================================================
 class Test__Env:
     VICTIM: Type[PrivateEnv] = type("VICTIM", (PrivateEnv,), {})
 
@@ -41,24 +45,21 @@ class Test__Env:
         self.VICTIM = type("VICTIM", (PrivateEnv,), {})
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__ClassMethod_and_obj(self):
-        assert self.VICTIM.get(self.NAME_Exists) == self.VALUE
-        assert self.VICTIM().get(self.NAME_Exists) == self.VALUE
-
     def test__Exists(self):
-        assert self.VICTIM().get(self.NAME_Exists) == self.VALUE
+        assert self.VICTIM()[self.NAME_Exists] == self.VALUE
+        assert getattr(self.VICTIM(), self.NAME_Exists) == self.VALUE
 
     def test__notExists(self):
         try:
-            self.VICTIM().get(self.NAME_NotExists)
+            self.VICTIM()[self.NAME_NotExists]
         except Exx_PvNotAccepted:
             return
-
-        assert False
+        else:
+            assert False
 
     def test__show(self):
         # uppercase - see docstring for method!
-        envs = self.VICTIM.show(self.NAME_Exists)
+        envs = self.VICTIM().get_as_dict(self.NAME_Exists)
         print(envs)
         assert envs.get(self.NAME_Exists.upper()) == self.VALUE
 
@@ -113,17 +114,19 @@ name1=value12
         self.VICTIM.FILENAME = "12345.ini"
 
         try:
-            self.VICTIM().get("name")
+            self.VICTIM()
         except Exx_PvNotAccepted:
-            return
-
-        assert False
+            pass
+        else:
+            assert False
 
     def test__notExist_name(self):
+        assert self.VICTIM().nAme == "valueDef"
+
         try:
             self.VICTIM().name999
         except Exx_PvNotAccepted:
-            return
+            pass
         else:
             assert False
 
@@ -132,7 +135,7 @@ name1=value12
         assert self.VICTIM().nAme == "valueDef"
         assert self.VICTIM().name0 == "valueDef"
         try:
-            self.VICTIM().get("name1")
+            self.VICTIM().name1
         except Exx_PvNotAccepted:
             pass
         else:
@@ -166,12 +169,7 @@ name1=value12
         VICTIM_obj = self.VICTIM(_filename=self.VICTIM2_FILENAME, _section="SEC1")
         assert VICTIM_obj.name1 == "value12"
 
-    def test__get_section(self):
-        VICTIM_obj = self.VICTIM()
-        assert VICTIM_obj.name == "valueDef"
-        assert VICTIM_obj.name0 == "valueDef"
-
-    def test__call_class(self):
+    def test__PrivateAuthIni(self):
         VICTIM_obj = PrivateAuthIni(_filepath=self.VICTIM().filepath, _section="AUTH")
         assert VICTIM_obj.USER == "NAME1"
         assert VICTIM_obj.PWD == "PWD1"
@@ -324,11 +322,6 @@ class Test__Json:
         assert VICTIM_obj.name2 == "value11"
 
     def test__PrivateAuthJson(self):
-        VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH")
-        assert VICTIM_obj.USER == "NAME1"
-        assert VICTIM_obj.PWD == "PWD1"
-
-    def test__call_class(self):
         VICTIM_obj = PrivateAuthJson(_filepath=self.VICTIM().filepath, _section="AUTH")
         assert VICTIM_obj.USER == "NAME1"
         assert VICTIM_obj.PWD == "PWD1"
