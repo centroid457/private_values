@@ -6,6 +6,7 @@ Release History
 **RENAMES**
 - to PrivateAuthJson/PrivateTgBotAddressJson
 **NEW**
+- attr acess via any lettercase attr on instance and via dict key
 - add PrivateAuthIni/PrivateTgBotAddressIni
 - work as class calls without get!
 - any lettercase for name attrs!
