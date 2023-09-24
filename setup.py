@@ -12,8 +12,8 @@ with open("README.md", "r") as f:
 NAME = "private_values"
 
 setup(
-  version="0.4.5",
-  description="Get values from OsEnvironment or Ini/Json File",
+  version="0.5.0",
+  description="update values into class attrs from OsEnvironment or Ini/Json File",
   keywords=[
       "environs", "environment",
       "private",

@@ -1,6 +1,12 @@
 Release History
 ===============
 
+0.5.0 (2023-09-24)
+-------------------
+GREATE REF!  
+**NEW**
+- separate new module annot_attrs and apply it!
+
 0.4.5 (2023-09-24)
 -------------------
 **NEW**
