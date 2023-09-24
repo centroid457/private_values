@@ -71,9 +71,15 @@ class PrivateBase(abc.ABC):
 
     def __str__(self):
         result = f"{self.filepath=}"
-        for key, value in self.as_dict():
-            result += f"\n{key}={value}"
-        return "hello"
+        data = self.as_dict()
+        if data:
+            for key, value in data.items():
+                result += f"\n{key}={value}"
+        elif self.filepath and self.filepath.exists():
+            result += f"\n{self.filepath.read_text()}"
+        else:
+            result += f"\ndata=None"
+        return result
 
     def __getattr__(self, item: str) -> Union[str, NoReturn]:
         if item in ["__isabstractmethod__", ]:

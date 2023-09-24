@@ -446,5 +446,16 @@ name1=ini1
         else:
             assert False
 
+    def test__str(self):
+        class Victim(self.VICTIM):
+            name1: str
+            name2: str
+
+        obj = Victim(_section="SEC1111")
+        assert "pv.ini" not in str(obj)
+        assert "pv.json" in str(obj)
+        assert "name1" in str(obj)
+        assert "json1" in str(obj)
+
 
 # =====================================================================================================================
