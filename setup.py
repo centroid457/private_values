@@ -12,7 +12,7 @@ with open("README.md", "r") as f:
 NAME = "private_values"
 
 setup(
-  version="0.4.2",
+  version="0.4.3",
   description="Get values from OsEnvironment or Ini/Json File",
   keywords=[
       "environs", "environment",
