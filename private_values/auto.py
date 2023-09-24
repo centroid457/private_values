@@ -1,4 +1,4 @@
-from .main import Type_PvDict, Type_Path
+from .main import Type_PvDict, PrivateAuth, PrivateTgBotAddress
 from .env import PrivateEnv
 from .ini import PrivateIni
 from .json import PrivateJson
@@ -19,6 +19,15 @@ class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
                     return data
             except:
                 pass
+
+
+# =====================================================================================================================
+class PrivateAuthAuto(PrivateAuth, PrivateAuto):
+    pass
+
+
+class PrivateTgBotAddressAuto(PrivateTgBotAddress, PrivateAuto):
+    pass
 
 
 # =====================================================================================================================
