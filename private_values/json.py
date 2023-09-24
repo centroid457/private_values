@@ -7,7 +7,7 @@ import json
 class PrivateJson(PrivateBase):
     FILENAME: str = "pv.json"
 
-    def get_as_dict(self) -> Union[Type_PvDict, NoReturn]:
+    def as_dict(self) -> Union[Type_PvDict, NoReturn]:
         """
         section only in first level!
         """

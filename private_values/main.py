@@ -69,6 +69,12 @@ class PrivateBase(abc.ABC):
             msg = f'[CRITICAL]no[{self.filepath=}]'
             raise Exx_PvNotAccepted(msg)
 
+    def __str__(self):
+        result = f"{self.filepath=}"
+        for key, value in self.as_dict():
+            result += f"\n{key}={value}"
+        return "hello"
+
     def __getattr__(self, item: str) -> Union[str, NoReturn]:
         if item in ["__isabstractmethod__", ]:
             return
@@ -140,11 +146,10 @@ class PrivateBase(abc.ABC):
             raise Exx_PvNotAccepted(msg)
 
     def print(self) -> None:
-        for key, value in self.get_as_dict():
-            print(f"{key}={value}")
+        print(self)
 
     def load(self) -> Union[True, NoReturn]:
-        section_dict = self.get_as_dict()
+        section_dict = self.as_dict()
         if section_dict:
             self.apply_dict(section_dict)
             return True
@@ -156,7 +161,7 @@ class PrivateBase(abc.ABC):
 
     # -----------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod
-    def get_as_dict(self) -> Optional[Dict[str, Any]]:
+    def as_dict(self) -> Optional[Dict[str, Any]]:
         """
         return
             NONE - if no section! dont raise inside!

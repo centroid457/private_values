@@ -60,7 +60,7 @@ class Test__Env:
 
     def test__show(self):
         # uppercase - see docstring for method!
-        envs = self.VICTIM().get_as_dict(self.NAME_Exists)
+        envs = self.VICTIM().as_dict(self.NAME_Exists)
         print(envs)
         assert envs.get(self.NAME_Exists.upper()) == self.VALUE
 
@@ -403,6 +403,7 @@ name1=ini1
     }
 }
     """
+
     @classmethod
     def setup_class(cls):
         cls.DIRPATH.mkdir()
