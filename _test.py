@@ -5,8 +5,10 @@ import shutil
 from tempfile import TemporaryDirectory
 from typing import *
 from configparser import ConfigParser
-from private_values import *
 import abc
+
+from private_values import *
+from annot_attrs import *
 
 
 # =====================================================================================================================
@@ -53,7 +55,7 @@ class Test__Env:
     def test__notExists(self):
         try:
             self.VICTIM()[self.NAME_NotExists]
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             return
         else:
             assert False
@@ -126,7 +128,7 @@ name1=value12
 
         try:
             self.VICTIM().name999
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -137,7 +139,7 @@ name1=value12
         assert self.VICTIM().name0 == "valueDef"
         try:
             self.VICTIM().name1
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -151,7 +153,7 @@ name1=value12
         assert self.VICTIM2().name0 == "valueDef2"
         try:
             self.VICTIM2().name1
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -180,7 +182,7 @@ name1=value12
 
         try:
             Cls(_filepath=self.VICTIM().filepath, _section="AUTH")
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -254,7 +256,7 @@ class Test__Json:
     def test__notExist_name(self):
         try:
             self.VICTIM().name999
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -265,7 +267,7 @@ class Test__Json:
         assert self.VICTIM().name2 == "value11"
         try:
             self.VICTIM().name3
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -274,7 +276,7 @@ class Test__Json:
         assert self.VICTIM(_section="SEC2").name2 == "value22"
         try:
             self.VICTIM(_section="SEC2").name3
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -291,7 +293,7 @@ class Test__Json:
         assert self.VICTIM2().name2 == "value11*"
         try:
             self.VICTIM2().name3
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -332,7 +334,7 @@ class Test__Json:
 
         try:
             Cls(_filepath=self.VICTIM().filepath, _section="AUTH")
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -357,7 +359,7 @@ class Test__Json:
 
         try:
             Cls2(_filepath=self.VICTIM().filepath, _section="AUTH")
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
