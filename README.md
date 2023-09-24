@@ -4,6 +4,9 @@ Designed to use private data like username/pwd kept secure in OsEnvironment or I
 And not open it in public.
 
 
+**CAUTION:**  
+in requirements for other projects use fixed version! because it might be refactored so you would get exception soon.
+
 ## Features
 1. load values to instance attrs from:
    * Environment
