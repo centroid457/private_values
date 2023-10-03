@@ -15,7 +15,7 @@ class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
         for cls in [PrivateAuto, PrivateJson, PrivateIni]:
             try:
                 self.FILENAME = super(cls, self).FILENAME
-                self.filepath_apply_new()
+                self._filepath_apply_new()
                 data = super(cls, self).as_dict()
                 data_lower = set(map(str.lower, data))
                 if data_lower.issuperset(annots_lower):

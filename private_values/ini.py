@@ -17,7 +17,10 @@ class PrivateIni(PrivateBase):
             ini.read_string(self.filepath.read_text())
         except Exception as exx:
             msg = f"[CRITICAL] incorrect format file!\n{exx!r}"
-            raise Exx_PvNotAccepted(msg)
+            if self.RAISE:
+                raise Exx_PvNotAccepted(msg)
+            else:
+                return {}
 
         if not self.SECTION or self.SECTION == "DEFAULT" or ini.has_section(section=self.SECTION):
             result = dict(ini[self.SECTION or "DEFAULT"])
@@ -25,8 +28,10 @@ class PrivateIni(PrivateBase):
         else:
             msg = f"[CRITICAL] NO [{self.SECTION=} in {self.filepath=}]\n"
             msg += self.filepath.read_text()
-            raise Exx_PvNotAccepted(msg)
-
+            if self.RAISE:
+                raise Exx_PvNotAccepted(msg)
+            else:
+                return {}
 
 # =====================================================================================================================
 class PrivateAuthIni(PrivateAuth, PrivateIni):

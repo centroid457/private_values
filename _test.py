@@ -460,4 +460,27 @@ name1=ini1
         assert "json1" in str(obj)
 
 
+class Test__RAISE:
+
+    @pytest.mark.parametrize(argnames="VictimBase", argvalues=[PrivateEnv, PrivateIni, PrivateJson])
+    def test__raise(self, VictimBase):
+
+        class Victim1(VictimBase):
+            attr1: str
+            RAISE = True
+
+        try:
+            Victim1()
+        except:
+            pass
+        else:
+            assert False
+
+        class Victim2(VictimBase):
+            attr1: str
+            RAISE = False
+
+        Victim2()
+
+
 # =====================================================================================================================

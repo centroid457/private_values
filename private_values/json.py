@@ -16,7 +16,10 @@ class PrivateJson(PrivateBase):
         except Exception as exx:
             msg = f"[CRITICAL] incorrect format file!\n{exx!r}"
             print(msg)
-            raise Exx_PvNotAccepted(msg)
+            if self.RAISE:
+                raise Exx_PvNotAccepted(msg)
+            else:
+                return {}
 
         if self.SECTION:
             json_data = json_data.get(self.SECTION)
@@ -26,8 +29,10 @@ class PrivateJson(PrivateBase):
         else:
             msg = f"[CRITICAL] NO [{self.SECTION=} in {self.filepath=}]\n"
             msg += self.filepath.read_text()
-            raise Exx_PvNotAccepted(msg)
-
+            if self.RAISE:
+                raise Exx_PvNotAccepted(msg)
+            else:
+                return {}
 
 # =====================================================================================================================
 class PrivateAuthJson(PrivateAuth, PrivateJson):
