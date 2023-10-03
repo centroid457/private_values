@@ -6,11 +6,11 @@ import os
 # =====================================================================================================================
 class PrivateEnv(PrivateBase):
     """
-    read exact environ from Os Environment
+    read exact environs from Os Environment
     """
     def as_dict(self, _prefix: Optional[str] = None) -> Type_PvDict:
         """
-        mainly it is only for PRINTing and debugging! don't use result!
+        directly using result - mainly it is only for PRINTing and debugging! don't use result!
 
         NOTE: be careful to use result as dict! especially if you have lowercase letters!
 

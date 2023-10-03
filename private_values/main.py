@@ -115,6 +115,8 @@ class PrivateBase(AnnotAttrs, abc.ABC):
 
     @property
     def filepath(self) -> Optional[pathlib.Path]:
+        """compose final pathlib instance for file
+        """
         try:
             if self.FILENAME:
                 return pathlib.Path(self.DIRPATH, self.FILENAME)
@@ -122,7 +124,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             pass
 
     def _apply_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
-        """Apply passes dict into instance.
+        """Apply passes dict into instance and check consistence.
         """
         for key, value in attrs.items():
             setattr(self, key, value)
@@ -130,7 +132,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             self.annots_check_values_exists()
 
     def load(self) -> Union[True, NoReturn, None]:
-        """load values from source into instance.
+        """load values from source into instance attributes.
         """
         section_dict = self.as_dict()
         if section_dict:

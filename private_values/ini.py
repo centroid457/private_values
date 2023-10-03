@@ -5,7 +5,7 @@ from configparser import ConfigParser
 
 # =====================================================================================================================
 class PrivateIni(PrivateBase):
-    """
+    """Get values from Ini file.
     Not recommended using DEFAULT SECTION!
     """
     FILENAME: str = "pv.ini"

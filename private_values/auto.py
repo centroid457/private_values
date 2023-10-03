@@ -8,6 +8,10 @@ from typing import *
 
 # =====================================================================================================================
 class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
+    """This class will try all variants in order Json-Ini-Env.
+    and take values ONLY from FIRST ONE source with all needed values!
+    It will not merge sources!
+    """
     def as_dict(self) -> Union[Type_PvDict, NoReturn]:
         annots = self.annots_get_set()
         annots_lower = set(map(str.lower, annots))
