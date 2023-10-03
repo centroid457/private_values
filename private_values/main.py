@@ -65,10 +65,13 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             _section: Optional[str] = None,
             _dirpath: Type_Path = None,
             _filename: str = None,
-            _filepath: Type_Path = None
+            _filepath: Type_Path = None,
+            _raise: Optional[bool] = None
     ):
         super().__init__()
         self.SECTION = _section or self.SECTION
+        self.RAISE = _raise if _raise is not None else self.RAISE
+
         self._filepath_apply_new(
             _dirpath=_dirpath,
             _filename=_filename,

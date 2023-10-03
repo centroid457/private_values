@@ -476,6 +476,8 @@ class Test__RAISE:
         else:
             assert False
 
+        Victim1(_raise=False)
+
         class Victim2(VictimBase):
             attr1: str
             RAISE = False

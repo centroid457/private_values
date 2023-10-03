@@ -1,10 +1,10 @@
 Release History
 ===============
 
-0.5.1 (2023-10-03)
+0.5.2 (2023-10-03)
 -------------------
 **NEW**
-- add RAISE attribute
+- add RAISE attribute + init param
 
 0.5.0 (2023-09-24)
 -------------------
