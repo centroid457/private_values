@@ -34,6 +34,7 @@ class PrivateJson(PrivateBase):
             else:
                 return {}
 
+
 # =====================================================================================================================
 class PrivateAuthJson(PrivateAuth, PrivateJson):
     pass
