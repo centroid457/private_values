@@ -17,6 +17,8 @@ class PrivateCsv(PrivateBase):
     It was created for parsing stdout from CLI commands about device info,
     which is has data like
 
+    skip all nonames.
+
     skip all lines with no separator.
         C:\\Users\\a.starichenko>STM32_Programmer_CLI --verbosity 1 --connect port=swd index=0
               -------------------------------------------------------------------
@@ -65,6 +67,9 @@ class PrivateCsv(PrivateBase):
             key: str = key.strip()
             key = re.sub(pattern=r"\s", repl=self.SPACE_IN_KEYS, string=key)
             value: str = value.strip()
+
+            if not key:
+                continue
 
             if key in result and self.RAISE_SAME_KEYS:
                 raise Exx_SameKeys

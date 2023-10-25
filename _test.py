@@ -75,10 +75,14 @@ class Test__Csv:
     DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
     TEXT1: str = f"""
+hello
+
+:world
 name:111
 name1:111
     """
     TEXT2: str = f"""
+
 name:222
 name2:222
     """
@@ -128,6 +132,7 @@ name2:222
 
         self.VICTIM.SEPARATOR = "="
         assert self.VICTIM(_text="name11=11").name11 == "11"
+
 
 # =====================================================================================================================
 class Test__Ini:
@@ -432,6 +437,10 @@ class Test__Auto:
     VICTIM: Type[PrivateAuto] = type("VICTIM", (PrivateAuto,), {})
     DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
+    TEXT0: str = f"""
+name1=ini1
+name2=ini2
+    """
     TEXT1: str = f"""
 [SEC1111]
 name1=ini1
@@ -522,6 +531,7 @@ name1=ini1
         assert "json1" in str(obj)
 
 
+# =====================================================================================================================
 class Test__RAISE:
 
     @pytest.mark.parametrize(argnames="VictimBase", argvalues=[PrivateEnv, PrivateIni, PrivateJson])
