@@ -56,11 +56,12 @@ class PrivateBase(AnnotAttrs, abc.ABC):
     """
     SECTION: str = None
 
-    DIRPATH: Type_Path = pathlib.Path.home()
-    FILENAME: str = None
+    DIRPATH: Optional[Type_Path] = pathlib.Path.home()
+    FILENAME: Optional[str] = None
 
-    _text: Optional[str] = None     # TODO: apply!
+    _text: Optional[str] = None     # TODO: need tests!!!
 
+    # -----------------------------------------------------------------------------------------------------------------
     def __init__(
             self,
             _section: Optional[str] = None,
@@ -72,14 +73,35 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         super().__init__()
         self.SECTION = _section or self.SECTION
 
-        self._filepath_apply_new(
-            _dirpath=_dirpath,
-            _filename=_filename,
-            _filepath=_filepath
-        )
-        self.load()
+        if _text:
+            self.DIRPATH = None
+            self.FILENAME = None
+            self._text = _text
+        else:
+            self._filepath_apply_new(
+                _dirpath=_dirpath,
+                _filename=_filename,
+                _filepath=_filepath
+            )
+
+        self.load_dict()
         self.annots_check_values_exists()
 
+    def __str__(self):
+        """return pretty string
+        """
+        result = f"{self.filepath=}"
+        data = self.as_dict()
+        if data:
+            for key, value in data.items():
+                result += f"\n{key}={value}"
+        elif self.filepath and self.filepath.exists():
+            result += f"\n{self._text}"
+        else:
+            result += f"\ndata=None"
+        return result
+
+    # -----------------------------------------------------------------------------------------------------------------
     def _filepath_apply_new(
             self,
             _dirpath: Type_Path = None,
@@ -99,19 +121,8 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             msg = f'[CRITICAL]no[{self.filepath=}]'
             raise Exx_FileNotExists(msg)
 
-    def __str__(self):
-        """return pretty string
-        """
-        result = f"{self.filepath=}"
-        data = self.as_dict()
-        if data:
-            for key, value in data.items():
-                result += f"\n{key}={value}"
-        elif self.filepath and self.filepath.exists():
-            result += f"\n{self.filepath.read_text()}"
-        else:
-            result += f"\ndata=None"
-        return result
+        if self.filepath:
+            self._text = self.filepath.read_text()
 
     @property
     def filepath(self) -> Optional[pathlib.Path]:
@@ -123,18 +134,19 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         except:
             pass
 
-    def _apply_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
-        """Apply passes dict into instance and check consistence.
-        """
-        for key, value in attrs.items():
-            setattr(self, key, value)
-
-    def load(self) -> None:
+    # -----------------------------------------------------------------------------------------------------------------
+    def load_dict(self) -> None:
         """load values from source into instance attributes.
         """
         section_dict = self.as_dict()
         if section_dict:
             self._apply_dict(section_dict)
+
+    def _apply_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
+        """Apply passes dict into instance and check consistence.
+        """
+        for key, value in attrs.items():
+            setattr(self, key, value)
 
     # -----------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod

@@ -12,7 +12,7 @@ class PrivateJson(PrivateBase):
         section only in first level!
         """
         try:
-            json_data = json.loads(self.filepath.read_text())
+            json_data = json.loads(self._text)
         except Exception as exx:
             msg = f"[CRITICAL] incorrect format file!\n{exx!r}"
             print(msg)
@@ -25,7 +25,7 @@ class PrivateJson(PrivateBase):
             return json_data
         else:
             msg = f"[CRITICAL] NO [{self.SECTION=} in {self.filepath=}]\n"
-            msg += self.filepath.read_text()
+            msg += self._text
             print(msg)
 
 
