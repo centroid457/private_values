@@ -12,7 +12,7 @@ with open("README.md", "r") as f:
 NAME = "private_values"
 
 setup(
-  version="0.5.2",
+  version="0.5.3",
   description="update values into class attrs from OsEnvironment or Ini/Json File",
   keywords=[
       "environs", "environment",
