@@ -13,7 +13,7 @@ NAME = "private_values"
 
 setup(
   version="0.5.3",
-  description="update values into class attrs from OsEnvironment or Ini/Json File",
+  description="update values into class attrs from OsEnvironment or Csv/Ini/Json File",
   keywords=[
       "environs", "environment",
       "private",
