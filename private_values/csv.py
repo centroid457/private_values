@@ -1,17 +1,24 @@
 from .main import *
+import re
 
-from configparser import ConfigParser
+
+# =====================================================================================================================
+class Exx_SameKeys(Exception):
+    """Same keys NOT allowed!
+    """
+    pass
 
 
 # =====================================================================================================================
 class PrivateCsv(PrivateBase):
-    """Get values from CSV file.
+    """Get values from CSV file as dict format.
 
     this is not actually about private values!
     It was created for parsing stdout from CLI commands about device info,
     which is has data like
-    '
-        C:\Users\a.starichenko>STM32_Programmer_CLI --verbosity 1 --connect port=swd index=0
+
+    skip all lines with no separator.
+        C:\\Users\\a.starichenko>STM32_Programmer_CLI --verbosity 1 --connect port=swd index=0
               -------------------------------------------------------------------
                                STM32CubeProgrammer v2.14.0
               -------------------------------------------------------------------
@@ -32,36 +39,47 @@ class PrivateCsv(PrivateBase):
         BL Version  : --
 
 
-        C:\Users\a.starichenko>
-    '
+        C:\\Users\\a.starichenko>
     """
     FILENAME: str = "pv.csv"
+    SEPARATOR: str = ":"
+    SPACE_IN_KEYS: str = "_"
+    RAISE_SAME_KEYS: bool = True
+    LINE_SKIP__FIRST: Optional[int] = None
+    LINE_SKIP__LAST: Optional[int] = None
+    LINE_SKIP__REGEXP: Optional[str] = None
 
     def as_dict(self) -> Union[Type_PvDict, NoReturn]:
-        ini = ConfigParser()
+        result = {}
+        lines = self._text.splitlines()[self.LINE_SKIP__FIRST:]
+        if self.LINE_SKIP__LAST:
+            lines = lines[:-self.LINE_SKIP__LAST]
 
-        try:
-            ini.read_string(self._text)
-        except Exception as exx:
-            msg = f"[CRITICAL] incorrect format file!\n{exx!r}"
-            print(msg)
-            raise exx
+        for line in lines:
+            if self.SEPARATOR not in line:
+                continue
+            if self.LINE_SKIP__REGEXP and re.search(pattern=self.LINE_SKIP__REGEXP, string=line):
+                continue
 
-        if not self.SECTION or self.SECTION == "DEFAULT" or ini.has_section(section=self.SECTION):
-            result = dict(ini[self.SECTION or "DEFAULT"])
-            return result
-        else:
-            msg = f"[CRITICAL] NO [{self.SECTION=} in {self.filepath=}]\n"
-            msg += self._text
-            print(msg)
+            key, value = line.split(sep=self.SEPARATOR, maxsplit=1)
+            key: str = key.strip()
+            key = re.sub(pattern=r"\s", repl=self.SPACE_IN_KEYS, string=key)
+            value: str = value.strip()
+
+            if key in result and self.RAISE_SAME_KEYS:
+                raise Exx_SameKeys
+
+            result.update({key: value})
+
+        return result
 
 
 # =====================================================================================================================
-class PrivateAuthIni(PrivateAuth, PrivateIni):
+class PrivateAuthCsv(PrivateAuth, PrivateCsv):
     pass
 
 
-class PrivateTgBotAddressIni(PrivateTgBotAddress, PrivateIni):
+class PrivateTgBotAddressCsv(PrivateTgBotAddress, PrivateCsv):
     pass
 
 

@@ -2,6 +2,7 @@ from .main import Type_PvDict, PrivateAuth, PrivateTgBotAddress
 from .env import PrivateEnv
 from .ini import PrivateIni
 from .json import PrivateJson
+from .csv import PrivateCsv
 
 from typing import *
 
@@ -16,7 +17,7 @@ class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
         annots = self.annots_get_set()
         annots_lower = set(map(str.lower, annots))
 
-        for cls in [PrivateAuto, PrivateJson, PrivateIni]:
+        for cls in [PrivateAuto, PrivateJson, PrivateIni, PrivateCsv]:
             try:
                 self.FILENAME = super(cls, self).FILENAME
                 self._filepath_apply_new()

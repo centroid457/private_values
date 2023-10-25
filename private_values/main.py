@@ -13,8 +13,7 @@ Type_Value = Union[str, NoReturn, None]
 
 # =====================================================================================================================
 class Exx_FileNotExists(Exception):
-    """
-    Any final exception when value can't be get.
+    """Any final exception when value can't be get.
     """
     pass
 
