@@ -12,7 +12,7 @@ Type_Value = Union[str, NoReturn, None]
 
 
 # =====================================================================================================================
-class Exx_PvNotAccepted(Exception):
+class Exx_FileNotExists(Exception):
     """
     Any final exception when value can't be get.
     """
@@ -23,8 +23,8 @@ class Exx_PvNotAccepted(Exception):
 class PrivateAuth:
     """Typical structure for AUTH
 
-    :USER: user login name
-    :PWD: password
+    :ivar USER: user login name
+    :ivar PWD: password
     """
     USER: str
     PWD: str
@@ -33,9 +33,9 @@ class PrivateAuth:
 class PrivateTgBotAddress:
     """Typical structure for Telegram bot address
 
-    :LINK_ID: just a bot id, not important
-    :NAME: just a bot public name, not important
-    :TOKEN: bot token for connection, important!
+    :ivar LINK_ID: just a bot id, not important
+    :ivar NAME: just a bot public name, not important
+    :ivar TOKEN: bot token for connection, important!
     """
     LINK_ID: str     # @mybot20230913
     NAME: str        # MyBotPublicName
@@ -46,19 +46,20 @@ class PrivateTgBotAddress:
 class PrivateBase(AnnotAttrs, abc.ABC):
     """Base class to get values from sources.
 
-    :SECTION: first level name in source, for ini - root section, for json - rootKey, for env - not used
-    :DIRPATH: file destination
-    :FILENAME: file name
-    :RAISE: True - raise Exx_PvNotAccepted in any incomplete values
-        usefull if you have a messaging system connected to you project jast for fan
-        and you dont want to raise if you dont configured it.
+    :ivar SECTION: first level name in source, for ini - root section, for json - rootKey, for env - not used
+    :ivar DIRPATH: file destination
+    :ivar FILENAME: file name
+
+    USAGE
+    -----
+    if you dont need RAISE when no value get for exact annotated name - just define None!
     """
     SECTION: str = None
 
     DIRPATH: Type_Path = pathlib.Path.home()
     FILENAME: str = None
 
-    RAISE: bool = True
+    _text: Optional[str] = None     # TODO: apply!
 
     def __init__(
             self,
@@ -66,11 +67,10 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             _dirpath: Type_Path = None,
             _filename: str = None,
             _filepath: Type_Path = None,
-            _raise: Optional[bool] = None
+            _text: Optional[str] = None
     ):
         super().__init__()
         self.SECTION = _section or self.SECTION
-        self.RAISE = _raise if _raise is not None else self.RAISE
 
         self._filepath_apply_new(
             _dirpath=_dirpath,
@@ -78,6 +78,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             _filepath=_filepath
         )
         self.load()
+        self.annots_check_values_exists()
 
     def _filepath_apply_new(
             self,
@@ -96,8 +97,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
 
         if self.filepath and not self.filepath.exists():
             msg = f'[CRITICAL]no[{self.filepath=}]'
-            if self.RAISE:
-                raise Exx_PvNotAccepted(msg)
+            raise Exx_FileNotExists(msg)
 
     def __str__(self):
         """return pretty string
@@ -128,22 +128,13 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         """
         for key, value in attrs.items():
             setattr(self, key, value)
-        if self.RAISE:
-            self.annots_check_values_exists()
 
-    def load(self) -> Union[True, NoReturn, None]:
+    def load(self) -> None:
         """load values from source into instance attributes.
         """
         section_dict = self.as_dict()
         if section_dict:
             self._apply_dict(section_dict)
-            return True
-
-        msg = f"[CRITICAL]no values!"
-        if self.filepath and self.filepath.exists():
-            msg += self.filepath.read_text()
-        if self.RAISE:
-            raise Exx_PvNotAccepted(msg)
 
     # -----------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod

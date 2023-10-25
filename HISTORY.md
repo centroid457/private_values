@@ -1,6 +1,8 @@
 Release History
 ===============
 
+- del RAISE attribute!!! use value None for not important annotations!
+
 0.5.2 (2023-10-03)
 -------------------
 **NEW**

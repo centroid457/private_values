@@ -118,7 +118,7 @@ name1=value12
 
         try:
             self.VICTIM()
-        except Exx_PvNotAccepted:
+        except Exx_FileNotExists:
             pass
         else:
             assert False
@@ -248,7 +248,7 @@ class Test__Json:
         self.VICTIM.FILENAME = "12345.ini"
         try:
             self.VICTIM()
-        except Exx_PvNotAccepted:
+        except Exx_FileNotExists:
             pass
         else:
             assert False
@@ -283,7 +283,7 @@ class Test__Json:
 
         try:
             self.VICTIM(_section="SEC3").name1
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -443,7 +443,7 @@ name1=ini1
             name200: str
         try:
             Victim(_section="SEC0000")
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -467,7 +467,6 @@ class Test__RAISE:
 
         class Victim1(VictimBase):
             attr1: str
-            RAISE = True
 
         try:
             Victim1()
@@ -475,14 +474,6 @@ class Test__RAISE:
             pass
         else:
             assert False
-
-        Victim1(_raise=False)
-
-        class Victim2(VictimBase):
-            attr1: str
-            RAISE = False
-
-        Victim2()
 
 
 # =====================================================================================================================
