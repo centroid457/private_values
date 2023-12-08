@@ -1,13 +1,10 @@
-from .main import Type_PvDict, PrivateAuth, PrivateTgBotAddress
-from .env import PrivateEnv
-from .ini import PrivateIni
-from .json import PrivateJson
-from .csv import PrivateCsv
+from . import *
 
 from typing import *
 
 
 # =====================================================================================================================
+# TODO: add Csv???
 class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
     """This class will try all variants in order Json-Ini-Env.
     and take values ONLY from FIRST ONE source with all needed values!

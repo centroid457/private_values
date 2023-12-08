@@ -1,4 +1,4 @@
-from .main import *
+from . import *
 import re
 
 

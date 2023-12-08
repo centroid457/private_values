@@ -7,8 +7,8 @@ from typing import *
 from configparser import ConfigParser
 import abc
 
-from private_values import *
 from annot_attrs import *
+from private_values import *
 
 
 # =====================================================================================================================
