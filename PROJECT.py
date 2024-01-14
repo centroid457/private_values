@@ -17,7 +17,7 @@ class PROJECT:
     KEYWORDS: List[str] = [
       "environs", "environment",
       "private",
-      "rc", "ini",
+      "rc", "ini", "csv"
       "json"
     ]
 
@@ -52,7 +52,7 @@ in requirements for other projects use fixed version! because it might be refact
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 5, 3)
+    VERSION: Tuple[int, int, int] = (0, 5, 4)
     VERSION_STR: str = ".".join(map(str, VERSION))
     TODO: List[str] = [
         "..."
