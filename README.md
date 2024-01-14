@@ -1,4 +1,4 @@
-# private_values (v0.5.3)
+# private_values (v0.5.4)
 
 ## DESCRIPTION_SHORT
 Update values into class attrs from osenvironment or ini/json file

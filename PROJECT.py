@@ -44,6 +44,7 @@ in requirements for other projects use fixed version! because it might be refact
          "Environment",
          "iniFile",
          "JsonFile",
+         "CSV",
          ],
         ["attr access",
          "via any lettercase",
