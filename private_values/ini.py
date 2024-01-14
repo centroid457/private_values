@@ -1,4 +1,4 @@
-from .main import *
+from . import *
 
 from configparser import ConfigParser
 
@@ -14,24 +14,20 @@ class PrivateIni(PrivateBase):
         ini = ConfigParser()
 
         try:
-            ini.read_string(self.filepath.read_text())
+            ini.read_string(self._text)
         except Exception as exx:
             msg = f"[CRITICAL] incorrect format file!\n{exx!r}"
-            if self.RAISE:
-                raise Exx_PvNotAccepted(msg)
-            else:
-                return {}
+            print(msg)
+            raise exx
 
         if not self.SECTION or self.SECTION == "DEFAULT" or ini.has_section(section=self.SECTION):
             result = dict(ini[self.SECTION or "DEFAULT"])
             return result
         else:
             msg = f"[CRITICAL] NO [{self.SECTION=} in {self.filepath=}]\n"
-            msg += self.filepath.read_text()
-            if self.RAISE:
-                raise Exx_PvNotAccepted(msg)
-            else:
-                return {}
+            msg += self._text
+            print(msg)
+
 
 # =====================================================================================================================
 class PrivateAuthIni(PrivateAuth, PrivateIni):

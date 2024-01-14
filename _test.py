@@ -7,12 +7,12 @@ from typing import *
 from configparser import ConfigParser
 import abc
 
-from private_values import *
 from annot_attrs import *
+from private_values import *
 
 
 # =====================================================================================================================
-# TODO: merge Ini/Json tests via parametrisation
+# TODO: merge Csv/Ini/Json tests via parametrisation
 
 
 # =====================================================================================================================
@@ -68,6 +68,73 @@ class Test__Env:
 
 
 # =====================================================================================================================
+class Test__Csv:
+    VICTIM: Type[PrivateCsv] = type("VICTIM", (PrivateCsv,), {})
+    VICTIM2_FILENAME: str = f"{PrivateCsv.FILENAME}2"
+    VICTIM2: Type[PrivateCsv] = type("VICTIM2", (PrivateCsv,), {"FILENAME": VICTIM2_FILENAME})
+    DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
+
+    TEXT1: str = f"""
+hello
+
+:world
+name:111
+name1:111
+    """
+    TEXT2: str = f"""
+
+name:222
+name2:222
+    """
+    @classmethod
+    def setup_class(cls):
+        cls.DIRPATH.mkdir()
+        cls.DIRPATH.joinpath(cls.VICTIM.FILENAME).write_text(cls.TEXT1)
+        cls.DIRPATH.joinpath(cls.VICTIM2.FILENAME).write_text(cls.TEXT2)
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree(cls.DIRPATH)
+
+    def setup_method(self, method):
+        self.VICTIM = type("VICTIM", (PrivateCsv,), {})
+        self.VICTIM2 = type("VICTIM2", (PrivateCsv,), {"FILENAME": self.VICTIM2_FILENAME})
+        self.VICTIM.DIRPATH = self.DIRPATH
+        self.VICTIM2.DIRPATH = self.DIRPATH
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__notExist_file(self):
+        self.VICTIM.FILENAME = "12345.csv"
+
+        try:
+            self.VICTIM()
+        except Exx_FileNotExists:
+            pass
+        else:
+            assert False
+
+    def test__notExist_name(self):
+        assert self.VICTIM().nAme == "111"
+
+        try:
+            self.VICTIM().name999
+        except Exx_AttrNotExist:
+            pass
+        else:
+            assert False
+
+    def test__use_init(self):
+        assert self.VICTIM().name == "111"
+        assert self.VICTIM(_filepath=pathlib.Path(self.VICTIM2.DIRPATH, self.VICTIM2_FILENAME)).name == "222"
+        assert self.VICTIM(_filename=self.VICTIM2_FILENAME).name == "222"
+
+        assert self.VICTIM(_text="name11:11").name11 == "11"
+
+        self.VICTIM.SEPARATOR = "="
+        assert self.VICTIM(_text="name11=11").name11 == "11"
+
+
+# =====================================================================================================================
 class Test__Ini:
     VICTIM: Type[PrivateIni] = type("VICTIM", (PrivateIni,), {})
     VICTIM2_FILENAME: str = f"{PrivateIni.FILENAME}2"
@@ -118,7 +185,7 @@ name1=value12
 
         try:
             self.VICTIM()
-        except Exx_PvNotAccepted:
+        except Exx_FileNotExists:
             pass
         else:
             assert False
@@ -248,7 +315,7 @@ class Test__Json:
         self.VICTIM.FILENAME = "12345.ini"
         try:
             self.VICTIM()
-        except Exx_PvNotAccepted:
+        except Exx_FileNotExists:
             pass
         else:
             assert False
@@ -283,7 +350,7 @@ class Test__Json:
 
         try:
             self.VICTIM(_section="SEC3").name1
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -370,6 +437,10 @@ class Test__Auto:
     VICTIM: Type[PrivateAuto] = type("VICTIM", (PrivateAuto,), {})
     DIRPATH: pathlib.Path = pathlib.Path(TemporaryDirectory().name)
 
+    TEXT0: str = f"""
+name1=ini1
+name2=ini2
+    """
     TEXT1: str = f"""
 [SEC1111]
 name1=ini1
@@ -443,7 +514,7 @@ name1=ini1
             name200: str
         try:
             Victim(_section="SEC0000")
-        except Exx_PvNotAccepted:
+        except Exx_AttrNotExist:
             pass
         else:
             assert False
@@ -460,6 +531,7 @@ name1=ini1
         assert "json1" in str(obj)
 
 
+# =====================================================================================================================
 class Test__RAISE:
 
     @pytest.mark.parametrize(argnames="VictimBase", argvalues=[PrivateEnv, PrivateIni, PrivateJson])
@@ -467,7 +539,6 @@ class Test__RAISE:
 
         class Victim1(VictimBase):
             attr1: str
-            RAISE = True
 
         try:
             Victim1()
@@ -475,14 +546,6 @@ class Test__RAISE:
             pass
         else:
             assert False
-
-        Victim1(_raise=False)
-
-        class Victim2(VictimBase):
-            attr1: str
-            RAISE = False
-
-        Victim2()
 
 
 # =====================================================================================================================

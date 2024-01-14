@@ -1,12 +1,10 @@
-from .main import Type_PvDict, PrivateAuth, PrivateTgBotAddress
-from .env import PrivateEnv
-from .ini import PrivateIni
-from .json import PrivateJson
+from . import *
 
 from typing import *
 
 
 # =====================================================================================================================
+# TODO: add Csv???
 class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
     """This class will try all variants in order Json-Ini-Env.
     and take values ONLY from FIRST ONE source with all needed values!
@@ -16,7 +14,7 @@ class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
         annots = self.annots_get_set()
         annots_lower = set(map(str.lower, annots))
 
-        for cls in [PrivateAuto, PrivateJson, PrivateIni]:
+        for cls in [PrivateAuto, PrivateJson, PrivateIni, PrivateCsv]:
             try:
                 self.FILENAME = super(cls, self).FILENAME
                 self._filepath_apply_new()

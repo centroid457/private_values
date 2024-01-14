@@ -1,8 +1,11 @@
 import pathlib
-from typing import *
 import abc
 
 from annot_attrs import *
+
+
+# =====================================================================================================================
+# TODO: add iter???
 
 
 # =====================================================================================================================
@@ -12,73 +15,72 @@ Type_Value = Union[str, NoReturn, None]
 
 
 # =====================================================================================================================
-class Exx_PvNotAccepted(Exception):
-    """
-    Any final exception when value can't be get.
+class Exx_FileNotExists(Exception):
+    """Any final exception when value can't be get.
     """
     pass
-
-
-# =====================================================================================================================
-class PrivateAuth:
-    """Typical structure for AUTH
-
-    :USER: user login name
-    :PWD: password
-    """
-    USER: str
-    PWD: str
-
-
-class PrivateTgBotAddress:
-    """Typical structure for Telegram bot address
-
-    :LINK_ID: just a bot id, not important
-    :NAME: just a bot public name, not important
-    :TOKEN: bot token for connection, important!
-    """
-    LINK_ID: str     # @mybot20230913
-    NAME: str        # MyBotPublicName
-    TOKEN: str
 
 
 # =====================================================================================================================
 class PrivateBase(AnnotAttrs, abc.ABC):
     """Base class to get values from sources.
 
-    :SECTION: first level name in source, for ini - root section, for json - rootKey, for env - not used
-    :DIRPATH: file destination
-    :FILENAME: file name
-    :RAISE: True - raise Exx_PvNotAccepted in any incomplete values
-        usefull if you have a messaging system connected to you project jast for fan
-        and you dont want to raise if you dont configured it.
+    :ivar SECTION: first level name in source, for ini - root section, for json - rootKey, for env - not used
+    :ivar DIRPATH: file destination
+    :ivar FILENAME: file name
+
+    USAGE
+    -----
+    if you dont need RAISE when no value get for exact annotated name - just define None!
     """
     SECTION: str = None
 
-    DIRPATH: Type_Path = pathlib.Path.home()
-    FILENAME: str = None
+    DIRPATH: Optional[Type_Path] = pathlib.Path.home()
+    FILENAME: Optional[str] = None
 
-    RAISE: bool = True
+    _text: Optional[str] = None     # TODO: need tests!!!
 
+    # -----------------------------------------------------------------------------------------------------------------
     def __init__(
             self,
             _section: Optional[str] = None,
             _dirpath: Type_Path = None,
             _filename: str = None,
             _filepath: Type_Path = None,
-            _raise: Optional[bool] = None
+            _text: Optional[str] = None
     ):
         super().__init__()
         self.SECTION = _section or self.SECTION
-        self.RAISE = _raise if _raise is not None else self.RAISE
 
-        self._filepath_apply_new(
-            _dirpath=_dirpath,
-            _filename=_filename,
-            _filepath=_filepath
-        )
-        self.load()
+        if _text:
+            self.DIRPATH = None
+            self.FILENAME = None
+            self._text = _text
+        else:
+            self._filepath_apply_new(
+                _dirpath=_dirpath,
+                _filename=_filename,
+                _filepath=_filepath
+            )
 
+        self.load_dict()
+        self.annots_check_values_exists()
+
+    def __str__(self):
+        """return pretty string
+        """
+        result = f"{self.filepath=}"
+        data = self.as_dict()
+        if data:
+            for key, value in data.items():
+                result += f"\n{key}={value}"
+        elif self.filepath and self.filepath.exists():
+            result += f"\n{self._text}"
+        else:
+            result += f"\ndata=None"
+        return result
+
+    # -----------------------------------------------------------------------------------------------------------------
     def _filepath_apply_new(
             self,
             _dirpath: Type_Path = None,
@@ -96,22 +98,10 @@ class PrivateBase(AnnotAttrs, abc.ABC):
 
         if self.filepath and not self.filepath.exists():
             msg = f'[CRITICAL]no[{self.filepath=}]'
-            if self.RAISE:
-                raise Exx_PvNotAccepted(msg)
+            raise Exx_FileNotExists(msg)
 
-    def __str__(self):
-        """return pretty string
-        """
-        result = f"{self.filepath=}"
-        data = self.as_dict()
-        if data:
-            for key, value in data.items():
-                result += f"\n{key}={value}"
-        elif self.filepath and self.filepath.exists():
-            result += f"\n{self.filepath.read_text()}"
-        else:
-            result += f"\ndata=None"
-        return result
+        if self.filepath:
+            self._text = self.filepath.read_text()
 
     @property
     def filepath(self) -> Optional[pathlib.Path]:
@@ -123,27 +113,19 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         except:
             pass
 
-    def _apply_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
-        """Apply passes dict into instance and check consistence.
-        """
-        for key, value in attrs.items():
-            setattr(self, key, value)
-        if self.RAISE:
-            self.annots_check_values_exists()
-
-    def load(self) -> Union[True, NoReturn, None]:
+    # -----------------------------------------------------------------------------------------------------------------
+    def load_dict(self) -> None:
         """load values from source into instance attributes.
         """
         section_dict = self.as_dict()
         if section_dict:
             self._apply_dict(section_dict)
-            return True
 
-        msg = f"[CRITICAL]no values!"
-        if self.filepath and self.filepath.exists():
-            msg += self.filepath.read_text()
-        if self.RAISE:
-            raise Exx_PvNotAccepted(msg)
+    def _apply_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
+        """Apply passes dict into instance and check consistence.
+        """
+        for key, value in attrs.items():
+            setattr(self, key, value)
 
     # -----------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod
