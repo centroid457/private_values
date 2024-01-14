@@ -16,6 +16,7 @@ in requirements for other projects use fixed version! because it might be refact
 	- Environment  
 	- iniFile  
 	- JsonFile  
+	- CSV  
 2. attr access:  
 	- via any lettercase  
 	- by instance attr  
