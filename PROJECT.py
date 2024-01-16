@@ -4,7 +4,7 @@ from typing import *
 # =====================================================================================================================
 class PROJECT:
     # AUX --------------------------------------------------
-    _VERSION_TEMPLATE: Tuple[int] = (0, 0, 1)
+    _VERSION_TEMPLATE: Tuple[int] = (0, 0, 2)
 
     # AUTHOR -----------------------------------------------
     AUTHOR_NAME: str = "Andrei Starichenko"
@@ -12,30 +12,29 @@ class PROJECT:
     AUTHOR_HOMEPAGE: str = "https://github.com/centroid457/"
 
     # PROJECT ----------------------------------------------
-    NAME_INSTALL: str = "private-values"
     NAME_IMPORT: str = "private_values"
+    NAME_INSTALL: str = NAME_IMPORT.replace("_", "-")
     KEYWORDS: List[str] = [
       "environs", "environment",
       "private",
       "rc", "ini", "csv"
       "json"
     ]
-
-    # GIT --------------------------------------------------
-    DESCRIPTION_SHORT: str = "update values into class attrs from OsEnvironment or Ini/Json File"
+    CLASSIFIERS_TOPICS_ADD: List[str] = [
+        # "Topic :: Communications",
+        # "Topic :: Communications :: Email",
+    ]
 
     # README -----------------------------------------------
-    pass
-
     # add DOUBLE SPACE at the end of all lines! for correct representation in MD-viewers
+    DESCRIPTION_SHORT: str = "update values into class attrs from OsEnvironment or Ini/Json File"
     DESCRIPTION_LONG: str = """
 Designed to use private data like username/pwd kept secure in OsEnvironment or Ini/Json-File for your several home projects at ones.  
 And not open it in public.  
 
 **CAUTION:**  
 in requirements for other projects use fixed version! because it might be refactored so you would get exception soon.
-
-    """
+"""
     FEATURES: List[str] = [
         # "feat1",
         # ["feat2", "block1", "block2"],
@@ -53,7 +52,7 @@ in requirements for other projects use fixed version! because it might be refact
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 5, 4)
+    VERSION: Tuple[int, int, int] = (0, 5, 5)
     VERSION_STR: str = ".".join(map(str, VERSION))
     TODO: List[str] = [
         "..."
@@ -62,7 +61,7 @@ in requirements for other projects use fixed version! because it might be refact
         "..."
     ]
     NEWS: List[str] = [
-        "apply new pypi template"
+        "apply Prj template 0.0.2"
     ]
 
 
