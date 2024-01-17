@@ -10,7 +10,7 @@ class PrivateIni(PrivateBase):
     """
     FILENAME: str = "pv.ini"
 
-    def as_dict(self) -> Union[Type_PvDict, NoReturn]:
+    def get_dict(self) -> Union[Type_PvDict, NoReturn]:
         ini = ConfigParser()
 
         try:

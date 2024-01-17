@@ -9,6 +9,7 @@ import abc
 
 from annot_attrs import *
 from private_values import *
+from private_values import PrivateJson, PrivateIni
 
 
 # =====================================================================================================================
@@ -62,7 +63,7 @@ class Test__Env:
 
     def test__show(self):
         # uppercase - see docstring for method!
-        envs = self.VICTIM().as_dict(self.NAME_Exists)
+        envs = self.VICTIM().get_dict(self.NAME_Exists)
         print(envs)
         assert envs.get(self.NAME_Exists.upper()) == self.VALUE
 
@@ -430,6 +431,24 @@ class Test__Json:
             pass
         else:
             assert False
+
+    def test__dict_update(self):
+        victim = self.VICTIM()
+        assert victim.name1 == "value1"
+        victim.apply_dict({"hello": 111})
+
+        try:
+            assert victim.name1 == "value1"
+        except Exx_AttrNotExist:
+            pass
+        else:
+            assert False
+
+        victim = self.VICTIM()
+        assert victim.name1 == "value1"
+        victim.update_dict({"hello": 111})
+        assert victim.name1 == "value1"
+        assert victim.hello == 111
 
 
 # =====================================================================================================================

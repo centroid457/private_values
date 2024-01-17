@@ -39,6 +39,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
     FILENAME: Optional[str] = None
 
     _text: Optional[str] = None     # TODO: need tests!!!
+    dict: Dict[str, Any] = None
 
     # -----------------------------------------------------------------------------------------------------------------
     def __init__(
@@ -70,7 +71,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         """return pretty string
         """
         result = f"{self.filepath=}"
-        data = self.as_dict()
+        data = self.get_dict()
         if data:
             for key, value in data.items():
                 result += f"\n{key}={value}"
@@ -117,19 +118,34 @@ class PrivateBase(AnnotAttrs, abc.ABC):
     def load_dict(self) -> None:
         """load values from source into instance attributes.
         """
-        section_dict = self.as_dict()
-        if section_dict:
-            self._apply_dict(section_dict)
+        section_dict = self.get_dict()
+        self.apply_dict(section_dict)
 
-    def _apply_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
+    def apply_dict(self, attrs: Optional[Dict[str, Any]], update: Optional[bool] = None) -> None | NoReturn:
         """Apply passes dict into instance and check consistence.
         """
-        for key, value in attrs.items():
+        if self.dict and not update:
+            for key in self.dict:
+                delattr(self, key)
+
+        if attrs is not None:
+            if update:
+                self.dict.update(attrs)
+            else:
+                self.dict = dict(attrs)
+        if self.dict is None:
+            return
+        for key, value in self.dict.items():
             setattr(self, key, value)
+
+    def update_dict(self, attrs: Optional[Dict[str, Any]]) -> None | NoReturn:
+        """Apply passes dict into instance and check consistence.
+        """
+        self.apply_dict(attrs, True)
 
     # -----------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod
-    def as_dict(self) -> Optional[Dict[str, Any]]:
+    def get_dict(self) -> Optional[Dict[str, Any]]:
         """Obtain existed values from source in dict structure.
 
         return

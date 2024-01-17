@@ -8,7 +8,7 @@ class PrivateEnv(PrivateBase):
     """
     read exact environs from Os Environment
     """
-    def as_dict(self, _prefix: Optional[str] = None) -> Type_PvDict:
+    def get_dict(self, _prefix: Optional[str] = None) -> Type_PvDict:
         """
         directly using result - mainly it is only for PRINTing and debugging! don't use result!
 

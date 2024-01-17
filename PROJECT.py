@@ -48,11 +48,12 @@ in requirements for other projects use fixed version! because it might be refact
         ["attr access",
          "via any lettercase",
          "by instance attr",
-         "like dict key on instance", ]
+         "like dict key on instance", ],
+        "update_dict as cumulative result - useful in case of settings result",
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 5, 5)
+    VERSION: Tuple[int, int, int] = (0, 5, 6)
     VERSION_STR: str = ".".join(map(str, VERSION))
     TODO: List[str] = [
         "..."
@@ -61,7 +62,9 @@ in requirements for other projects use fixed version! because it might be refact
         "..."
     ]
     NEWS: List[str] = [
-        "apply Prj template 0.0.2"
+        "add update_dict",
+        "keep dict as result",
+        "some renames",
     ]
 
 
