@@ -1,4 +1,4 @@
-# private_values (v0.5.5)
+# private_values (v0.5.6)
 
 ## DESCRIPTION_SHORT
 Update values into class attrs from osenvironment or ini/json file
@@ -21,6 +21,7 @@ in requirements for other projects use fixed version! because it might be refact
 	- via any lettercase  
 	- by instance attr  
 	- like dict key on instance  
+3. update_dict as cumulative result - useful in case of settings result  
 
 
 ********************************************************************************
