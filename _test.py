@@ -463,6 +463,17 @@ class Test__Json:
         assert victim.hello == 11
         assert victim.hello1 == 2222
 
+    def test__dict_in_init(self):
+        victim = self.VICTIM(_dict={"hello": 11})
+        assert dict(victim.dict) == {"hello": 11}
+        try:
+            assert victim.name1 == "value1"
+        except Exx_AttrNotExist:
+            pass
+        else:
+            assert False
+        assert victim.hello == 11
+
 
 # =====================================================================================================================
 class Test__Auto:

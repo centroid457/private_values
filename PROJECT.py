@@ -41,9 +41,11 @@ in requirements for other projects use fixed version! because it might be refact
 
         ["load values to instance attrs from",
          "Environment",
-         "iniFile",
+         "IniFile",
          "JsonFile",
-         "CSV",
+         "CsvFile",
+         "direct text instead of file",
+         "direct dict instead of file",
          ],
 
         ["attr access",
@@ -66,7 +68,7 @@ in requirements for other projects use fixed version! because it might be refact
         "..."
     ]
     NEWS: List[str] = [
-        "add preupdate_dict",
+        ["add in init", "_dict", "_dont_check_values_exists"],
     ]
 
 

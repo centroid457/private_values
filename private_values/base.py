@@ -33,7 +33,9 @@ class PrivateBase(AnnotAttrs, abc.ABC):
     -----
     if you dont need RAISE when no value get for exact annotated name - just define None!
     """
-    SECTION: str = None
+    DONT_CHECK_VALUES_EXISTS: Optional[bool] = None
+
+    SECTION: Optional[str] = None
 
     DIRPATH: Optional[Type_Path] = pathlib.Path.home()
     FILENAME: Optional[str] = None
@@ -45,15 +47,25 @@ class PrivateBase(AnnotAttrs, abc.ABC):
     def __init__(
             self,
             _section: Optional[str] = None,
+
             _dirpath: Type_Path = None,
             _filename: str = None,
             _filepath: Type_Path = None,
-            _text: Optional[str] = None
+
+            _text: Optional[str] = None,                # instead of file
+            _dict: Optional[Dict[str, Any]] = None,     # instead of file
+
+            _dont_check_values_exists: Optional[bool] = None
     ):
         super().__init__()
         self.SECTION = _section or self.SECTION
 
-        if _text:
+        if _dict is not None:
+            self.SECTION = None
+            self.DIRPATH = None
+            self.FILENAME = None
+            self.apply_dict(_dict)
+        elif _text is not None:
             self.DIRPATH = None
             self.FILENAME = None
             self._text = _text
@@ -64,8 +76,11 @@ class PrivateBase(AnnotAttrs, abc.ABC):
                 _filepath=_filepath
             )
 
-        self.load_dict()
-        self.annots_check_values_exists()
+        if _dict is None:
+            self.load_dict()
+
+        if not _dont_check_values_exists:
+            self.annots_check_values_exists()
 
     def __str__(self):
         """return pretty string
