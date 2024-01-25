@@ -121,20 +121,24 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         section_dict = self.get_dict()
         self.apply_dict(section_dict)
 
-    def apply_dict(self, attrs: Optional[Dict[str, Any]], update: Optional[bool] = None) -> None | NoReturn:
+    def apply_dict(self, attrs: Optional[Dict[str, Any]] = None, update: Optional[bool] = None) -> None | NoReturn:
         """Apply passes dict into instance and check consistence.
         """
+        # clear -----------------------
         if self.dict and not update:
             for key in self.dict:
                 delattr(self, key)
 
+        # work -----------------------
         if attrs is not None:
             if update:
                 self.dict.update(attrs)
             else:
                 self.dict = dict(attrs)
+
         if self.dict is None:
             return
+
         for key, value in self.dict.items():
             setattr(self, key, value)
 
@@ -142,6 +146,18 @@ class PrivateBase(AnnotAttrs, abc.ABC):
         """Apply passes dict into instance and check consistence.
         """
         self.apply_dict(attrs, True)
+
+    def preupdate_dict(self, attrs: Dict[str, Any]) -> None | NoReturn:
+        """Apply passes dict into instance and check consistence.
+        """
+        # prepare  -----------------------
+        new_dict = {}
+        for key, value in attrs.items():
+            if key not in self.dict:
+                new_dict.update({key: value})
+
+        # work -----------------------
+        self.update_dict(new_dict)
 
     # -----------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod

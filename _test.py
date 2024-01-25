@@ -450,6 +450,19 @@ class Test__Json:
         assert victim.name1 == "value1"
         assert victim.hello == 111
 
+    def test__dict_preupdate(self):
+        victim = self.VICTIM()
+        assert victim.name1 == "value1"
+        victim.apply_dict({"hello": 11})
+
+        assert dict(victim.dict) == {"hello": 11}
+        assert victim.hello == 11
+
+        victim.preupdate_dict({"hello1": 2222, "hello": 2222})
+        assert dict(victim.dict) == {"hello1": 2222, "hello": 11}
+        assert victim.hello == 11
+        assert victim.hello1 == 2222
+
 
 # =====================================================================================================================
 class Test__Auto:

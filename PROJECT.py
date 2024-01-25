@@ -45,10 +45,14 @@ in requirements for other projects use fixed version! because it might be refact
          "JsonFile",
          "CSV",
          ],
+
         ["attr access",
          "via any lettercase",
          "by instance attr",
          "like dict key on instance", ],
+
+        ["work with dict", "apply", "update", "preupdate"],
+
         "update_dict as cumulative result - useful in case of settings result",
     ]
 
@@ -62,9 +66,7 @@ in requirements for other projects use fixed version! because it might be refact
         "..."
     ]
     NEWS: List[str] = [
-        "add update_dict",
-        "keep dict as result",
-        "some renames",
+        "add preupdate_dict",
     ]
 
 
