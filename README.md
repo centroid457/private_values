@@ -1,4 +1,4 @@
-# private_values (v0.5.7)
+# private_values (v0.5.8)
 
 ## DESCRIPTION_SHORT
 Update values into class attrs from osenvironment or ini/json file
@@ -14,9 +14,11 @@ in requirements for other projects use fixed version! because it might be refact
 ## Features
 1. load values to instance attrs from:  
 	- Environment  
-	- iniFile  
+	- IniFile  
 	- JsonFile  
-	- CSV  
+	- CsvFile  
+	- direct text instead of file  
+	- direct dict instead of file  
 2. attr access:  
 	- via any lettercase  
 	- by instance attr  
