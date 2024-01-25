@@ -57,7 +57,7 @@ in requirements for other projects use fixed version! because it might be refact
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 5, 6)
+    VERSION: Tuple[int, int, int] = (0, 5, 7)
     VERSION_STR: str = ".".join(map(str, VERSION))
     TODO: List[str] = [
         "..."
