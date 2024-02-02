@@ -62,7 +62,7 @@ in requirements for other projects use fixed version! because it might be refact
     VERSION: Tuple[int, int, int] = (0, 5, 8)
     VERSION_STR: str = ".".join(map(str, VERSION))
     TODO: List[str] = [
-        "..."
+        "add Lock param after load"
     ]
     FIXME: List[str] = [
         "..."
