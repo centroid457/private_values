@@ -1,7 +1,8 @@
+from typing import *
 import pathlib
 import abc
 
-from annot_attrs import *
+from annot_attrs import AnnotAttrs
 
 
 # =====================================================================================================================
@@ -9,9 +10,9 @@ from annot_attrs import *
 
 
 # =====================================================================================================================
-Type_PvDict = Dict[str, Any]
-Type_Path = Union[str, pathlib.Path]
-Type_Value = Union[str, NoReturn, None]
+TYPE__PV_DICT = dict[str, Any]
+TYPE__PATH = Union[str, pathlib.Path]
+TYPE__VALUE = Union[str, NoReturn, None]
 
 
 # =====================================================================================================================
@@ -37,7 +38,7 @@ class PrivateBase(AnnotAttrs, abc.ABC):
 
     SECTION: Optional[str] = None
 
-    DIRPATH: Optional[Type_Path] = pathlib.Path.home()
+    DIRPATH: Optional[TYPE__PATH] = pathlib.Path.home()
     FILENAME: Optional[str] = None
 
     _text: Optional[str] = None     # TODO: need tests!!!
@@ -48,9 +49,9 @@ class PrivateBase(AnnotAttrs, abc.ABC):
             self,
             _section: Optional[str] = None,
 
-            _dirpath: Type_Path = None,
+            _dirpath: TYPE__PATH = None,
             _filename: str = None,
-            _filepath: Type_Path = None,
+            _filepath: TYPE__PATH = None,
 
             _text: Optional[str] = None,                # instead of file
             _dict: Optional[Dict[str, Any]] = None,     # instead of file
@@ -99,9 +100,9 @@ class PrivateBase(AnnotAttrs, abc.ABC):
     # -----------------------------------------------------------------------------------------------------------------
     def _filepath_apply_new(
             self,
-            _dirpath: Type_Path = None,
+            _dirpath: TYPE__PATH = None,
             _filename: str = None,
-            _filepath: Type_Path = None
+            _filepath: TYPE__PATH = None
     ) -> Optional[NoReturn]:
         """apply new file destination
         """

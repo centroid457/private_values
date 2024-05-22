@@ -9,7 +9,6 @@ import abc
 
 from annot_attrs import *
 from private_values import *
-from private_values import PrivateJson, PrivateIni
 
 
 # =====================================================================================================================

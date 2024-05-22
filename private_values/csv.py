@@ -1,4 +1,5 @@
 from . import *
+from typing import *
 import re
 
 
@@ -51,7 +52,7 @@ class PrivateCsv(PrivateBase):
     LINE_SKIP__LAST: Optional[int] = None
     LINE_SKIP__REGEXP: Optional[str] = None
 
-    def get_dict(self) -> Union[Type_PvDict, NoReturn]:
+    def get_dict(self) -> Union[TYPE__PV_DICT, NoReturn]:
         result = {}
         lines = self._text.splitlines()[self.LINE_SKIP__FIRST:]
         if self.LINE_SKIP__LAST:

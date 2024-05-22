@@ -1,5 +1,5 @@
 from . import *
-
+from typing import *
 from configparser import ConfigParser
 
 
@@ -10,7 +10,7 @@ class PrivateIni(PrivateBase):
     """
     FILENAME: str = "pv.ini"
 
-    def get_dict(self) -> Union[Type_PvDict, NoReturn]:
+    def get_dict(self) -> Union[TYPE__PV_DICT, NoReturn]:
         ini = ConfigParser()
 
         try:

@@ -1,4 +1,6 @@
 # =====================================================================================================================
+# DONOT apply PrivateBase nesting!
+
 class PrivateAuth:
     """Typical structure for AUTH
 

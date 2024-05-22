@@ -1,5 +1,5 @@
 from . import *
-
+from typing import *
 import json
 
 
@@ -7,7 +7,7 @@ import json
 class PrivateJson(PrivateBase):
     FILENAME: str = "pv.json"
 
-    def get_dict(self) -> Union[Type_PvDict, NoReturn]:
+    def get_dict(self) -> Union[TYPE__PV_DICT, NoReturn]:
         """
         section only in first level!
         """

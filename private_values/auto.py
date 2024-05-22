@@ -1,5 +1,4 @@
 from . import *
-
 from typing import *
 
 
@@ -10,7 +9,7 @@ class PrivateAuto(PrivateJson, PrivateIni, PrivateEnv):
     and take values ONLY from FIRST ONE source with all needed values!
     It will not merge sources!
     """
-    def get_dict(self) -> Union[Type_PvDict, NoReturn]:
+    def get_dict(self) -> Union[TYPE__PV_DICT, NoReturn]:
         annots = self.annots_get_set()
         annots_lower = set(map(str.lower, annots))
 
