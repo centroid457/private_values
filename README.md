@@ -1,14 +1,14 @@
-# private_values (v0.5.8)
+# private_values (v0.5.9)
 
 ## DESCRIPTION_SHORT
-Update values into class attrs from osenvironment or ini/json file
+update values into class attrs from OsEnvironment or Ini/Json File
 
 ## DESCRIPTION_LONG
-designed to use private data like username/pwd kept secure in osenvironment or ini/json-file for your several home projects at ones.  
-and not open it in public.  
+Designed to use private data like username/pwd kept secure in OsEnvironment or Ini/Json-File for your several home projects at ones.  
+    And not open it in public.  
 
-**caution:**  
-in requirements for other projects use fixed version! because it might be refactored so you would get exception soon.
+    **CAUTION:**  
+    in requirements for other projects use fixed version! because it might be refactored so you would get exception soon.
 
 
 ## Features

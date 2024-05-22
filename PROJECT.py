@@ -1,11 +1,13 @@
 from typing import *
+from _aux__release_files import release_files_update
+
+
+# =====================================================================================================================
+VERSION = (0, 0, 3)   # 1/deprecate _VERSION_TEMPLATE from PRJ object +2/place update_prj here in __main__ +3/separate finalize attrs
 
 
 # =====================================================================================================================
 class PROJECT:
-    # AUX --------------------------------------------------
-    _VERSION_TEMPLATE: Tuple[int] = (0, 0, 2)
-
     # AUTHOR -----------------------------------------------
     AUTHOR_NAME: str = "Andrei Starichenko"
     AUTHOR_EMAIL: str = "centroid@mail.ru"
@@ -13,12 +15,11 @@ class PROJECT:
 
     # PROJECT ----------------------------------------------
     NAME_IMPORT: str = "private_values"
-    NAME_INSTALL: str = NAME_IMPORT.replace("_", "-")
     KEYWORDS: List[str] = [
-      "environs", "environment",
-      "private",
-      "rc", "ini", "csv"
-      "json"
+        "environs", "environment",
+        "private",
+        "rc", "ini", "csv"
+                     "json"
     ]
     CLASSIFIERS_TOPICS_ADD: List[str] = [
         # "Topic :: Communications",
@@ -29,12 +30,12 @@ class PROJECT:
     # add DOUBLE SPACE at the end of all lines! for correct representation in MD-viewers
     DESCRIPTION_SHORT: str = "update values into class attrs from OsEnvironment or Ini/Json File"
     DESCRIPTION_LONG: str = """
-Designed to use private data like username/pwd kept secure in OsEnvironment or Ini/Json-File for your several home projects at ones.  
-And not open it in public.  
+    Designed to use private data like username/pwd kept secure in OsEnvironment or Ini/Json-File for your several home projects at ones.  
+    And not open it in public.  
 
-**CAUTION:**  
-in requirements for other projects use fixed version! because it might be refactored so you would get exception soon.
-"""
+    **CAUTION:**  
+    in requirements for other projects use fixed version! because it might be refactored so you would get exception soon.
+    """
     FEATURES: List[str] = [
         # "feat1",
         # ["feat2", "block1", "block2"],
@@ -59,22 +60,26 @@ in requirements for other projects use fixed version! because it might be refact
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 5, 8)
-    VERSION_STR: str = ".".join(map(str, VERSION))
+    VERSION: Tuple[int, int, int] = (0, 5, 9)
     TODO: List[str] = [
-        "add Lock param after load"
+        "add Lock param after load?"
     ]
     FIXME: List[str] = [
         "..."
     ]
     NEWS: List[str] = [
-        ["add in init", "_dict", "_dont_check_values_exists"],
+        "[__INIT__.py] fix import",
+        "apply last pypi template",
     ]
+
+    # FINALIZE -----------------------------------------------
+    VERSION_STR: str = ".".join(map(str, VERSION))
+    NAME_INSTALL: str = NAME_IMPORT.replace("_", "-")
 
 
 # =====================================================================================================================
 if __name__ == '__main__':
-    pass
+    release_files_update(PROJECT)
 
 
 # =====================================================================================================================
