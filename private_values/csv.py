@@ -2,12 +2,10 @@ from . import *
 from typing import *
 import re
 
+from . import TYPE__PV_DICT, Exx__SameKeys
+
 
 # =====================================================================================================================
-class Exx_SameKeys(Exception):
-    """Same keys NOT allowed!
-    """
-    pass
 
 
 # =====================================================================================================================
@@ -73,7 +71,7 @@ class PrivateCsv(PrivateBase):
                 continue
 
             if key in result and self.RAISE_SAME_KEYS:
-                raise Exx_SameKeys
+                raise Exx__SameKeys
 
             result.update({key: value})
 

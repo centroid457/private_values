@@ -4,22 +4,11 @@ import abc
 
 from annot_attrs import AnnotAux
 
+from private_values import Exx__FileNotExists, TYPE__PATH
+
 
 # =====================================================================================================================
 # TODO: add iter???
-
-
-# =====================================================================================================================
-TYPE__PV_DICT = dict[str, Any]
-TYPE__PATH = Union[str, pathlib.Path]
-TYPE__VALUE = Union[str, NoReturn, None]
-
-
-# =====================================================================================================================
-class Exx_FileNotExists(Exception):
-    """Any final exception when value can't be get.
-    """
-    pass
 
 
 # =====================================================================================================================
@@ -81,7 +70,7 @@ class PrivateBase(AnnotAux, abc.ABC):
             self.load_dict()
 
         if not _dont_check_values_exists:
-            self.annots_check_values_exists()
+            self.annot__raise_if_not_defined()
 
     def __str__(self):
         """return pretty string
@@ -115,7 +104,7 @@ class PrivateBase(AnnotAux, abc.ABC):
 
         if self.filepath and not self.filepath.exists():
             msg = f'[CRITICAL]no[{self.filepath=}]'
-            raise Exx_FileNotExists(msg)
+            raise Exx__FileNotExists(msg)
 
         if self.filepath:
             self._text = self.filepath.read_text()

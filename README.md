@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/private_values)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/private_values)
 
-# private_values (current v0.6.0/![Ver/Pypi Latest](https://img.shields.io/pypi/v/private_values?label=pypi%20latest))
+# private_values (current v0.6.1/![Ver/Pypi Latest](https://img.shields.io/pypi/v/private_values?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 update values into class attrs from OsEnvironment or Ini/Json File

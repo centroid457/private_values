@@ -4,11 +4,17 @@ import pathlib
 import shutil
 from tempfile import TemporaryDirectory
 from typing import *
-from configparser import ConfigParser
 import abc
 
-from annot_attrs import *
-from private_values import *
+from annot_attrs import (
+    Exx__AnnotNotDefined,
+)
+from private_values import (
+    PrivateAuto,
+    PrivateEnv, PrivateCsv, PrivateIni, PrivateJson,
+    PrivateAuthIni, PrivateAuthJson,
+    Exx__FileNotExists,
+)
 
 
 # =====================================================================================================================
@@ -108,7 +114,7 @@ name2:222
 
         try:
             self.VICTIM()
-        except Exx_FileNotExists:
+        except Exx__FileNotExists:
             pass
         else:
             assert False
@@ -185,7 +191,7 @@ name1=value12
 
         try:
             self.VICTIM()
-        except Exx_FileNotExists:
+        except Exx__FileNotExists:
             pass
         else:
             assert False
@@ -315,7 +321,7 @@ class Test__Json:
         self.VICTIM.FILENAME = "12345.ini"
         try:
             self.VICTIM()
-        except Exx_FileNotExists:
+        except Exx__FileNotExists:
             pass
         else:
             assert False

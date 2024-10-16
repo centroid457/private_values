@@ -3,43 +3,44 @@
 #   from .main import *                 # INcorrect
 #   from .main import EXACT_OBJECTS     # CORRECT
 # VERSION = (0, 0, 2)   # del blank lines
+# VERSION = (0, 0, 3)   # separate all types/exx into static.py!
 
 
 # =====================================================================================================================
 # TEMPLATE
-# from .main import (
-#     # BASE
-#     EXACT_OBJECTS,
-#     # AUX
+# from .static import (
 #     # TYPES
 #     # EXX
 # )
+# from .main import (
+#     # BASE
+#     # AUX
+# )
 # ---------------------------------------------------------------------------------------------------------------------
-from .base import (
-    # BASE
-    PrivateBase,
-    # AUX
+from .static import (
     # TYPES
     TYPE__PV_DICT,
     TYPE__PATH,
     TYPE__VALUE,
     # EXX
-    Exx_FileNotExists,
+    Exx__FileNotExists,
+    Exx__SameKeys,
+)
+from .base import (
+    # BASE
+    PrivateBase,
+    # AUX
 )
 from .derivatives import (
     # BASE
     PrivateAuth,
     PrivateTgBotAddress,
     # AUX
-    # TYPES
-    # EXX
 )
 from .env import (
     # BASE
     PrivateEnv,
     # AUX
-    # TYPES
-    # EXX
 )
 from .csv import (
     # BASE
@@ -47,9 +48,6 @@ from .csv import (
     PrivateAuthCsv,
     PrivateTgBotAddressCsv,
     # AUX
-    # TYPES
-    # EXX
-    Exx_SameKeys,
 )
 from .ini import (
     # BASE
@@ -57,8 +55,6 @@ from .ini import (
     PrivateAuthIni,
     PrivateTgBotAddressIni,
     # AUX
-    # TYPES
-    # EXX
 )
 from .json import (
     # BASE
@@ -66,8 +62,6 @@ from .json import (
     PrivateAuthJson,
     PrivateTgBotAddressJson,
     # AUX
-    # TYPES
-    # EXX
 )
 from .auto import (
     # BASE
@@ -75,8 +69,6 @@ from .auto import (
     PrivateAuthAuto,
     PrivateTgBotAddressAuto,
     # AUX
-    # TYPES
-    # EXX
 )
 
 # =====================================================================================================================

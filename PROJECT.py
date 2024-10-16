@@ -82,7 +82,7 @@ class PROJECT(PROJECT_BASE):
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 6, 0)
+    VERSION: tuple[int, int, int] = (0, 6, 1)
     TODO: list[str] = [
         "add Lock param after load?"
     ]
@@ -90,8 +90,7 @@ class PROJECT(PROJECT_BASE):
         "..."
     ]
     NEWS: list[str] = [
-        "[pypi] apply last ver",
-        "try apply new ver for others like AnnotAux, seems errors exists!",
+        "[pypi.init] add static =NOW IT IS NOT WORKING!!!"
     ]
 
 

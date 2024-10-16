@@ -2,6 +2,8 @@ from . import *
 from typing import *
 from configparser import ConfigParser
 
+from . import TYPE__PV_DICT
+
 
 # =====================================================================================================================
 class PrivateIni(PrivateBase):
