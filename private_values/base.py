@@ -2,7 +2,7 @@ from typing import *
 import pathlib
 import abc
 
-from annot_attrs import AnnotAttrs
+from annot_attrs import AnnotAux
 
 
 # =====================================================================================================================
@@ -23,7 +23,7 @@ class Exx_FileNotExists(Exception):
 
 
 # =====================================================================================================================
-class PrivateBase(AnnotAttrs, abc.ABC):
+class PrivateBase(AnnotAux, abc.ABC):
     """Base class to get values from sources.
 
     :ivar SECTION: first level name in source, for ini - root section, for json - rootKey, for env - not used
